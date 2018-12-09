@@ -1,7 +1,8 @@
 import numpy as np
 import scipy as sp
-import squidward.squidward.gpr as gpr
-#from gp_viz import plot_gp
+import squidward.gpr as gpr
+
+np.seterr(over='raise')
 
 class gaussian_process(object):
     def __init__(self,kernel=None,var_l=1e-15,inv_method='inv'):

@@ -1,7 +1,6 @@
 import numpy as np
 import scipy as sp
-from squidward.squidward.utils import invert
-#from squidward.squidward import gp_viz
+from squidward.utils import invert
 
 np.seterr(over='raise')
 
