@@ -1,6 +1,7 @@
 import numpy as np
 import scipy as sp
 import squidward.gpr as gpr
+from squidward.utils import atleast_2d
 
 np.seterr(over='raise')
 
@@ -17,13 +18,6 @@ class gaussian_process(object):
         self.predictors = []
         self.n_classes = None
 
-    def preprocess(self,x,y=None):
-        if len(x.shape) == 1:
-            x = x.reshape(-1,1)
-        if y is not None:
-            y = y.reshape(-1,1)
-        return x,y
-
     def sigmoid(self,z):
         return 1.0 / (1.0 + np.exp(-z))
 
@@ -31,7 +25,8 @@ class gaussian_process(object):
         return predictions / predictions.sum(axis=1).reshape(-1,1)
 
     def fit(self,x,y):
-        self.x, self.y = self.preprocess(x,y)
+        self.x = atleast_2d(x)
+        self.y = atleast_2d(y)
         self.n_classes = np.unique(self.y).shape[0]
         for i in range(self.n_classes):
             y_train = np.where(self.y==i,1,-1)
@@ -41,7 +36,7 @@ class gaussian_process(object):
         return None
 
     def posterior_predict(self,x_test,logits=False):
-        #x_test = self.preprocess(x_test)
+        x_test = atleast_2d(x_test)
         means = []
         vars = []
         for model in self.predictors:
@@ -51,7 +46,7 @@ class gaussian_process(object):
         if logits == False:
             means = np.array(means).T[0]
             means = self.softmax(self.sigmoid(means))
-            return means.argmax(axis=1)
+            return atleast_2d(means.argmax(axis=1))
         else:
             means = np.array(means).T[0]
             vars = np.array(vars).T[0]

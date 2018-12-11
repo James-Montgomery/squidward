@@ -2,10 +2,14 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
-from squidward.utils import make_grid
+from squidward.utils import make_grid, atmost_1d
 
 class regression:
     def plot_1d(x,mean,var):
+        x = atmost_1d(x)
+        mean = atmost_1d(mean)
+        var = atmost_1d(var)
+
         plt.fill_between(x,
                      mean-.674*np.sqrt(var),
                      mean+.674*np.sqrt(var),
@@ -28,15 +32,19 @@ class regression:
     def point_grid(model,coordinates=(-1,1,.1),show_var=False):
         x_test,s = make_grid(coordinates)
         mean, var = model.posterior_predict(x_test)
+        mean = atmost_1d(mean)
+        var = atmost_1d(var)
         if show_var == False:
             plt.scatter(x_test[:,0],x_test[:,1],c=mean)
         else:
-            plt.scatter(x_test[:,0],x_test[:,1],c=var[:,0])
+            plt.scatter(x_test[:,0],x_test[:,1],c=var)
         return None
 
     def contour(model,coordinates=(-1,1,.1),show_var=False):
         x_test,s = make_grid(coordinates)
         mean, var = model.posterior_predict(x_test)
+        mean = atmost_1d(mean)
+        var = atmost_1d(var)
         if show_var == False:
             z = mean.T.reshape(s,s)
         else:
@@ -51,6 +59,8 @@ class regression:
     def plot_3d(model,coordinates=(-1,1,.1),show_var=False,figsize=(20,10)):
         x_test,s = make_grid(coordinates)
         mean, var = model.posterior_predict(x_test)
+        mean = atmost_1d(mean)
+        var = atmost_1d(var)
         if show_var == False:
             z = mean.T.reshape(s,s)
         else:
@@ -76,11 +86,13 @@ class regression:
         ax = fig.add_subplot(224, projection="3d")
         ax.plot_surface(a, b, z, cmap="autumn_r", lw=0.5, rstride=1, cstride=1, alpha=0.5)
         ax.contour(a, b, z, 10, lw=3, colors="k", linestyles="solid")
-        ax.view_init(30, 180)
+        ax.view_init(30, -120)
         return None
 
 class classification:
     def plot_1dc(x,mean):
+        x = atmost_1d(x)
+        mean = atmost_1d(mean)
         plt.plot(x,mean,c='w')
         return None
 

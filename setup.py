@@ -10,9 +10,10 @@ setup(name='squidward',
       license='MIT',
       packages=['squidward'],
       install_requires=[
-          'numpy',
-          'scipy',
-          'matplotlib',
-          'seaborn'
+          'numpy>=1.15.1',
+          'scipy>=1.1.0',
+          'matplotlib>=2.2.3',
+          'seaborn>=0.9.0',
+          'nose>=1.3.7'
       ],
       zip_safe=False)
