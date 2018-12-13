@@ -14,26 +14,32 @@ These instructions will get you a copy of the project up and running on your loc
 
 This is a step by step guide to installing squidward for your local environment.
 
-First, git clone this repository to your local environment.
+I recommend installing squidward in a virtual environment for organized dependency control. Personally, I prefer conda environments. Create your environment and then go into it.
+
+```
+conda create --name squidward_env python=3.6
+source activate squidward_env
+```
+
+To install the latest stable version, simply pip install from pypi!
+
+```
+pip install squidward
+```
+
+However, if you want the latest version git clone this repository to your local environment instead.
 
 ```
 git clone https://github.com/looyclark/squidward.git
 ```
 
-I recommend installing squidward in a virtual environment for organized dependency control. Personally, I prefer conda environments.
+Change directory (cd) into the root of the squidward repository.
 
 ```
-conda create --name squidward_env python=3.6
-```
-
-Gom into your new environment and cd into the root of the squidward repository.
-
-```
-source activate squidward_env
 cd ./squidward
 ```
 
-Install squidward using pip.
+Install squidward using pip from the setup file.
 
 ```
 pip install .
@@ -41,7 +47,7 @@ pip install .
 
 ## Running the tests
 
-To run tests cd to `squidward/squidward` so that `/tests` is a subdirectory. use `nosetests` to run all tests for squidward. If you installed squidward in a virtual environment, please run the tests in that same environment.
+To run tests cd to `squidward/squidward` so that `/tests` is a subdirectory. Use `nosetests` to run all tests for squidward. If you installed squidward in a virtual environment, please run the tests in that same environment.
 
 ## Deployment
 
@@ -57,10 +63,11 @@ Next Steps:
 1. Polish core functionality and comment thoroughly
 2. Build out robust unit test and integration tests
 3. Add code quality and style guide checks
-4. Optimization and sampling functionality
-5. Embedding optimization for efficient inversion at scale
-6. Multiprocessing for parallelization
-7. Robust examples for reinforcement learning and parameter optimization
+4. Posterior Predictive checks
+5. Optimization and sampling functionality
+6. Embedding optimization for efficient inversion at scale
+7. Multiprocessing for parallelization
+8. Robust examples for reinforcement learning and parameter optimization
 
 ## Authors
 
