@@ -4,7 +4,7 @@ After working with gaussian processes (GPs) to build out robust reinforcement le
 
 This is my attempt to create the product that I would want to use. Something simple and flexible that gives knowledgable data scientists the tools they need to do the research or production machine learning work that they need.
 
-I'm, open to all feedback, commentary, and suggestions as long as it is constructive and polite.
+I'm open to all feedback, commentary, and suggestions as long as they are constructive and polite.
 
 ## Getting Started
 
@@ -51,7 +51,7 @@ To run the unit tests cd to `squidward/squidward` so that `/tests` is a subdirec
 
 ## Running the style tests
 
-I attempt to adhere to the pep8 style guide for the squidward project. To run the style tests cd to the root directory of the repository `squidward/` so that `/squidward` is a subdirectory. Use `pylint` to run all style tests for squidward. 
+I attempt to adhere to the [pep8](https://www.python.org/dev/peps/pep-0008/) style guide for the squidward project. To run the style tests cd to the root directory of the repository `squidward/` so that `/squidward` is a subdirectory. Use `pylint` to run all style tests for squidward.
 
 ## Deployment
 
@@ -85,3 +85,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 * A big thanks to Keegan Hines and Josh Touyz who introduced me to Gaussian Processes
 * Another thanks to Thanos Kintsakis who helped turn me from a data scientist into a machine learning engineer who can produce maintainable and efficient code.
+* The core functionality of this code (gpr and gpc) are based on the book [Gaussian Processes for Machine Learning](http://www.gaussianprocess.org/gpml/) chapters 2 and 3.
