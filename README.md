@@ -71,7 +71,7 @@ Next Steps:
 
 ## Authors
 
-* **James Montgomery** - *Initial work* - [jamesmontgomery.us](https://jamesmontgomery.us)
+* **James Montgomery** - *Initial work* - [jamesmontgomery.us](jamesmontgomery.us)
 
 ## License
 
