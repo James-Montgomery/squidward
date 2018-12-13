@@ -12,3 +12,8 @@
 
 # Mac files
 .DS_Store
+
+# pypi build files
+build
+dist
+squidward.egg-info
