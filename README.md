@@ -45,9 +45,13 @@ Install squidward using pip from the setup file.
 pip install .
 ```
 
-## Running the tests
+## Running the unit tests
 
-To run tests cd to `squidward/squidward` so that `/tests` is a subdirectory. Use `nosetests` to run all tests for squidward. If you installed squidward in a virtual environment, please run the tests in that same environment.
+To run the unit tests cd to `squidward/squidward` so that `/tests` is a subdirectory. Use `nosetests` to run all unit tests for squidward. If you installed squidward in a virtual environment, please run the tests in that same environment.
+
+## Running the style tests
+
+I attempt to adhere to the pep8 style guide for the squidward project. To run the style tests cd to the root directory of the repository `squidward/` so that `/squidward` is a subdirectory. Use `pylint` to run all style tests for squidward. 
 
 ## Deployment
 
