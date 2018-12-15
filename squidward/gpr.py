@@ -24,6 +24,10 @@ class gaussian_process(object):
         inv_method: string
             A string argument choosing an inversion method for matrix K when
             fitting the gaussian process.
+
+        Returns
+        ----------
+        Model object
         '''
         self.kernel = kernel
         self.var_l = var_l
@@ -50,6 +54,10 @@ class gaussian_process(object):
         y: array_like
             An array containing the model targets (currently only supports
             single outputs).
+
+        Returns
+        ----------
+        None
         '''
         self.x = atleast_2d(x)
         self.y = atleast_2d(y)
@@ -62,6 +70,7 @@ class gaussian_process(object):
 
         self.K = invert(K, self.inv_method)
         self.fitted = True
+        return None
 
     def posterior_predict(self, x_test, return_cov=False):
         '''
@@ -79,8 +88,19 @@ class gaussian_process(object):
         return_cov: boolean
             If true, will return the full covariance matrix. Otherwise it will
             return the variance.
+
+        Returns
+        ----------
+        Mean: array_like
+            An array with the values of the mean function of the guassian
+            process posterior.
+        Var: array_like
+            The variance around the values of the mean function of the
+            gaussian process posterior.
+        Cov: array_like
+            The full covariance matrix opf the gaussian process posterior.
         '''
-        if self.fitted = False:
+        if self.fitted == False:
             raise ValueError('Please fit the model before trying to make posterior predictions!')
         # Gaussian Processes for Machine Learning Eq 2.18/2.19
         K_s = self.kernel.k(x_test, self.x)
@@ -109,6 +129,17 @@ class gaussian_process(object):
         return_cov: boolean
             If true, will return the full covariance matrix. Otherwise it will
             return the variance.
+
+        Returns
+        ----------
+        Mean: array_like
+            An array with the values of the mean function of the guassian
+            process prior.
+        Var: array_like
+            The variance around the values of the mean function of the
+            gaussian process prior.
+        Cov: array_like
+            The full covariance matrix opf the gaussian process prior.
         '''
         mean = np.zero(x_test.shape[0])
         cov = self.kernel.k(x_test, x_test)
@@ -128,7 +159,14 @@ class gaussian_process(object):
         ----------
         x_test: array_like
             Feature input for points to draw samples for.
+
+        Returns
+        ----------
+        Sample: array_like
+            The values of a function sampled from the gaussian process posterior.
         '''
+        if self.fitted == False:
+            raise ValueError('Please fit the model before trying to make posterior predictions!')
         mean, cov = posterior_predict(x_test, True)
         return np.random.multivariate_normal(mean, cov, 1).T[:, 0]
 
@@ -142,12 +180,17 @@ class gaussian_process(object):
         ----------
         x_test: array_like
             Feature input for points to draw samples for.
+
+        Returns
+        ----------
+        Sample: array_like
+            The values of a function sampled from the gaussian process prior.
         '''
         mean, cov = prior_predict(x_test, True)
         return np.random.multivariate_normal(mean, cov, 1).T[:, 0]
 
 class gaussian_process_stable_cholesky(object):
-    def cholesky_predict(self, x, y, x_test, kernel, var_l=1e-15, return_cov=False):
+    def fit_predict(self, x, y, x_test, kernel, var_l=1e-15, return_cov=False):
         '''
         Description
         ----------
@@ -174,6 +217,17 @@ class gaussian_process_stable_cholesky(object):
         return_cov: boolean
             If true, will return the full covariance matrix. Otherwise it will
             return the variance.
+
+        Returns
+        ----------
+        Mean: array_like
+            An array with the values of the mean function of the guassian
+            process posterior.
+        Var: array_like
+            The variance around the values of the mean function of the
+            gaussian process posterior.
+        Cov: array_like
+            The full covariance matrix opf the gaussian process posterior.
         '''
         assert(kernel == None, 'Model object must be instantiated with a valid kernel object.')
         assert(var_l >= 0.0, 'Invalid likelihood variance argument.')
@@ -194,10 +248,10 @@ class gaussian_process_stable_cholesky(object):
         # More numerically stable
         # Gaussian Processes for Machine Learning Alg 2.1
         L = np.linalg.cholesky(K)
-		alpha = np.linalg.solve(L.transpose(), np.linalg.solve(L, y))
-		V = np.linalg.solve(L, K_)
-		mean = np.dot(K_.transpose() , alpha)
-		cov = K_ss - np.dot(V.transpose(), V)
+        alpha = np.linalg.solve(L.transpose(), np.linalg.solve(L, y))
+        V = np.linalg.solve(L, K_)
+        mean = np.dot(K_.transpose() , alpha)
+        cov = K_ss - np.dot(V.transpose(), V)
         check_valid_cov(cov)
         if return_cov == True:
             return mean, cov

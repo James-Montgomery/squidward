@@ -86,3 +86,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * A big thanks to Keegan Hines and Josh Touyz who introduced me to Gaussian Processes
 * Another thanks to Thanos Kintsakis who helped turn me from a data scientist into a machine learning engineer who can produce maintainable and efficient code.
 * The core functionality of this code (gpr and gpc) are based on the book [Gaussian Processes for Machine Learning](http://www.gaussianprocess.org/gpml/) chapters 2 and 3.
+* The native kernels supported by squidward are largely drawn from the [kernel cookbook](https://www.cs.toronto.edu/~duvenaud/cookbook/) by David Duvenaud.

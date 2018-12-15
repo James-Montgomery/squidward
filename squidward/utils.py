@@ -3,6 +3,12 @@ import scipy as sp
 import scipy.linalg as la
 import sys
 
+def sigmoid(z):
+    return 1.0 / (1.0 + np.exp(-z))
+
+def softmax(z):
+    return z / z.sum(axis=1).reshape(-1, 1)
+
 def is_invertible(a, strict=False):
     if strict == True:
         if np.linalg.cond(a) < 1.0/sys.float_info.epsilon:
@@ -35,7 +41,7 @@ def make_grid(coordinates=(-10, 10, 1)):
     return x, s
 
 def invert(A, method='inv'):
-    if is_invertible(cov) == False:
+    if is_invertible(A) == False:
         warnings.warn('Matrix is of low rank. Matrix might not be invertible. Recommend using LU decomposition for inversion.')
     if method == 'inv':
         return np.linalg.inv(A)
