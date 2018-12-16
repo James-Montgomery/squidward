@@ -51,7 +51,9 @@ To run the unit tests cd to `squidward/squidward` so that `/tests` is a subdirec
 
 ## Running the style tests
 
-I attempt to adhere to the [pep8](https://www.python.org/dev/peps/pep-0008/) style guide for the squidward project. To run the style tests cd to the root directory of the repository `squidward/` so that `/squidward` is a subdirectory. Use `pylint` to run all style tests for squidward.
+I attempt to adhere to the [pep8](https://www.python.org/dev/peps/pep-0008/) style guide for the squidward project. To run the style tests cd to the root directory of the repository `squidward/` so that `/squidward` is a subdirectory. Use `pylint squidward` to run all style tests for squidward.
+
+Some of the naming conventions I've chosen intentionally do not adhere to pep8 in order to better resemble mathematical conventions. For example, identity matrices may be named `I` even though this does not adhere to snake case conventions. You can run `pylint --disable=invalid-name` if you would like to ignore the resulting pylint warnings.
 
 ## Deployment
 

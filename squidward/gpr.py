@@ -1,13 +1,19 @@
-import warnings
+"""
+This script contains code for basic gaussian process regression. A regression
+model can be created by calling one of these classes to create a model object.
+"""
+
 import numpy as np
-import scipy as sp
 from squidward.utils import invert, atleast_2d, check_valid_cov
 
-np.seterr(over='raise')
+np.seterr(over="raise")
 
-class gaussian_process(object):
-    def __init__(self, kernel=None, var_l=1e-15, inv_method='inv'):
-        '''
+class GaussianProcess(object):
+    """
+    Model object for single output gaussian process (SOGP) regression.
+    """
+    def __init__(self, kernel=None, var_l=1e-15, inv_method="inv"):
+        """
         Description
         ----------
         Model object for single output gaussian process (SOGP) regression.
@@ -28,19 +34,21 @@ class gaussian_process(object):
         Returns
         ----------
         Model object
-        '''
+        """
         self.kernel = kernel
         self.var_l = var_l
-        self.x = None
-        self.y = None
+        self.x_obs = None
+        self.y_obs = None
         self.inv_method = inv_method
         self.K = None
         self.fitted = False
-        assert(kernel == None, 'Model object must be instantiated with a valid kernel object.')
-        assert(var_l >= 0.0, 'Invalid likelihood variance argument.')
+        assert self.kernel is not None, \
+            "Model object must be instantiated with a valid kernel object."
+        assert self.var_l >= 0.0, \
+            "Invalid likelihood variance argument."
 
-    def fit(self, x, y):
-        '''
+    def fit(self, x_obs, y_obs):
+        """
         Description
         ----------
         Fit the model to data. This function takes in training data
@@ -49,19 +57,19 @@ class gaussian_process(object):
 
         Parameters
         ----------
-        x: array_like
+        x_obs: array_like
             An array containing the model features.
-        y: array_like
+        y_obs: array_like
             An array containing the model targets (currently only supports
             single outputs).
 
         Returns
         ----------
         None
-        '''
-        self.x = atleast_2d(x)
-        self.y = atleast_2d(y)
-        K = self.kernel.k(x, x)
+        """
+        self.x_obs = atleast_2d(x_obs)
+        self.y_obs = atleast_2d(y_obs)
+        K = self.kernel.k(x_obs, x_obs)
 
         I = np.zeros(K.shape)
         idx = np.diag_indices(I.shape[0])
@@ -73,7 +81,7 @@ class gaussian_process(object):
         return None
 
     def posterior_predict(self, x_test, return_cov=False):
-        '''
+        """
         Description
         ----------
         Make predictions based on fitted model. This function takes in a set of
@@ -99,22 +107,22 @@ class gaussian_process(object):
             gaussian process posterior.
         Cov: array_like
             The full covariance matrix opf the gaussian process posterior.
-        '''
-        if self.fitted == False:
-            raise ValueError('Please fit the model before trying to make posterior predictions!')
+        """
+        assert self.fitted, "Please fit the model before trying to make posterior predictions!"
+
         # Gaussian Processes for Machine Learning Eq 2.18/2.19
-        K_s = self.kernel.k(x_test, self.x)
-        mean = K_s.dot(self.K).dot(self.y)
+        K_s = self.kernel.k(x_test, self.x_obs)
+        mean = K_s.dot(self.K).dot(self.y_obs)
         K_ss = self.kernel.k(x_test, x_test)
         cov = K_ss - np.dot(np.dot(K_s, self.K), K_s.T)
         check_valid_cov(cov)
-        if return_cov == True:
+        if return_cov:
             return mean, cov
         var = atleast_2d(np.diag(cov))
         return mean, var
 
     def prior_predict(self, x_test, return_cov=False):
-        '''
+        """
         Description
         ----------
         Make predictions. This function takes in a set of test points to make
@@ -140,17 +148,17 @@ class gaussian_process(object):
             gaussian process prior.
         Cov: array_like
             The full covariance matrix opf the gaussian process prior.
-        '''
-        mean = np.zero(x_test.shape[0])
+        """
+        mean = np.zeros(x_test.shape[0])
         cov = self.kernel.k(x_test, x_test)
         check_valid_cov(cov)
-        if return_cov == True:
+        if return_cov:
             return mean, cov
         var = atleast_2d(np.diag(cov))
         return mean, var
 
     def posterior_sample(self, x_test):
-        '''
+        """
         Description
         ----------
         Draw a function from the fitted posterior.
@@ -164,14 +172,14 @@ class gaussian_process(object):
         ----------
         Sample: array_like
             The values of a function sampled from the gaussian process posterior.
-        '''
-        if self.fitted == False:
-            raise ValueError('Please fit the model before trying to make posterior predictions!')
-        mean, cov = posterior_predict(x_test, True)
+        """
+        assert self.fitted, "Please fit the model before trying to make posterior predictions!"
+
+        mean, cov = self.posterior_predict(x_test, True)
         return np.random.multivariate_normal(mean, cov, 1).T[:, 0]
 
     def prior_sample(self, x_test):
-        '''
+        """
         Description
         ----------
         Draw a function from the prior.
@@ -185,13 +193,47 @@ class gaussian_process(object):
         ----------
         Sample: array_like
             The values of a function sampled from the gaussian process prior.
-        '''
-        mean, cov = prior_predict(x_test, True)
+        """
+        mean, cov = self.prior_predict(x_test, True)
         return np.random.multivariate_normal(mean, cov, 1).T[:, 0]
 
-class gaussian_process_stable_cholesky(object):
-    def fit_predict(self, x, y, x_test, kernel, var_l=1e-15, return_cov=False):
-        '''
+class GaussianProcessStableCholesky(object):
+    """
+    Model object for single output gaussian process (SOGP) regression using
+    algorithm 2.1 (pg.19) from Gaussian Processes for Machine Learning
+    for increased numerical stability and faster performance.
+    """
+    def __init__(self, kernel=None, var_l=1e-15):
+        """
+        Description
+        ----------
+        Model object for single output gaussian process (SOGP) regression using
+        algorithm 2.1 (pg.19) from Gaussian Processes for Machine Learning
+        for increased numerical stability and faster performance.
+
+        Parameters
+        ----------
+        kernel : kernel object
+            An object with an associated function k that takes in 2 arrays and
+            returns a valid K matrix. Valid K matricies are positive
+            semi-definite and not singular.
+        var_l: float
+            The liklihood variance of the process. Currently only supports
+            scalars for homoskedastic regression.
+
+        Returns
+        ----------
+        Model object
+        """
+        self.kernel = kernel
+        self.var_l = var_l
+        assert self.kernel is not None, \
+            "Model object must be instantiated with a valid kernel object."
+        assert self.var_l >= 0.0, \
+            "Invalid likelihood variance argument."
+
+    def fit_predict(self, x_obs, y_obs, x_test, return_cov=False):
+        """
         Description
         ----------
         Model object for single output gaussian process (SOGP) regression. This
@@ -200,9 +242,9 @@ class gaussian_process_stable_cholesky(object):
 
         Parameters
         ----------
-        x: array_like
+        x_obs: array_like
             An array containing the model features.
-        y: array_like
+        y_obs: array_like
             An array containing the model targets (currently only supports
             single outputs - SOGP).
         x_test: array_like
@@ -228,32 +270,30 @@ class gaussian_process_stable_cholesky(object):
             gaussian process posterior.
         Cov: array_like
             The full covariance matrix opf the gaussian process posterior.
-        '''
-        assert(kernel == None, 'Model object must be instantiated with a valid kernel object.')
-        assert(var_l >= 0.0, 'Invalid likelihood variance argument.')
+        """
 
-        x = atleast_2d(x)
-        y = atleast_2d(y)
+        x_obs = atleast_2d(x_obs)
+        y_obs = atleast_2d(y_obs)
 
         # Gaussian Processes for Machine Learning Eq 2.18/2.19
-        K = kernel.k(x, x)
-        K_ = kernel.k(x, x_test)
-        K_ss = kernel.k(x_test, x_test)
+        K = self.kernel.k(x_obs, x_obs)
+        K_ = self.kernel.k(x_obs, x_test)
+        K_ss = self.kernel.k(x_test, x_test)
 
         I = np.zeros(K.shape)
         idx = np.diag_indices(I.shape[0])
-        I[idx] = var_l
+        I[idx] = self.var_l
         K += I
 
         # More numerically stable
         # Gaussian Processes for Machine Learning Alg 2.1
         L = np.linalg.cholesky(K)
-        alpha = np.linalg.solve(L.transpose(), np.linalg.solve(L, y))
+        alpha = np.linalg.solve(L.transpose(), np.linalg.solve(L, y_obs))
         V = np.linalg.solve(L, K_)
-        mean = np.dot(K_.transpose() , alpha)
+        mean = np.dot(K_.transpose(), alpha)
         cov = K_ss - np.dot(V.transpose(), V)
         check_valid_cov(cov)
-        if return_cov == True:
+        if return_cov:
             return mean, cov
         var = atleast_2d(np.diag(cov))
         return mean, var
