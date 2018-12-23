@@ -10,6 +10,9 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 from squidward.utils import make_grid, atmost_1d
 
+def plot_covariance():
+    raise NotImplementedError()
+
 class Regression:
     """
     Class containing fuctions for visualizing guassian process regression models.

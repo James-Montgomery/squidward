@@ -78,3 +78,56 @@ class RBF(object):
         for i in range(alpha.shape[1]):
             output *= self._k(alpha[:, i], beta[:, i])
         return output
+
+# https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/gaussian_process/correlation_models.py
+
+class AbsoluteExponential(object):
+    raise NotImplementedError()
+
+class GeneralizedExponential(object):
+    raise NotImplementedError()
+
+class Periodic(Object):
+    raise NotImplementedError()
+
+class EditDistance(Object):
+    raise NotImplementedError()
+
+# https://scikit-learn.org/stable/modules/metrics.html
+# https://stackoverflow.com/questions/41905029/create-cosine-similarity-matrix-numpy
+
+class CosineSimilarity(object):
+    raise NotImplementedError()
+
+class Linear(object):
+    raise NotImplementedError()
+
+class Polynomial(object):
+    raise NotImplementedError()
+
+class Sigmoid(object):
+    raise NotImplementedError()
+
+class Laplacian(object):
+    raise NotImplementedError()
+
+class ChiSquared(object):
+    raise NotImplementedError()
+
+class CosineSimilarity(object):
+    raise NotImplementedError()
+
+# https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.kernels.Matern.html
+
+class Mattern(object):
+    raise NotImplementedError()
+
+# https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.kernels.RationalQuadratic.html
+
+class RationalQuadratic(object):
+    raise NotImplementedError()
+
+# https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.kernels.WhiteKernel.html
+
+class WhiteNoise(object):
+    raise NotImplementedError()
