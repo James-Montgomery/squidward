@@ -4,7 +4,7 @@ model can be created by calling one of these classes to create a model object.
 """
 
 import numpy as np
-from squidward.utils import invert, atleast_2d, check_valid_cov
+from squidward.Utils import invert, atleast_2d, check_valid_cov
 
 np.seterr(over="raise")
 
@@ -149,7 +149,7 @@ class GaussianProcess(object):
         Cov: array_like
             The full covariance matrix opf the gaussian process prior.
         """
-        mean = np.zeros(x_test.shape[0])
+        mean = np.zeros(x_test.shape[0]).reshape(-1,1)
         cov = self.kernel.k(x_test, x_test)
         check_valid_cov(cov)
         if return_cov:
@@ -176,7 +176,7 @@ class GaussianProcess(object):
         assert self.fitted, "Please fit the model before trying to make posterior predictions!"
 
         mean, cov = self.posterior_predict(x_test, True)
-        return np.random.multivariate_normal(mean, cov, 1).T[:, 0]
+        return np.random.multivariate_normal(mean[:,0], cov, 1).T[:, 0]
 
     def prior_sample(self, x_test):
         """
@@ -195,7 +195,7 @@ class GaussianProcess(object):
             The values of a function sampled from the gaussian process prior.
         """
         mean, cov = self.prior_predict(x_test, True)
-        return np.random.multivariate_normal(mean, cov, 1).T[:, 0]
+        return np.random.multivariate_normal(mean[:,0], cov, 1).T[:, 0]
 
 class GaussianProcessStableCholesky(object):
     """

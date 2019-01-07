@@ -5,8 +5,8 @@ a model object.
 """
 
 import numpy as np
-import squidward.gpr as gpr
-from squidward.utils import atleast_2d, sigmoid, softmax
+import squidward.GPR as gpr
+from squidward.Utils import atleast_2d, sigmoid, softmax
 
 np.seterr(over="raise")
 

@@ -87,5 +87,17 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 * A big thanks to Keegan Hines and Josh Touyz who introduced me to Gaussian Processes
 * Another thanks to Thanos Kintsakis who helped turn me from a data scientist into a machine learning engineer who can produce maintainable and efficient code.
-* The core functionality of this code (gpr and gpc) are based on the book [Gaussian Processes for Machine Learning](http://www.gaussianprocess.org/gpml/) chapters 2 and 3.
+* The core functionality of this code (gpr and gpc) is based on the book [Gaussian Processes for Machine Learning](http://www.gaussianprocess.org/gpml/) chapters 2 and 3.
 * The native kernels supported by squidward are largely drawn from the [kernel cookbook](https://www.cs.toronto.edu/~duvenaud/cookbook/) by David Duvenaud.
+
+## Alternative Gaussian Process Packages
+
+This is hardly the only gaussian process package out there. Here are a few alternatives in case you dislike this package.
+
+* [GPyTorch](https://gpytorch.ai/)
+* [GPy](https://gpy.readthedocs.io/en/deploy/)
+* [GPFlow](https://gpflow.readthedocs.io/en/develop/)
+* [Sklearn](https://scikit-learn.org/stable/modules/gaussian_process.html)
+* [George](https://george.readthedocs.io/en/latest/tutorials/first/)
+* [Pymc3](https://docs.pymc.io/api/gp.html)
+* [Stan](https://betanalpha.github.io/assets/case_studies/gp_part1/part1.html)

@@ -5,10 +5,17 @@ classification classes.
 """
 
 import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
-from squidward.utils import make_grid, atmost_1d
+from squidward.Utils import make_grid, atmost_1d
+
+try:
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+except:
+    import matplotlib
+    matplotlib.use('PS')
+    from matplotlib import pyplot as plt
+    import seaborn as sns
 
 def plot_covariance():
     raise NotImplementedError()
@@ -131,7 +138,7 @@ class Regression:
         else:
             zed = np.sqrt(var).T.reshape(size, size)
         alpha, beta = x_test.T.reshape(2, size, size)
-        plt.contourf(alpha, beta, zed, 20, cmap='RdGy')
+        plt.contourf(alpha, beta, zed, 20, cmap='Blues')
         plt.colorbar()
         contours = plt.contour(alpha, beta, zed, 5, colors='black')
         plt.clabel(contours, inline=True, fontsize=8)
@@ -217,7 +224,7 @@ class Classification:
             mean, var = model.posterior_predict(x_test, True)
             zed = np.mean(var, axis=1).T.reshape(size, size)
         alpha, beta = x_test.T.reshape(2, size, size)
-        plt.contourf(alpha, beta, zed, 20, cmap='RdGy')
+        plt.contourf(alpha, beta, zed, 20, cmap='Blues')
         plt.colorbar()
         contours = plt.contour(alpha, beta, zed, 5, colors='black')
         plt.clabel(contours, inline=True, fontsize=8)

@@ -10,7 +10,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="squidward",
-    version="0.0.14",
+    version="0.0.15",
     author="James Montgomery",
     author_email="looyclark@gmail.com",
     description="Package for implementing Gaussian Process models in python.",
