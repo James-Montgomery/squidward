@@ -6,9 +6,9 @@ This is my attempt to create the product that I would want to use. Something sim
 
 I'm open to all feedback, commentary, and suggestions as long as they are constructive and polite.
 
-### **Authors**
+### Authors
 
-**James Montgomery** - *Initial work* - [jamesmontgomery.us](http://jamesmontgomery.us)
+<center> **James Montgomery** - *Initial work* - [jamesmontgomery.us](http://jamesmontgomery.us) </center>
 
 ### License
 
