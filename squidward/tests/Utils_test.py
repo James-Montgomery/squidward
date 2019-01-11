@@ -25,6 +25,14 @@ class UtilsTestCase(unittest.TestCase):
         output = Utils.sigmoid(x)
         npt.assert_almost_equal(output, true, decimal=10)
 
+        output = Utils.sigmoid(-12345, True)
+        true = 0.5
+        npt.assert_almost_equal(output, true, decimal=10)
+
+        with self.assertRaises(Exception) as context:
+           Utils.sigmoid(-12345)
+        self.assertTrue('overflow encountered in exp' in str(context.exception))
+
     def test_softmax(self):
         """
         Test softmax function works.

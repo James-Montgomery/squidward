@@ -8,6 +8,23 @@ class ValidationTestCase(unittest.TestCase):
     """
     Class for validation tests.
     """
+    def test_preprocess(self):
+        """
+        Test classification validation preprocessing code.
+        """
+        preprocess = Validation.preprocess
+
+        @preprocess
+        def f(p, y):
+            return True
+
+        p = np.ones(10)
+        y = np.zeros(9)
+
+        with self.assertRaises(Exception) as context:
+           f(p, y)
+        self.assertTrue('Number of predictions does not match number of targets' in str(context.exception))
+
     def test_likelihood(self):
         """
         Test that the likelihood function returns the correct likeliohood or

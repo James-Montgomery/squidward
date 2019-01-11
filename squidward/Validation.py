@@ -13,7 +13,7 @@ def preprocess(func):
             p, y  = kwargs['p'], kwargs['y']
             p, y = atmost_1d(p), atmost_1d(y)
         if y.shape[0] != p.shape[0]:
-            raise Exception("Number of predictions does not match number of targets")
+            raise Exception("Number of predictions does not match number of targets.")
         return func(p=p,y=y)
     return wrapper
 
