@@ -6,7 +6,7 @@ This is my attempt to create the product that I would want to use. Something sim
 
 I'm open to all feedback, commentary, and suggestions as long as they are constructive and polite.
 
-### <span style="color:purple">Authors</span>.
+### <span style="color:blue">some *blue* text</span>
 
 **James Montgomery** - *Initial work* - [jamesmontgomery.us](http://jamesmontgomery.us)
 
