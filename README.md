@@ -6,7 +6,13 @@ This is my attempt to create the product that I would want to use. Something sim
 
 I'm open to all feedback, commentary, and suggestions as long as they are constructive and polite.
 
-***
+#### Authors
+
+**James Montgomery** - *Initial work* - [jamesmontgomery.us](http://jamesmontgomery.us)
+
+#### License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Getting Started
 
@@ -47,11 +53,12 @@ Install squidward using pip from the setup file.
 pip install .
 ```
 
-#### Deployment
+#### Basic Examples
 
-For fastest performance, it is recommended to use numpy/scipy with MKL (Math Kernel Library).
+I've included basic examples of how to use squidward to get new users started building gaussian process models with this package.
 
-***
+* [Simple Regression](https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Regression.ipynb)
+* [Simple Classification](https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Classification.ipynb)
 
 ## Testing
 
@@ -93,46 +100,11 @@ Some of the naming conventions I've chosen intentionally do not adhere to pep8 i
 pylint --disable=invalid-name
 ```
 
-***
-
-## Continuing Improvements
-
-This package started as a fever dream in response to a series of frustrations I had with currently implemented gaussian process (GP) packages. Many GP packages favor using the latest and greatest optimization packages rather than focusing on creating an efficient, simple, flexible tool for data scientists to use.
-
-I hope to grow this package into a robust tool for use in research or production environments. It is far from a finished product.
-
-Next Steps:
-1. Polish core functionality and comment thoroughly
-2. Build out robust unit test and integration tests
-3. Add code quality and style guide checks
-4. Posterior Predictive checks
-5. Optimization and sampling functionality
-6. Embedding optimization for efficient inversion at scale
-7. Multiprocessing for parallelization
-8. Robust examples for reinforcement learning and parameter optimization
-
-***
-
-## Authors
-
-* **James Montgomery** - *Initial work* - [jamesmontgomery.us](http://jamesmontgomery.us)
-
-***
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-***
-
 ## Acknowledgments
 
 * A big thanks to Keegan Hines and Josh Touyz who introduced me to Gaussian Processes
-* Another thanks to Thanos Kintsakis who helped turn me from a data scientist into a machine learning engineer who can produce maintainable and efficient code.
-* The core functionality of this code (gpr and gpc) is based on the book [Gaussian Processes for Machine Learning](http://www.gaussianprocess.org/gpml/) chapters 2 and 3.
-* The native kernels supported by squidward are largely drawn from the [kernel cookbook](https://www.cs.toronto.edu/~duvenaud/cookbook/) by David Duvenaud.
-
-***
+* Many of the methods/implementations in this package are based off of [Gaussian Processes for Machine Learning](http://www.gaussianprocess.org/gpml/) chapters 2 and 3.
+* Many of the native kernels supported by squidward are largely drawn from the [kernel cookbook](https://www.cs.toronto.edu/~duvenaud/cookbook/) by David Duvenaud.
 
 ## Alternative Gaussian Process Packages
 
