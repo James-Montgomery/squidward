@@ -1,16 +1,14 @@
 # Squidward
 
-***
-
 After working with gaussian processes (GPs) to build out robust reinforcement learning models in production for most of my early career as a machine learning engineer (MLE), I became frustrated with the packages available for building GPs. They often focus using the latest in optimization tools and are far from the elegant, efficient, and simple design that I believe a GP package should embody.
 
 This is my attempt to create the product that I would want to use. Something simple and flexible that gives knowledgable data scientists the tools they need to do the research or production machine learning work that they need.
 
 I'm open to all feedback, commentary, and suggestions as long as they are constructive and polite.
 
-## Getting Started
-
 ***
+
+## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
@@ -53,9 +51,9 @@ pip install .
 
 For fastest performance, it is recommended to use numpy/scipy with MKL (Math Kernel Library).
 
-## Testing
-
 ***
+
+## Testing
 
 Testing is an important part of creating maintainable, production grade code.
 
@@ -95,9 +93,9 @@ Some of the naming conventions I've chosen intentionally do not adhere to pep8 i
 pylint --disable=invalid-name
 ```
 
-## Continuing Improvements
-
 ***
+
+## Continuing Improvements
 
 This package started as a fever dream in response to a series of frustrations I had with currently implemented gaussian process (GP) packages. Many GP packages favor using the latest and greatest optimization packages rather than focusing on creating an efficient, simple, flexible tool for data scientists to use.
 
@@ -113,30 +111,30 @@ Next Steps:
 7. Multiprocessing for parallelization
 8. Robust examples for reinforcement learning and parameter optimization
 
-## Authors
-
 ***
+
+## Authors
 
 * **James Montgomery** - *Initial work* - [jamesmontgomery.us](http://jamesmontgomery.us)
 
-## License
-
 ***
+
+## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments
-
 ***
+
+## Acknowledgments
 
 * A big thanks to Keegan Hines and Josh Touyz who introduced me to Gaussian Processes
 * Another thanks to Thanos Kintsakis who helped turn me from a data scientist into a machine learning engineer who can produce maintainable and efficient code.
 * The core functionality of this code (gpr and gpc) is based on the book [Gaussian Processes for Machine Learning](http://www.gaussianprocess.org/gpml/) chapters 2 and 3.
 * The native kernels supported by squidward are largely drawn from the [kernel cookbook](https://www.cs.toronto.edu/~duvenaud/cookbook/) by David Duvenaud.
 
-## Alternative Gaussian Process Packages
-
 ***
+
+## Alternative Gaussian Process Packages
 
 This is hardly the only gaussian process package out there. Here are a few alternatives in case you dislike this package.
 
