@@ -1,5 +1,7 @@
 # Squidward
 
+***
+
 After working with gaussian processes (GPs) to build out robust reinforcement learning models in production for most of my early career as a machine learning engineer (MLE), I became frustrated with the packages available for building GPs. They often focus using the latest in optimization tools and are far from the elegant, efficient, and simple design that I believe a GP package should embody.
 
 This is my attempt to create the product that I would want to use. Something simple and flexible that gives knowledgable data scientists the tools they need to do the research or production machine learning work that they need.
@@ -8,9 +10,11 @@ I'm open to all feedback, commentary, and suggestions as long as they are constr
 
 ## Getting Started
 
+***
+
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Installing
+#### Installing
 
 This is a step by step guide to installing squidward for your local environment.
 
@@ -45,7 +49,17 @@ Install squidward using pip from the setup file.
 pip install .
 ```
 
-## Running the unit tests
+#### Deployment
+
+For fastest performance, it is recommended to use numpy/scipy with MKL (Math Kernel Library).
+
+## Testing
+
+***
+
+Testing is an important part of creating maintainable, production grade code.
+
+#### Running the unit tests
 
 To run the unit tests cd to `squidward/squidward` so that `/tests` is a subdirectory.
 
@@ -66,7 +80,7 @@ You can also run the tests with coverage to see what code within the package is 
 nosetests --with-coverage --cover-package=squidward
 ```
 
-## Running the style tests
+#### Running the style tests
 
 I attempt to adhere to the [pep8](https://www.python.org/dev/peps/pep-0008/) style guide for the squidward project. To run the style tests cd to the root directory of the repository `squidward/` so that `/squidward` is a subdirectory. Use `pylint squidward` to run all style tests for squidward.
 
@@ -81,11 +95,9 @@ Some of the naming conventions I've chosen intentionally do not adhere to pep8 i
 pylint --disable=invalid-name
 ```
 
-## Deployment
+## Continuing Improvements
 
-For fastest performance, it is recommended to use numpy/scipy with MKL (Math Kernel Library).
-
-## Continuing Improvement
+***
 
 This package started as a fever dream in response to a series of frustrations I had with currently implemented gaussian process (GP) packages. Many GP packages favor using the latest and greatest optimization packages rather than focusing on creating an efficient, simple, flexible tool for data scientists to use.
 
@@ -103,13 +115,19 @@ Next Steps:
 
 ## Authors
 
+***
+
 * **James Montgomery** - *Initial work* - [jamesmontgomery.us](http://jamesmontgomery.us)
 
 ## License
 
+***
+
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
+
+***
 
 * A big thanks to Keegan Hines and Josh Touyz who introduced me to Gaussian Processes
 * Another thanks to Thanos Kintsakis who helped turn me from a data scientist into a machine learning engineer who can produce maintainable and efficient code.
@@ -117,6 +135,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * The native kernels supported by squidward are largely drawn from the [kernel cookbook](https://www.cs.toronto.edu/~duvenaud/cookbook/) by David Duvenaud.
 
 ## Alternative Gaussian Process Packages
+
+***
 
 This is hardly the only gaussian process package out there. Here are a few alternatives in case you dislike this package.
 
