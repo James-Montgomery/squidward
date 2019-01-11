@@ -6,11 +6,11 @@ This is my attempt to create the product that I would want to use. Something sim
 
 I'm open to all feedback, commentary, and suggestions as long as they are constructive and polite.
 
-#### Authors
+### <span style="color:purple">Authors</span>.
 
 **James Montgomery** - *Initial work* - [jamesmontgomery.us](http://jamesmontgomery.us)
 
-#### License
+### License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
@@ -18,7 +18,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-#### Installing
+### Installing
 
 This is a step by step guide to installing squidward for your local environment.
 
@@ -53,7 +53,7 @@ Install squidward using pip from the setup file.
 pip install .
 ```
 
-#### Basic Examples
+### Basic Examples
 
 I've included basic examples of how to use squidward to get new users started building gaussian process models with this package.
 
@@ -64,7 +64,7 @@ I've included basic examples of how to use squidward to get new users started bu
 
 Testing is an important part of creating maintainable, production grade code.
 
-#### Running the unit tests
+### Running the unit tests
 
 To run the unit tests cd to `squidward/squidward` so that `/tests` is a subdirectory.
 
@@ -85,7 +85,7 @@ You can also run the tests with coverage to see what code within the package is 
 nosetests --with-coverage --cover-package=squidward
 ```
 
-#### Running the style tests
+### Running the style tests
 
 I attempt to adhere to the [pep8](https://www.python.org/dev/peps/pep-0008/) style guide for the squidward project. To run the style tests cd to the root directory of the repository `squidward/` so that `/squidward` is a subdirectory. Use `pylint squidward` to run all style tests for squidward.
 
