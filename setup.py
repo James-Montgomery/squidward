@@ -12,7 +12,7 @@ setuptools.setup(
     name="squidward",
     version="0.0.15",
     author="James Montgomery",
-    author_email="looyclark@gmail.com",
+    author_email="jamesoneillmontgomery@gmail.com",
     description="Package for implementing Gaussian Process models in python.",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -20,10 +20,12 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         'numpy>=1.15.1',
+        'numba==0.42.0',
         'scipy>=1.1.0',
         'matplotlib>=2.2.3',
         'seaborn>=0.9.0',
         'nose>=1.3.7',
+        'coverage==4.0.0',
         'pylint>=1.8.2'
     ],
     classifiers=[

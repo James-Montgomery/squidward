@@ -3,23 +3,32 @@ import warnings
 import functools
 import numpy as np
 import scipy.linalg as la
+from scipy.special import expit
 
-def sigmoid(z):
-    return 1.0 / (1.0 + np.exp(-z))
+np.seterr(over="raise")
+
+def sigmoid(z, ingore_overflow=False):
+    try:
+        return 1.0 / (1.0 + np.exp(-z))
+    except Exception as e:
+        if "overflow encountered in exp" in str(e):
+            if ingore_overflow:
+                return 1.0 / (1.0 + expit(-z))
+        raise e
 
 def softmax(z):
     return z / z.sum(axis=1).reshape(-1, 1)
 
-def is_invertible(a, strength='weak'):
-    if strength=='exact':
-        if linalg.det(sigma) == 0:
-            return False
-    if strength=='strict':
-        if np.linalg.cond(a) < 1.0/sys.float_info.epsilon:
-            return False
-    return a.shape[0] == a.shape[1] and np.linalg.matrix_rank(a) == a.shape[0]
+def is_invertible(arr, strength='condition'):
+    if strength=='cramer':
+        return np.linalg.det(arr) == 0.0
+    if strength=='rank':
+        return arr.shape[0] == arr.shape[1] and np.linalg.matrix_rank(arr) == arr.shape[0]
+    return 1.0 / np.linalg.cond(arr) >= sys.float_info.epsilon
 
 def check_valid_cov(cov):
+    if not is_invertible(cov):
+        warnings.warn('Cov has high condition. Inverting matrix may result in errors.')
     var = np.diag(cov)
     if var[var < 0].shape[0] != 0:
         raise Exception('Negative values in diagonal of covariance matrix.\nLikely cause is kernel inversion instability.\nCheck kernel variance.')
@@ -58,7 +67,7 @@ def make_grid(coordinates=(-10, 10, 1)):
 
 def invert(Arr, method='inv'):
     if not is_invertible(Arr):
-        warnings.warn('Matrix is of low rank. Matrix might not be invertible. Recommend using LU decomposition for inversion.')
+        warnings.warn('Matrix has high condition. Inverting matrix may result in errors.')
     if method == 'inv':
         return np.linalg.inv(Arr)
     elif method == 'pinv':
@@ -80,9 +89,11 @@ def invert(Arr, method='inv'):
         return invU.dot(invL).dot(invP)
     raise Exception('Invalid inversion method argument.')
 
-def onehot(a, num_classes, safe=True):
+def onehot(a, num_classes=None, safe=True):
     """
     """
+    if num_classes is None:
+        num_classes = np.unique(a).shape[0]
     if safe:
         if num_classes != np.unique(a).shape[0]:
             raise Exception('Number of unique values does not match num_classes argument.')
@@ -117,7 +128,3 @@ def deprecated(func):
         warnings.simplefilter('default', DeprecationWarning)  # reset filter
         return func(*args, **kwargs)
     return new_func
-
-@deprecated
-def example():
-    pass

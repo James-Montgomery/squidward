@@ -17,3 +17,6 @@
 build
 dist
 squidward.egg-info
+
+# testing files
+.coverage

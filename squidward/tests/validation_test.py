@@ -1,41 +1,96 @@
-from squidward import validation
+from squidward import Validation
 import unittest
 import numpy as np
 import numpy.testing as npt
 np.random.seed(0)
 
-class TestUtilities(unittest.TestCase):
-
-    def test_rmse(self):
-        """
-        """
-        x = np.random.rand(10)
-        y = np.random.rand(10) + 1.0
-        output = validation.rmse(x,y)
-        true = 0.9877661052357045
-        assert output
-
+class ValidationTestCase(unittest.TestCase):
+    """
+    Class for validation tests.
+    """
     def test_likelihood(self):
+        """
+        Test that the likelihood function returns the correct likeliohood or
+        log likelihood.
+        """
         means = np.linspace(0,4,5).reshape(-1,1)
         cov = np.random.rand(5,5)
         cov = cov.dot(cov.T)
-        y = means + 1.0
+        y = np.array([1.2815938,  2.46052947, 3.49448986, 3.71525343, 5.5182648 ])
 
-        output = validation.likelihood(means, cov, y)
-        true = np.array([2.78725618e-25, 9.61388482e-23, 5.51482346e-23,
-                         5.26108097e-26, 8.34697340e-32])
-        npt.assert_almost_equal(output, true, decimal=10)
+        true = -1.941715114406031
+        output = Validation.likelihood(means, cov, y, True)
+        self.assertEqual(output, true)
 
-        output = validation.likelihood(means, cov, y, True)
-        true = np.array([-877.3227103867, -665.7262049664, -486.1115914062,
-                         -338.4788697063, -222.8280398666])
-        npt.assert_almost_equal(output, true, decimal=10)
+        true = 0.14345769230347272
+        output = Validation.likelihood(means, cov, y, False)
+        self.assertEqual(output, true)
+
+    def test_rmse(self):
+        """
+        Test that rmse returns the correct root mean squared error.
+        """
+        x = np.random.rand(10)
+        y = np.random.rand(10) + 1.0
+        output = Validation.rmse(p=x,y=y)
+        true = 1.1545450663694088
+        self.assertEqual(output, true)
 
     def test_acc(self):
-        y = np.random.randint(0,3,10).reshape(-1,1)
-        p = np.random.randint(0,3,10).reshape(-1,1)
-        validation.acc(y,p)
+        """
+        Test that acc returns the correct accuracy.
+        """
+        y = np.array([0,1,2,1,0,1,0,2,1]).reshape(-1,1)
+        p = np.array([1,2,2,1,1,1,2,2,1]).reshape(-1,1)
+        output = Validation.acc(y,p)
+        true = 0.5555555555555556
+        self.assertEqual(output, true)
 
+        y = np.array([0,1,2,1,0,1,0,2,1])
+        p = np.array([1,2,2,1,1,1,2,2,1])
+        output = Validation.acc(y,p)
+        true = 0.5555555555555556
+        self.assertEqual(output, true)
+
+    def test_brier(self):
+        """
+        """
+        try:
+            Validation.brier_score()
+        except:
+            pass
+
+    def test_precision(self):
+        """
+        """
+        try:
+            Validation.precision()
+        except:
+            pass
+
+    def test_recall(self):
+        """
+        """
+        try:
+            Validation.recall()
+        except:
+            pass
+
+    def test_roc_auc(self):
+        """
+        """
+        try:
+            Validation.roc_auc()
+        except:
+            pass
+
+    def test_posterior_checks(self):
+        """
+        """
+        try:
+            Validation.posterior_checks()
+        except:
+            pass
 
 if __name__ == '__main__':
     unittest.main()

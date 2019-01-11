@@ -47,13 +47,39 @@ pip install .
 
 ## Running the unit tests
 
-To run the unit tests cd to `squidward/squidward` so that `/tests` is a subdirectory. Use `nosetests` to run all unit tests for squidward. If you installed squidward in a virtual environment, please run the tests in that same environment.
+To run the unit tests cd to `squidward/squidward` so that `/tests` is a subdirectory.
+
+```
+cd ./squidward/squidward
+```
+
+Use `nosetests` to run all unit tests for squidward. If you installed squidward in a virtual environment, please run the tests in that same environment.
+
+```
+source activate squidward_env
+nosetests
+```
+
+You can also run the tests with coverage to see what code within the package is called in the tests.
+
+```
+nosetests --with-coverage --cover-package=squidward
+```
 
 ## Running the style tests
 
 I attempt to adhere to the [pep8](https://www.python.org/dev/peps/pep-0008/) style guide for the squidward project. To run the style tests cd to the root directory of the repository `squidward/` so that `/squidward` is a subdirectory. Use `pylint squidward` to run all style tests for squidward.
 
+```
+cd ./ squidward
+pylint squidward
+```
+
 Some of the naming conventions I've chosen intentionally do not adhere to pep8 in order to better resemble mathematical conventions. For example, identity matrices may be named `I` even though this does not adhere to snake case conventions. You can run `pylint --disable=invalid-name` if you would like to ignore the resulting pylint warnings.
+
+```
+pylint --disable=invalid-name
+```
 
 ## Deployment
 

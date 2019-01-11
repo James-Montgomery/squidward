@@ -108,7 +108,7 @@ class GaussianProcess(object):
         Cov: array_like
             The full covariance matrix opf the gaussian process posterior.
         """
-        assert self.fitted, "Please fit the model before trying to make posterior predictions!"
+        assert self.fitted and (self.K is not None), "Please fit the model before trying to make posterior predictions!"
 
         # Gaussian Processes for Machine Learning Eq 2.18/2.19
         K_s = self.kernel.k(x_test, self.x_obs)
@@ -149,6 +149,7 @@ class GaussianProcess(object):
         Cov: array_like
             The full covariance matrix opf the gaussian process prior.
         """
+        # update to take into account constant kernels
         mean = np.zeros(x_test.shape[0]).reshape(-1,1)
         cov = self.kernel.k(x_test, x_test)
         check_valid_cov(cov)
@@ -176,6 +177,7 @@ class GaussianProcess(object):
         assert self.fitted, "Please fit the model before trying to make posterior predictions!"
 
         mean, cov = self.posterior_predict(x_test, True)
+        check_valid_cov(cov)
         return np.random.multivariate_normal(mean[:,0], cov, 1).T[:, 0]
 
     def prior_sample(self, x_test):
@@ -195,6 +197,7 @@ class GaussianProcess(object):
             The values of a function sampled from the gaussian process prior.
         """
         mean, cov = self.prior_predict(x_test, True)
+        check_valid_cov(cov)
         return np.random.multivariate_normal(mean[:,0], cov, 1).T[:, 0]
 
 class GaussianProcessStableCholesky(object):

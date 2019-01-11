@@ -219,7 +219,8 @@ class Classification:
         x_test, size = make_grid(coordinates)
         if not show_var:
             mean = model.posterior_predict(x_test)
-            zed = mean.T.reshape(size, size)
+            predictions = mean.argmax(axis=1)
+            zed = predictions.T.reshape(size, size)
         else:
             mean, var = model.posterior_predict(x_test, True)
             zed = np.mean(var, axis=1).T.reshape(size, size)

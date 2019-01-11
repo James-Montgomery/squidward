@@ -1,6 +1,8 @@
 import multiprocessing
 import numpy as np
 
+np.seterr(over="raise")
+
 class Kernel(object):
     """
     """

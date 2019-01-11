@@ -5,10 +5,13 @@ a model object.
 """
 
 import numpy as np
-import squidward.GPR as gpr
-from squidward.Utils import atleast_2d, sigmoid, softmax
+import squidward.GPR as GPR
+from squidward.Utils import atleast_2d, sigmoid, softmax, reversehot
 
 np.seterr(over="raise")
+
+# add in binary case for optimization
+# only need to train one regressor for binary case
 
 class GaussianProcess(object):
     """
@@ -72,16 +75,16 @@ class GaussianProcess(object):
         None
         """
         self.x_obs = atleast_2d(x_obs)
-        if len(y_obs.shape) > 1:
-            if y_obs.shape[1] > 1:
-                y_obs = y_obs.argmax(axis=1)
+        y_obs = reversehot(y_obs)
         self.y_obs = atleast_2d(y_obs)
+        # TODO: change to accomodate situation
+        # where a class is missing from train set
         self.n_classes = np.unique(self.y_obs).shape[0]
         for i in range(self.n_classes):
             y_obs_class = np.where(self.y_obs == i, 1, -1)
-            model = gpr.GaussianProcess(kernel=self.kernel, var_l=self.var_l, \
+            model = GPR.GaussianProcess(kernel=self.kernel, var_l=self.var_l, \
                                         inv_method=self.inv_method)
-            model.fit(x_obs, y_obs_class)
+            model.fit(x_obs, y_obs_class.T)
             self.predictors.append(model)
         self.fitted = True
         return None
@@ -113,7 +116,7 @@ class GaussianProcess(object):
         Var: array_like
             The variance around the mean of each one vs. all gaussian process
         """
-        assert self.fitted, "Please fit the model before trying to make posterior predictions!"
+        assert self.fitted and (len(self.predictors) > 0.0), "Please fit the model before trying to make posterior predictions!"
 
         x_test = atleast_2d(x_test)
         means = []
@@ -122,19 +125,21 @@ class GaussianProcess(object):
             mean, var = model.posterior_predict(x_test)
             means.append(mean)
             variances.append(var)
+
         if logits:
-            means = np.array(means).T[0]
-            variances = np.array(variances).T[0]
-            return means, variances
-        means = np.array(means).T[0]
-        means = softmax(sigmoid(means))
-        return atleast_2d(means.argmax(axis=1))
+            means = np.array(means)[:,:,0].T
+            variances = np.array(variances)[:,:,0].T
+            return atleast_2d(means), atleast_2d(variances)
+
+        means = softmax(sigmoid(np.array(means)[:,:,0].T, True))
+        return atleast_2d(means)
 
     def prior_predict(self, x_test, logits=False):
         """
         While each regressor in the one vs. all gaussian process classifier has
-        a prior. The softmax over their collective prior has no actual
-        interpretarion and is not supported by this package.
+        a prior. The softmax over their collective priors has no actual
+        interpretation and is not supported by this package. You can, however,
+        sample from their collective priors.
         """
         raise NotImplementedError("Priors not supported for one vs. all gaussian process classification.")
 
@@ -165,24 +170,22 @@ class GaussianProcess(object):
         Var: array_like
             The variance around the mean of each one vs. all gaussian process
         """
-        assert self.fitted, "Please fit the model before trying to make posterior predictions!"
+        assert self.fitted and (len(self.predictors) > 0.0), "Please fit the model before trying to make posterior predictions!"
 
         x_test = atleast_2d(x_test)
-        means = []
-        variances = []
+        samples = []
         for model in self.predictors:
-            mean, var = model.posterior_sample(x_test)
-            means.append(mean)
-            variances.append(var)
-        if logits:
-            means = np.array(means).T[0]
-            variances = np.array(variances).T[0]
-            return means, variances
-        means = np.array(means).T[0]
-        means = softmax(sigmoid(means))
-        return atleast_2d(means.argmax(axis=1))
+            sample = model.prior_sample(x_test)
+            samples.append(sample)
 
-    def prior_sample(self, x_test, logits=False):
+        if logits:
+            samples = np.array(samples).T
+            return samples
+
+        samples = softmax(sigmoid(np.array(samples).T, True))
+        return atleast_2d(samples)
+
+    def prior_sample(self, x_test, n_classes=None, logits=False):
         """
         Description
         ----------
@@ -209,19 +212,21 @@ class GaussianProcess(object):
         Var: array_like
             The variance around the mean of each one vs. all gaussian process
         """
-        assert self.fitted, "Please fit the model before trying to make posterior predictions!"
+        assert (n_classes is not None) or (self.n_classes is not None), "Please either fit the model or specify the number of classes."
+        if n_classes is None:
+            n_classes = self.n_classes
 
         x_test = atleast_2d(x_test)
-        means = []
-        variances = []
-        for model in self.predictors:
-            mean, var = model.prior_sample(x_test)
-            means.append(mean)
-            variances.append(var)
+        samples = []
+        for i in range(n_classes):
+            model = GPR.GaussianProcess(kernel=self.kernel, var_l=self.var_l, \
+                                        inv_method=self.inv_method)
+            sample = model.prior_sample(x_test)
+            samples.append(sample)
+
         if logits:
-            means = np.array(means).T[0]
-            variances = np.array(variances).T[0]
-            return means, variances
-        means = np.array(means).T[0]
-        means = softmax(sigmoid(means))
-        return atleast_2d(means.argmax(axis=1))
+            samples = np.array(samples).T
+            return samples
+
+        samples = softmax(sigmoid(np.array(samples).T, True))
+        return atleast_2d(samples)
