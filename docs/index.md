@@ -6,6 +6,8 @@ This is my attempt to create the product that I would want to use. Something sim
 
 I'm open to all feedback, commentary, and suggestions as long as they are constructive and polite.
 
+<a href="/examples/Simple_Classification">Simple_Classification</a>
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
