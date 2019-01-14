@@ -1,3 +1,8 @@
+"""
+This script contains code for useful data transformations and data checks
+used in the other modules of squidward.
+"""
+
 import sys
 import warnings
 import functools
@@ -8,6 +13,10 @@ from scipy.special import expit
 np.seterr(over="raise")
 
 def sigmoid(z, ingore_overflow=False):
+    """
+    Function to return the sigmoid transformation for every
+    term in a vector.
+    """
     try:
         return 1.0 / (1.0 + np.exp(-z))
     except Exception as e:
@@ -17,44 +26,63 @@ def sigmoid(z, ingore_overflow=False):
         raise e
 
 def softmax(z):
+    """
+    Function to return the softmax transformation over an
+    input vector.
+    """
     return z / z.sum(axis=1).reshape(-1, 1)
 
 def is_invertible(arr, strength='condition'):
-    if strength=='cramer':
+    """
+    Function to return True is matrix is safely invertible and
+    False is the matrix is not safely invertable.
+    """
+    if strength == 'cramer':
         return np.linalg.det(arr) == 0.0
-    if strength=='rank':
+    if strength == 'rank':
         return arr.shape[0] == arr.shape[1] and np.linalg.matrix_rank(arr) == arr.shape[0]
     return 1.0 / np.linalg.cond(arr) >= sys.float_info.epsilon
 
 def check_valid_cov(cov):
+    """
+    Function to do safety checks on covariance matrices.
+    """
     if not is_invertible(cov):
         warnings.warn('Cov has high condition. Inverting matrix may result in errors.')
     var = np.diag(cov)
     if var[var < 0].shape[0] != 0:
         raise Exception('Negative values in diagonal of covariance matrix.\nLikely cause is kernel inversion instability.\nCheck kernel variance.')
-    return None
 
-def atleast_2d(x):
-    if len(x.shape) == 1:
-        x = x.reshape(-1, 1)
-    if len(x.shape) == 2 and x.shape[0] == 1:
-        x = x.reshape(-1, 1)
-    return x
+def atleast_2d(arr):
+    """
+    Function to ensure that an array has a least 2 dimensions. Used to
+    formalize output / input dimensions for certain functions.
+    """
+    if len(arr.shape) == 1:
+        arr = arr.reshape(-1, 1)
+    if len(arr.shape) == 2 and arr.shape[0] == 1:
+        arr = arr.reshape(-1, 1)
+    return arr
 
-def atmost_1d(x):
-    if len(x.shape) == 1:
-        return x
-    elif len(x.shape) == 2:
-        if x.shape[0] == 1:
-            return x[0,:]
-        elif x.shape[1] == 1:
-            return x[:,0]
-        else:
-            raise Exception("Not appropriate input shape.")
-    else:
-        raise Exception("Not appropriate input shape.")
+def atmost_1d(arr):
+    """
+    Function to ensure that an array has a most 1 dimension. Used to
+    formalize output / input dimensions for certain functions.
+    """
+    if len(arr.shape) == 1:
+        return arr
+    if len(arr.shape) == 2:
+        if arr.shape[0] == 1:
+            return arr[0, :]
+        if arr.shape[1] == 1:
+            return arr[:, 0]
+    raise Exception("Not appropriate input shape.")
 
 def make_grid(coordinates=(-10, 10, 1)):
+    """
+    Returns a square grid of points determined by the input coordinates
+    using nump mgrid. Used in visualization fucntions.
+    """
     min_, max_, grain = coordinates
     if min_ >= max_:
         raise Exception("Min value greater than max value.")
@@ -65,57 +93,62 @@ def make_grid(coordinates=(-10, 10, 1)):
         raise Exception('Plot topology not square!')
     return x_test, size
 
-def invert(Arr, method='inv'):
-    if not is_invertible(Arr):
+def invert(arr, method='inv'):
+    """
+    Function to invert matrices. A variety of inversion solutions are available.
+    """
+    if not is_invertible(arr):
         warnings.warn('Matrix has high condition. Inverting matrix may result in errors.')
     if method == 'inv':
-        return np.linalg.inv(Arr)
-    elif method == 'pinv':
-        return np.linalg.pinv(Arr)
-    elif method == 'solve':
-        I = np.identity(Arr.shape[-1], dtype=Arr.dtype)
-        return np.linalg.solve(Arr, I)
-    elif method == 'cholesky':
-        c = np.linalg.inv(np.linalg.cholesky(Arr))
-        return np.dot(c.T, c)
-    elif method == 'svd':
-        u, s, v = np.linalg.svd(Arr)
-        return np.dot(v.transpose(), np.dot(np.diag(s**-1), u.transpose()))
-    elif method == 'lu':
-        P, L, U = la.lu(Arr)
-        invU = np.linalg.inv(U)
-        invL = np.linalg.inv(L)
-        invP = np.linalg.inv(P)
-        return invU.dot(invL).dot(invP)
+        return np.linalg.inv(arr)
+    if method == 'pinv':
+        return np.linalg.pinv(arr)
+    if method == 'solve':
+        identity = np.identity(arr.shape[-1], dtype=arr.dtype)
+        return np.linalg.solve(arr, identity)
+    if method == 'cholesky':
+        inv_cholesky = np.linalg.inv(np.linalg.cholesky(arr))
+        return np.dot(inv_cholesky.T, inv_cholesky)
+    if method == 'svd':
+        unitary_u, singular_values, unitary_v = np.linalg.svd(arr)
+        return np.dot(unitary_v.T, np.dot(np.diag(singular_values**-1), unitary_u.T))
+    if method == 'lu':
+        permutation, lower, upper = la.lu(arr)
+        inv_u = np.linalg.inv(upper)
+        inv_l = np.linalg.inv(lower)
+        inv_p = np.linalg.inv(permutation)
+        return inv_u.dot(inv_l).dot(inv_p)
     raise Exception('Invalid inversion method argument.')
 
-def onehot(a, num_classes=None, safe=True):
+def onehot(arr, num_classes=None, safe=True):
     """
+    Function to take in a 1D label array and returns the one hot encoded
+    transformation.
     """
+    arr = atmost_1d(arr)
     if num_classes is None:
-        num_classes = np.unique(a).shape[0]
+        num_classes = np.unique(arr).shape[0]
     if safe:
-        if num_classes != np.unique(a).shape[0]:
+        if num_classes != np.unique(arr).shape[0]:
             raise Exception('Number of unique values does not match num_classes argument.')
-    return np.squeeze(np.eye(num_classes)[a.reshape(-1)])
+    return np.squeeze(np.eye(num_classes)[arr.reshape(-1)])
 
-def reversehot(x):
+def reversehot(arr):
     """
+    Function to reverse the one hot transformation.
     """
-    if len(x.shape) > 1:
-        if len(x.shape) == 2:
-            if x.shape[0] == 1:
-                return x[0,:]
-            if x.shape[1] == 1:
-                return x[:,0]
-        return x.argmax(axis=1)
-    return x
+    if len(arr.shape) > 1:
+        if len(arr.shape) == 2:
+            if arr.shape[0] == 1:
+                return arr[0, :]
+            if arr.shape[1] == 1:
+                return arr[:, 0]
+        return arr.argmax(axis=1)
+    return arr
 
 def deprecated(func):
     """
-    This is a decorator which can be used to mark functions
-    as deprecated. It will result in a warning being emitted
-    when the function is used.
+    A decorator used to mark functions that are deprecated with a warning.
     """
     @functools.wraps(func)
     def new_func(*args, **kwargs):

@@ -1,10 +1,10 @@
-from squidward import Validation
+from squidward import validation
 import unittest
 import numpy as np
 import numpy.testing as npt
 np.random.seed(0)
 
-class ValidationTestCase(unittest.TestCase):
+class validationTestCase(unittest.TestCase):
     """
     Class for validation tests.
     """
@@ -12,17 +12,17 @@ class ValidationTestCase(unittest.TestCase):
         """
         Test classification validation preprocessing code.
         """
-        preprocess = Validation.preprocess
+        preprocess = validation.preprocess
 
         @preprocess
-        def f(p, y):
+        def f(prediction, target):
             return True
 
-        p = np.ones(10)
-        y = np.zeros(9)
+        prediction = np.ones(10)
+        target = np.zeros(9)
 
         with self.assertRaises(Exception) as context:
-           f(p, y)
+           f(prediction, target)
         self.assertTrue('Number of predictions does not match number of targets' in str(context.exception))
 
     def test_likelihood(self):
@@ -30,26 +30,26 @@ class ValidationTestCase(unittest.TestCase):
         Test that the likelihood function returns the correct likeliohood or
         log likelihood.
         """
-        means = np.linspace(0,4,5).reshape(-1,1)
-        cov = np.random.rand(5,5)
+        means = np.linspace(0, 4, 5).reshape(-1, 1)
+        cov = np.random.rand(5, 5)
         cov = cov.dot(cov.T)
-        y = np.array([1.2815938,  2.46052947, 3.49448986, 3.71525343, 5.5182648 ])
+        prediction = np.array([1.2815938,  2.46052947, 3.49448986, 3.71525343, 5.5182648 ])
 
         true = -1.941715114406031
-        output = Validation.likelihood(means, cov, y, True)
+        output = validation.likelihood(means, cov, prediction, True)
         self.assertEqual(output, true)
 
         true = 0.14345769230347272
-        output = Validation.likelihood(means, cov, y, False)
+        output = validation.likelihood(means, cov, prediction, False)
         self.assertEqual(output, true)
 
     def test_rmse(self):
         """
         Test that rmse returns the correct root mean squared error.
         """
-        x = np.random.rand(10)
-        y = np.random.rand(10) + 1.0
-        output = Validation.rmse(p=x,y=y)
+        prediction = np.random.rand(10)
+        target = np.random.rand(10) + 1.0
+        output = validation.rmse(prediction=prediction, target=target)
         true = 1.1545450663694088
         self.assertEqual(output, true)
 
@@ -57,57 +57,17 @@ class ValidationTestCase(unittest.TestCase):
         """
         Test that acc returns the correct accuracy.
         """
-        y = np.array([0,1,2,1,0,1,0,2,1]).reshape(-1,1)
-        p = np.array([1,2,2,1,1,1,2,2,1]).reshape(-1,1)
-        output = Validation.acc(y,p)
+        target = np.array([0,1,2,1,0,1,0,2,1]).reshape(-1,1)
+        prediction = np.array([1,2,2,1,1,1,2,2,1]).reshape(-1,1)
+        output = validation.acc(prediction, target)
         true = 0.5555555555555556
         self.assertEqual(output, true)
 
-        y = np.array([0,1,2,1,0,1,0,2,1])
-        p = np.array([1,2,2,1,1,1,2,2,1])
-        output = Validation.acc(y,p)
+        target = np.array([0,1,2,1,0,1,0,2,1])
+        predictions = np.array([1,2,2,1,1,1,2,2,1])
+        output = validation.acc(prediction, target)
         true = 0.5555555555555556
         self.assertEqual(output, true)
-
-    def test_brier(self):
-        """
-        """
-        try:
-            Validation.brier_score()
-        except:
-            pass
-
-    def test_precision(self):
-        """
-        """
-        try:
-            Validation.precision()
-        except:
-            pass
-
-    def test_recall(self):
-        """
-        """
-        try:
-            Validation.recall()
-        except:
-            pass
-
-    def test_roc_auc(self):
-        """
-        """
-        try:
-            Validation.roc_auc()
-        except:
-            pass
-
-    def test_posterior_checks(self):
-        """
-        """
-        try:
-            Validation.posterior_checks()
-        except:
-            pass
 
 if __name__ == '__main__':
     unittest.main()

@@ -2,14 +2,14 @@ import unittest
 import warnings
 import numpy as np
 import numpy.testing as npt
-from squidward import Utils
-from squidward.Utils import deprecated
+from squidward import utils
+from squidward.utils import deprecated
 np.random.seed(0)
 
 # useful for debugging
 np.set_printoptions(suppress=True)
 
-class UtilsTestCase(unittest.TestCase):
+class utilsTestCase(unittest.TestCase):
     """
     Class for utilities tests.
     """
@@ -22,15 +22,15 @@ class UtilsTestCase(unittest.TestCase):
                          [9.9966464987e-001, 9.5257412682e-001, 7.3105857863e-001],
                          [9.9995460213e-001, 5.1482002224e-131, 9.9998329858e-001]])
 
-        output = Utils.sigmoid(x)
+        output = utils.sigmoid(x)
         npt.assert_almost_equal(output, true, decimal=10)
 
-        output = Utils.sigmoid(-12345, True)
+        output = utils.sigmoid(-12345, True)
         true = 0.5
         npt.assert_almost_equal(output, true, decimal=10)
 
         with self.assertRaises(Exception) as context:
-           Utils.sigmoid(-12345)
+           utils.sigmoid(-12345)
         self.assertTrue('overflow encountered in exp' in str(context.exception))
 
     def test_softmax(self):
@@ -38,12 +38,12 @@ class UtilsTestCase(unittest.TestCase):
         Test softmax function works.
         """
         x = np.array([[-8,0,6],[8,3,1],[10,-300,11]])
-        x = Utils.sigmoid(x)
+        x = utils.sigmoid(x)
         true = np.array([[2.2388575697e-004, 3.3380896059e-001, 6.6596715365e-001],
                          [3.7255082739e-001, 3.5500132884e-001, 2.7244784376e-001],
                          [4.9999282567e-001, 2.5741800386e-131, 5.0000717433e-001]])
 
-        output = Utils.softmax(x)
+        output = utils.softmax(x)
         npt.assert_almost_equal(output, true, decimal=10)
 
     def test_is_invertible_true(self):
@@ -53,16 +53,16 @@ class UtilsTestCase(unittest.TestCase):
         arr = np.random.rand(10, 10)
         arr = arr.dot(arr.T)
 
-        output = Utils.is_invertible(arr, 'condition')
+        output = utils.is_invertible(arr, 'condition')
         assert output
 
-        output = Utils.is_invertible(arr, 'rank')
+        output = utils.is_invertible(arr, 'rank')
         assert output
 
         # cramer's rule method fails here due to
         # floating point errors in np.linalg.det
         # LU decomposition approximation of determinant
-        output = Utils.is_invertible(arr, 'cramer')
+        output = utils.is_invertible(arr, 'cramer')
         assert ~output
 
     def test_is_invertible_false(self):
@@ -72,13 +72,13 @@ class UtilsTestCase(unittest.TestCase):
         arr = np.random.rand(10, 10)
         arr[-1] = arr[0] + arr[1]
 
-        output = Utils.is_invertible(arr, 'condition')
+        output = utils.is_invertible(arr, 'condition')
         assert ~output
 
-        output = Utils.is_invertible(arr, 'rank')
+        output = utils.is_invertible(arr, 'rank')
         assert ~output
 
-        output = Utils.is_invertible(arr, 'cramer')
+        output = utils.is_invertible(arr, 'cramer')
         assert ~output
 
     def test_check_valid_cov(self):
@@ -86,12 +86,12 @@ class UtilsTestCase(unittest.TestCase):
         Test that the function that validates covariance matricies works.
         """
         x = np.array([[1,1,1],[1,0,1],[1,1,0]])
-        output = output = Utils.check_valid_cov(x)
+        output = output = utils.check_valid_cov(x)
         assert output is None
 
         x = np.array([[-1,1,1],[1,0,1],[1,1,0]])
         with self.assertRaises(Exception) as context:
-            Utils.check_valid_cov(x)
+            utils.check_valid_cov(x)
         self.assertTrue('Negative values in diagonal of covariance matrix.\nLikely cause is kernel inversion instability.\nCheck kernel variance.' in str(context.exception))
 
     def test_atleast_2d(self):
@@ -101,15 +101,15 @@ class UtilsTestCase(unittest.TestCase):
         true = np.ones(10).reshape(-1,1)
 
         x = np.ones(10)
-        output = Utils.atleast_2d(x)
+        output = utils.atleast_2d(x)
         npt.assert_almost_equal(output, true, decimal=10)
 
         x = np.ones(10).reshape(1,-1)
-        output = Utils.atleast_2d(x)
+        output = utils.atleast_2d(x)
         npt.assert_almost_equal(output, true, decimal=10)
 
         x = np.ones((10,10,2))
-        output = Utils.atleast_2d(x)
+        output = utils.atleast_2d(x)
         npt.assert_almost_equal(output, x, decimal=10)
 
     def test_atmost_1d(self):
@@ -117,25 +117,25 @@ class UtilsTestCase(unittest.TestCase):
         Test that at 1d always returns a 1d array.
         """
         x = true = np.ones((10))
-        output = Utils.atmost_1d(x)
+        output = utils.atmost_1d(x)
         npt.assert_almost_equal(output, x, decimal=10)
 
         x = np.ones((10,1))
-        output = Utils.atmost_1d(x)
+        output = utils.atmost_1d(x)
         npt.assert_almost_equal(output, true, decimal=10)
 
         x = np.ones((1,10))
-        output = Utils.atmost_1d(x)
+        output = utils.atmost_1d(x)
         npt.assert_almost_equal(output, true, decimal=10)
 
         x = np.ones((2,10))
         with self.assertRaises(Exception) as context:
-            output = Utils.atmost_1d(x)
+            output = utils.atmost_1d(x)
         self.assertTrue('Not appropriate input shape.' in str(context.exception))
 
         x = np.ones((2,10,1))
         with self.assertRaises(Exception) as context:
-            output = Utils.atmost_1d(x)
+            output = utils.atmost_1d(x)
         self.assertTrue('Not appropriate input shape.' in str(context.exception))
 
     def test_make_grid(self):
@@ -148,16 +148,16 @@ class UtilsTestCase(unittest.TestCase):
                           [ 0, -1],
                           [ 0,  0]]), 2)
 
-        output = Utils.make_grid((-1,1,1))
+        output = utils.make_grid((-1,1,1))
         npt.assert_almost_equal(output[0], true[0], decimal=10)
         assert output[1] == true[1]
 
         with self.assertRaises(Exception) as context:
-            output = Utils.make_grid((2,1,1))
+            output = utils.make_grid((2,1,1))
         self.assertTrue('Min value greater than max value.' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            output = Utils.make_grid((-2,1,1))
+            output = utils.make_grid((-2,1,1))
         self.assertTrue('Plot topology not square!' in str(context.exception))
 
     def test_invert(self):
@@ -173,26 +173,26 @@ class UtilsTestCase(unittest.TestCase):
                          [  -0.88702483,  -22.1530339,    12.99237804,   10.8927777,     3.57616868],
                          [ -67.39164907,   67.13403575, -119.02932256,    3.57616868,   96.96479211]])
 
-        output = Utils.invert(arr,"inv")
+        output = utils.invert(arr,"inv")
         npt.assert_almost_equal(output, true, decimal=7)
 
-        output = Utils.invert(arr,"pinv")
+        output = utils.invert(arr,"pinv")
         npt.assert_almost_equal(output, true, decimal=7)
 
-        output = Utils.invert(arr,"solve")
+        output = utils.invert(arr,"solve")
         npt.assert_almost_equal(output, true, decimal=7)
 
-        output = Utils.invert(arr,"cholesky")
+        output = utils.invert(arr,"cholesky")
         npt.assert_almost_equal(output, true, decimal=7)
 
-        output = Utils.invert(arr,"svd")
+        output = utils.invert(arr,"svd")
         npt.assert_almost_equal(output, true, decimal=7)
 
-        output = Utils.invert(arr,"lu")
+        output = utils.invert(arr,"lu")
         npt.assert_almost_equal(output, true, decimal=7)
 
         with self.assertRaises(Exception) as context:
-            output = Utils.invert(arr,"fake")
+            output = utils.invert(arr,"fake")
         self.assertTrue('Invalid inversion method argument.' in str(context.exception))
 
         arr = np.random.rand(10, 10)
@@ -202,7 +202,7 @@ class UtilsTestCase(unittest.TestCase):
             # Cause all warnings to always be triggered.
             warnings.simplefilter("always")
             # Trigger a warning.
-            Utils.invert(arr)
+            utils.invert(arr)
             # Verify some things
             assert len(w) == 1
             assert "Matrix has high condition." in str(w[-1].message)
@@ -223,18 +223,18 @@ class UtilsTestCase(unittest.TestCase):
                          [1., 0., 0.],
                          [0., 1., 0.]])
 
-        output = Utils.onehot(y,3)
+        output = utils.onehot(y,3)
         npt.assert_almost_equal(output, true, decimal=10)
 
-        output = Utils.onehot(y)
+        output = utils.onehot(y)
         npt.assert_almost_equal(output, true, decimal=10)
 
         with self.assertRaises(Exception) as context:
-            Utils.onehot(y,4)
+            utils.onehot(y,4)
         self.assertTrue('Number of unique values does not match num_classes argument.' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            Utils.onehot(y,2)
+            utils.onehot(y,2)
         self.assertTrue('Number of unique values does not match num_classes argument.' in str(context.exception))
 
     def test_reversehot(self):
@@ -255,21 +255,21 @@ class UtilsTestCase(unittest.TestCase):
 
         true = np.array([0.0,0.0,0.0,0.0,1.0,0.0,2.0,2.0,2.0,0.0])
 
-        output = Utils.reversehot(y)
+        output = utils.reversehot(y)
         npt.assert_almost_equal(output, true, decimal=10)
 
-        output = Utils.reversehot(true)
+        output = utils.reversehot(true)
         npt.assert_almost_equal(output, true, decimal=10)
 
-        output = Utils.reversehot(true.T)
+        output = utils.reversehot(true.T)
         npt.assert_almost_equal(output, true, decimal=10)
 
         y = true.reshape(-1,1)
-        output = Utils.reversehot(y)
+        output = utils.reversehot(y)
         npt.assert_almost_equal(output, true, decimal=10)
 
         y = true.reshape(1,-1)
-        output = Utils.reversehot(y)
+        output = utils.reversehot(y)
         npt.assert_almost_equal(output, true, decimal=10)
 
     def test_deprecated(self):

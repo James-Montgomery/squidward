@@ -1,13 +1,13 @@
 import unittest
 import numpy as np
-from squidward.Kernels import KernelBase
+from squidward.kernels import kernel_base
 import numpy.testing as npt
 np.random.seed(0)
 
 # useful for debugging
 np.set_printoptions(suppress=True)
 
-class KernelBaseTestCase(unittest.TestCase):
+class kernel_baseTestCase(unittest.TestCase):
     """
     Class for kernel base tests.
     """
@@ -56,17 +56,17 @@ class KernelBaseTestCase(unittest.TestCase):
 
     def test_params_assertions(self):
         """
-        Test that the KernelBase assertions work to raise exceptions for invalid parameters.
+        Test that the kernel_base assertions work to raise exceptions for invalid parameters.
         """
         d = self.dist
 
         with self.assertRaises(Exception) as context:
-            KernelBase.Kernel(d, 'fake')
+            kernel_base.Kernel(d, 'fake')
         self.assertTrue('Invalid argument for kernel method' in str(context.exception))
 
-class KOneTestCase(KernelBaseTestCase):
+class KOneTestCase(kernel_baseTestCase):
     """
-    Test that the k1 method of KernelBase returns valid kernels.
+    Test that the k1 method of kernel_base returns valid kernels.
     """
     def test_normal_input(self):
         """
@@ -76,7 +76,7 @@ class KOneTestCase(KernelBaseTestCase):
         a = self.alpha
         b = self.beta
 
-        kernel = KernelBase.Kernel(d, 'k1')
+        kernel = kernel_base.Kernel(d, 'k1')
         output = kernel.k(a, b)
         true = np.array([[13.17143916,  9.77988405, 10.13316671, 11.71761266, 11.92969764],
                          [11.9717428,   8.58018769,  8.93347035, 10.5179163,  10.73000128],

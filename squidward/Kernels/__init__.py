@@ -1,2 +1,7 @@
-import squidward.Kernels.KernelBase
-import squidward.Kernels.Distance
+"""
+This script contains code for creating kernels for
+gaussian processes modeling.
+"""
+
+import squidward.kernels.kernel_base
+import squidward.kernels.distance

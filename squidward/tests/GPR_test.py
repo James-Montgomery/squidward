@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
-from squidward import GPR
-from squidward.Kernels import Distance, KernelBase
+from squidward import gpr
+from squidward.kernels import distance, kernel_base
 import numpy.testing as npt
 np.random.seed(0)
 
@@ -32,9 +32,9 @@ class RegressionTestCase(unittest.TestCase):
         y_train = np.array([0.63095398, 0.29118303, 0.85576359])
 
         # create distance function
-        d = Distance.rbf(5.0,10000.0**2)
+        d = distance.RBF(5.0,10000.0**2)
         # create kernel
-        kernel = KernelBase.Kernel(d, 'k1')
+        kernel = kernel_base.Kernel(d, 'k1')
 
         self.x_train = x_train
         self.y_train = y_train
@@ -47,14 +47,14 @@ class GaussianProcessTestCase(RegressionTestCase):
 
     def test_prior_prediction(self):
         """
-        Test that the prior statistics for GPR makes sense.
+        Test that the prior statistics for gpr makes sense.
         """
         x_train = self.x_train
         y_train = self.y_train
         kernel = self.kernel
 
         # define model
-        model = GPR.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpr.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
 
         # check prior predict
         mean, var = model.prior_predict(x_train)
@@ -79,7 +79,7 @@ class GaussianProcessTestCase(RegressionTestCase):
         kernel = self.kernel
 
         # define model
-        model = GPR.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpr.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
 
         # check prior sample
         sample = []
@@ -102,7 +102,7 @@ class GaussianProcessTestCase(RegressionTestCase):
         kernel = self.kernel
 
         # define model
-        model = GPR.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpr.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
 
         # fit model
         model.fit(self.x_train, self.y_train)
@@ -129,7 +129,7 @@ class GaussianProcessTestCase(RegressionTestCase):
         kernel = self.kernel
 
         # define model
-        model = GPR.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpr.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
 
         # fit model
         model.fit(self.x_train, self.y_train)
@@ -147,21 +147,21 @@ class GaussianProcessTestCase(RegressionTestCase):
 
     def test_params_assertions(self):
         """
-        Test that the GPR assertions work to raise exceptions for invalid parameters.
+        Test that the gpr assertions work to raise exceptions for invalid parameters.
         """
         kernel = self.kernel
         x_train = self.x_train
 
         with self.assertRaises(Exception) as context:
-            GPR.GaussianProcess(var_l=1050**2, inv_method='lu')
+            gpr.GaussianProcess(var_l=1050**2, inv_method='lu')
         self.assertTrue('Model object must be instantiated with a valid kernel object.' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            GPR.GaussianProcess(kernel=kernel, var_l=-1.0**2, inv_method='lu')
+            gpr.GaussianProcess(kernel=kernel, var_l=-1.0**2, inv_method='lu')
         self.assertTrue('Invalid likelihood variance argument.' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            GPR.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu').posterior_predict(x_train)
+            gpr.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu').posterior_predict(x_train)
         self.assertTrue('Please fit the model before trying to make posterior predictions!' in str(context.exception))
 
 class GaussianProcessStableCholeskyTestCase(RegressionTestCase):
@@ -171,14 +171,14 @@ class GaussianProcessStableCholeskyTestCase(RegressionTestCase):
 
     def test_guassian_process_stable_cholesky(self):
         """
-        Test that the stable cholesky implementation of GPR returns valid
+        Test that the stable cholesky implementation of gpr returns valid
         posterior predictions.
         """
         x_train = self.x_train
         y_train = self.y_train
         kernel = self.kernel
 
-        model = GPR.GaussianProcessStableCholesky(kernel=kernel, var_l=1050**2)
+        model = gpr.GaussianProcessStableCholesky(kernel=kernel, var_l=1050**2)
 
         mean, var = model.fit_predict(x_train, y_train, x_train)
         true = np.array([0.6175477307, 0.3528573286, 0.8002926388]).reshape(-1,1)
@@ -194,16 +194,16 @@ class GaussianProcessStableCholeskyTestCase(RegressionTestCase):
 
     def test_params_assertions(self):
         """
-        Test that the GPR assertions work to raise exceptions for invalid parameters.
+        Test that the gpr assertions work to raise exceptions for invalid parameters.
         """
         kernel = self.kernel
 
         with self.assertRaises(Exception) as context:
-            GPR.GaussianProcessStableCholesky(var_l=1050**2)
+            gpr.GaussianProcessStableCholesky(var_l=1050**2)
         self.assertTrue('Model object must be instantiated with a valid kernel object.' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            GPR.GaussianProcessStableCholesky(kernel=kernel, var_l=-1.0**2)
+            gpr.GaussianProcessStableCholesky(kernel=kernel, var_l=-1.0**2)
         self.assertTrue('Invalid likelihood variance argument.' in str(context.exception))
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
-from squidward import GPC, Utils
-from squidward.Kernels import Distance, KernelBase
+from squidward import gpc, utils
+from squidward.kernels import distance, kernel_base
 import numpy.testing as npt
 np.random.seed(0)
 
@@ -31,12 +31,12 @@ class ClassificationTestCase(unittest.TestCase):
                             [0.93267862, 0.36709855, 0.41112865, 0.91878905, 0.021376  ]]])
 
         y_train = np.array([0,1,2])
-        y_train = Utils.onehot(y_train)
+        y_train = utils.onehot(y_train)
 
         # create distance function
-        d = Distance.rbf(5.0,10000.0**2)
+        d = distance.RBF(5.0,10000.0**2)
         # create kernel
-        kernel = KernelBase.Kernel(d, 'k1')
+        kernel = kernel_base.Kernel(d, 'k1')
 
         self.x_train = x_train
         self.y_train = y_train
@@ -46,7 +46,7 @@ class GaussianProcessTestCase(ClassificationTestCase):
     """
     Tests for guassian process.
     """
-    
+
     def test_prior_predict(self):
         """
         Prior predict should return not implemented.
@@ -57,7 +57,7 @@ class GaussianProcessTestCase(ClassificationTestCase):
         kernel = self.kernel
 
         # define model
-        model = GPC.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
 
         # check prior predict
         with self.assertRaises(NotImplementedError):
@@ -66,14 +66,14 @@ class GaussianProcessTestCase(ClassificationTestCase):
 
     def test_prior_sample_not_fit(self):
         """
-        Test that the samples from the GPC prior before fitting make sense.
+        Test that the samples from the gpc prior before fitting make sense.
         """
         x_train = self.x_train
         y_train = self.y_train
         kernel = self.kernel
 
         # define model
-        model = GPC.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
 
         # check prior sample without fitting
         logits = model.prior_sample(x_train, 5, True)
@@ -97,14 +97,14 @@ class GaussianProcessTestCase(ClassificationTestCase):
 
     def test_prior_sample_fit(self):
         """
-        Test that the samples from the GPC prior after fitting make sense.
+        Test that the samples from the gpc prior after fitting make sense.
         """
         x_train = self.x_train
         y_train = self.y_train
         kernel = self.kernel
 
         # define model
-        model = GPC.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
 
         # fit model
         model.fit(x_train, y_train)
@@ -128,14 +128,14 @@ class GaussianProcessTestCase(ClassificationTestCase):
 
     def test_posterior_predict(self):
         """
-        Test that the statistics of the posterior of the GPC make sense.
+        Test that the statistics of the posterior of the gpc make sense.
         """
         x_train = self.x_train
         y_train = self.y_train
         kernel = self.kernel
 
         # define model
-        model = GPC.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
 
         # fit model
         model.fit(x_train, y_train)
@@ -160,14 +160,14 @@ class GaussianProcessTestCase(ClassificationTestCase):
 
     def test_posterior_sample(self):
         """
-        Test that the predictions from the GPC posterior sense.
+        Test that the predictions from the gpc posterior sense.
         """
         x_train = self.x_train
         y_train = self.y_train
         kernel = self.kernel
 
         # define model
-        model = GPC.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
 
         # fit model
         model.fit(x_train, y_train)
@@ -187,25 +187,25 @@ class GaussianProcessTestCase(ClassificationTestCase):
 
     def test_params_assertions(self):
         """
-        Test that the GPC assertions work to raise exceptions for invalid parameters.
+        Test that the gpc assertions work to raise exceptions for invalid parameters.
         """
         x_train = self.x_train
         kernel = self.kernel
 
         with self.assertRaises(Exception) as context:
-            GPC.GaussianProcess(var_l=1050**2, inv_method='lu')
+            gpc.GaussianProcess(var_l=1050**2, inv_method='lu')
         self.assertTrue('Model object must be instantiated with a valid kernel object.' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            GPC.GaussianProcess(kernel=kernel, var_l=-1.0**2, inv_method='lu')
+            gpc.GaussianProcess(kernel=kernel, var_l=-1.0**2, inv_method='lu')
         self.assertTrue('Invalid likelihood variance argument.' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            GPC.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu').posterior_predict(x_train)
+            gpc.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu').posterior_predict(x_train)
         self.assertTrue('Please fit the model before trying to make posterior predictions!' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            model = GPC.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+            model = gpc.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
             model.prior_sample(x_train)
         self.assertTrue('Please either fit the model or specify the number of classes.' in str(context.exception))
 

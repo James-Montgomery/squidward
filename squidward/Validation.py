@@ -1,66 +1,65 @@
+"""
+Function for basic model validation. Sklearn has very nice implementations
+of a much wider variety of model validation metrics.
+"""
+
+import warnings
 import numpy as np
 import scipy.stats as st
-from squidward.Utils import atmost_1d, check_valid_cov, is_invertible
+from squidward.utils import atmost_1d, check_valid_cov, is_invertible
 
 np.seterr(over="raise")
 
 def preprocess(func):
+    """
+    Decorator function used for preprocessing for classification
+    validation metrics.
+    """
     def wrapper(*args, **kwargs):
+        """
+        Wrapper function for decorator.
+        """
         if args:
-            p, y = args[0], args[1]
-            p, y = atmost_1d(p), atmost_1d(y)
+            prediction, target = args[0], args[1]
+            prediction, target = atmost_1d(prediction), atmost_1d(target)
         if kwargs:
-            p, y  = kwargs['p'], kwargs['y']
-            p, y = atmost_1d(p), atmost_1d(y)
-        if y.shape[0] != p.shape[0]:
+            prediction, target = kwargs['prediction'], kwargs['target']
+            prediction, target = atmost_1d(prediction), atmost_1d(target)
+        if prediction.shape[0] != target.shape[0]:
             raise Exception("Number of predictions does not match number of targets.")
-        return func(p=p,y=y)
+        return func(prediction=prediction, target=target)
     return wrapper
 
-def likelihood(mean, cov, y, log=False, allow_singular=False):
+def likelihood(mean, cov, target, log=False, allow_singular=False):
     """
+    Multivariate normal likelihood for a set of data given the
+    parameters of a gaussian process.
     """
     mean = atmost_1d(mean)
     check_valid_cov(cov)
     if not is_invertible(cov):
         warnings.warn('Matrix has high condition. Inverting matrix may result in errors.')
-    if log == False:
-        return st.multivariate_normal(mean, cov, allow_singular=allow_singular).pdf(y)
-    return st.multivariate_normal(mean, cov, allow_singular=allow_singular).logpdf(y)
+    if not log:
+        return st.multivariate_normal(mean, cov, allow_singular=allow_singular).pdf(target)
+    return st.multivariate_normal(mean, cov, allow_singular=allow_singular).logpdf(target)
 
 @preprocess
-def rmse(p, y):
+def rmse(prediction, target):
     """
+    Calculate of the root mean squared error of univariate regression model.
     """
-    return np.sqrt( np.sum((p - y)**2) / y.shape[0] )
+    return np.sqrt(np.sum((prediction-target) **2)/target.shape[0])
 
 @preprocess
-def acc(p, y):
+def acc(prediction, target):
     """
+    Calculate the accuracy of univariate classification problem.
     """
-    return y[y == p].shape[0] / y.shape[0]
+    return target[target == prediction].shape[0]/target.shape[0]
 
-def brier_score():
-    """
-    """
-    raise NotImplementedError()
-
-def precision():
-    """
-    """
-    raise NotImplementedError()
-
-def recall():
-    """
-    """
-    raise NotImplementedError()
-
-def roc_auc():
-    """
-    """
-    raise NotImplementedError()
-
-def posterior_checks():
-    """
-    """
-    raise NotImplementedError()
+# TODO: add the following methods
+# brier_score
+# precision
+# recall
+# roc_auc
+#posterior_checkes
