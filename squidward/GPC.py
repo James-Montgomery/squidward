@@ -5,12 +5,12 @@ a model object.
 """
 
 import numpy as np
-import squidward.GPR as GPR
-from squidward.Utils import atleast_2d, sigmoid, softmax, reversehot
+from squidward import gpr
+from squidward.utils import atleast_2d, sigmoid, softmax, reversehot
 
 np.seterr(over="raise")
 
-# add in binary case for optimization
+# TODO: add in binary case for optimization
 # only need to train one regressor for binary case
 
 class GaussianProcess(object):
@@ -82,12 +82,11 @@ class GaussianProcess(object):
         self.n_classes = np.unique(self.y_obs).shape[0]
         for i in range(self.n_classes):
             y_obs_class = np.where(self.y_obs == i, 1, -1)
-            model = GPR.GaussianProcess(kernel=self.kernel, var_l=self.var_l, \
+            model = gpr.GaussianProcess(kernel=self.kernel, var_l=self.var_l, \
                                         inv_method=self.inv_method)
             model.fit(x_obs, y_obs_class.T)
             self.predictors.append(model)
         self.fitted = True
-        return None
 
     def posterior_predict(self, x_test, logits=False):
         """
@@ -116,7 +115,7 @@ class GaussianProcess(object):
         Var: array_like
             The variance around the mean of each one vs. all gaussian process
         """
-        assert self.fitted and (len(self.predictors) > 0.0), "Please fit the model before trying to make posterior predictions!"
+        assert self.fitted and self.predictors, "Please fit the model before trying to make posterior predictions!"
 
         x_test = atleast_2d(x_test)
         means = []
@@ -127,11 +126,11 @@ class GaussianProcess(object):
             variances.append(var)
 
         if logits:
-            means = np.array(means)[:,:,0].T
-            variances = np.array(variances)[:,:,0].T
+            means = np.array(means)[:, :, 0].T
+            variances = np.array(variances)[:, :, 0].T
             return atleast_2d(means), atleast_2d(variances)
 
-        means = softmax(sigmoid(np.array(means)[:,:,0].T, True))
+        means = softmax(sigmoid(np.array(means)[:, :, 0].T, True))
         return atleast_2d(means)
 
     def prior_predict(self, x_test, logits=False):
@@ -170,7 +169,8 @@ class GaussianProcess(object):
         Var: array_like
             The variance around the mean of each one vs. all gaussian process
         """
-        assert self.fitted and (len(self.predictors) > 0.0), "Please fit the model before trying to make posterior predictions!"
+        assert self.fitted and self.predictors, \
+               "Please fit the model before trying to make posterior predictions!"
 
         x_test = atleast_2d(x_test)
         samples = []
@@ -212,14 +212,16 @@ class GaussianProcess(object):
         Var: array_like
             The variance around the mean of each one vs. all gaussian process
         """
-        assert (n_classes is not None) or (self.n_classes is not None), "Please either fit the model or specify the number of classes."
+        assert (n_classes is not None) or (self.n_classes is not None), \
+               "Please either fit the model or specify the number of classes."
+
         if n_classes is None:
             n_classes = self.n_classes
 
         x_test = atleast_2d(x_test)
         samples = []
-        for i in range(n_classes):
-            model = GPR.GaussianProcess(kernel=self.kernel, var_l=self.var_l, \
+        for _ in range(n_classes):
+            model = gpr.GaussianProcess(kernel=self.kernel, var_l=self.var_l, \
                                         inv_method=self.inv_method)
             sample = model.prior_sample(x_test)
             samples.append(sample)

@@ -94,10 +94,10 @@ cd ./ squidward
 pylint squidward
 ```
 
-Some of the naming conventions I've chosen intentionally do not adhere to pep8 in order to better resemble mathematical conventions. For example, identity matrices may be named `I` even though this does not adhere to snake case conventions. You can run `pylint --disable=invalid-name` if you would like to ignore the resulting pylint warnings.
+Some of the naming conventions I've chosen intentionally do not adhere to pep8 in order to better resemble mathematical conventions. For example, I often borrow the matrix naming conventions of Rassmussen such as `K` and `K_ss`. You can run `pylint --disable=invalid-name` if you would like to ignore the resulting pylint warnings.
 
 ```
-pylint --disable=invalid-name
+pylint squidward --disable=invalid-name --ignore=gp_viz
 ```
 
 ## Acknowledgments

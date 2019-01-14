@@ -4,7 +4,7 @@ model can be created by calling one of these classes to create a model object.
 """
 
 import numpy as np
-from squidward.Utils import invert, atleast_2d, check_valid_cov
+from squidward.utils import invert, atleast_2d, check_valid_cov
 
 np.seterr(over="raise")
 
@@ -71,14 +71,13 @@ class GaussianProcess(object):
         self.y_obs = atleast_2d(y_obs)
         K = self.kernel.k(x_obs, x_obs)
 
-        I = np.zeros(K.shape)
-        idx = np.diag_indices(I.shape[0])
-        I[idx] = self.var_l
-        K += I
+        identity = np.zeros(K.shape)
+        idx = np.diag_indices(identity.shape[0])
+        identity[idx] = self.var_l
+        K += identity
 
         self.K = invert(K, self.inv_method)
         self.fitted = True
-        return None
 
     def posterior_predict(self, x_test, return_cov=False):
         """
@@ -150,7 +149,7 @@ class GaussianProcess(object):
             The full covariance matrix opf the gaussian process prior.
         """
         # update to take into account constant kernels
-        mean = np.zeros(x_test.shape[0]).reshape(-1,1)
+        mean = np.zeros(x_test.shape[0]).reshape(-1, 1)
         cov = self.kernel.k(x_test, x_test)
         check_valid_cov(cov)
         if return_cov:
@@ -178,7 +177,7 @@ class GaussianProcess(object):
 
         mean, cov = self.posterior_predict(x_test, True)
         check_valid_cov(cov)
-        return np.random.multivariate_normal(mean[:,0], cov, 1).T[:, 0]
+        return np.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
 
     def prior_sample(self, x_test):
         """
@@ -198,7 +197,7 @@ class GaussianProcess(object):
         """
         mean, cov = self.prior_predict(x_test, True)
         check_valid_cov(cov)
-        return np.random.multivariate_normal(mean[:,0], cov, 1).T[:, 0]
+        return np.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
 
 class GaussianProcessStableCholesky(object):
     """
@@ -283,10 +282,10 @@ class GaussianProcessStableCholesky(object):
         K_ = self.kernel.k(x_obs, x_test)
         K_ss = self.kernel.k(x_test, x_test)
 
-        I = np.zeros(K.shape)
-        idx = np.diag_indices(I.shape[0])
-        I[idx] = self.var_l
-        K += I
+        identity = np.zeros(K.shape)
+        idx = np.diag_indices(identity.shape[0])
+        identity[idx] = self.var_l
+        K += identity
 
         # More numerically stable
         # Gaussian Processes for Machine Learning Alg 2.1
