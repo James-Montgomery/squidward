@@ -69,7 +69,7 @@ class GaussianProcess(object):
         """
         self.x_obs = atleast_2d(x_obs)
         self.y_obs = atleast_2d(y_obs)
-        K = self.kernel.k(x_obs, x_obs)
+        K = self.kernel(x_obs, x_obs)
 
         identity = np.zeros(K.shape)
         idx = np.diag_indices(identity.shape[0])
@@ -110,9 +110,9 @@ class GaussianProcess(object):
         assert self.fitted and (self.K is not None), "Please fit the model before trying to make posterior predictions!"
 
         # Gaussian Processes for Machine Learning Eq 2.18/2.19
-        K_s = self.kernel.k(x_test, self.x_obs)
+        K_s = self.kernel(x_test, self.x_obs)
         mean = K_s.dot(self.K).dot(self.y_obs)
-        K_ss = self.kernel.k(x_test, x_test)
+        K_ss = self.kernel(x_test, x_test)
         cov = K_ss - np.dot(np.dot(K_s, self.K), K_s.T)
         check_valid_cov(cov)
         if return_cov:
@@ -150,7 +150,7 @@ class GaussianProcess(object):
         """
         # update to take into account constant kernels
         mean = np.zeros(x_test.shape[0]).reshape(-1, 1)
-        cov = self.kernel.k(x_test, x_test)
+        cov = self.kernel(x_test, x_test)
         check_valid_cov(cov)
         if return_cov:
             return mean, cov
@@ -278,9 +278,9 @@ class GaussianProcessStableCholesky(object):
         y_obs = atleast_2d(y_obs)
 
         # Gaussian Processes for Machine Learning Eq 2.18/2.19
-        K = self.kernel.k(x_obs, x_obs)
-        K_ = self.kernel.k(x_obs, x_test)
-        K_ss = self.kernel.k(x_test, x_test)
+        K = self.kernel(x_obs, x_obs)
+        K_ = self.kernel(x_obs, x_test)
+        K_ss = self.kernel(x_test, x_test)
 
         identity = np.zeros(K.shape)
         idx = np.diag_indices(identity.shape[0])

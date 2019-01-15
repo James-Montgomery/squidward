@@ -77,7 +77,7 @@ class KOneTestCase(kernel_baseTestCase):
         b = self.beta
 
         kernel = kernel_base.Kernel(d, 'k1')
-        output = kernel.k(a, b)
+        output = kernel(a, b)
         true = np.array([[13.17143916,  9.77988405, 10.13316671, 11.71761266, 11.92969764],
                          [11.9717428,   8.58018769,  8.93347035, 10.5179163,  10.73000128],
                          [14.1273139,  10.73575879, 11.08904145, 12.6734874,  12.88557238],

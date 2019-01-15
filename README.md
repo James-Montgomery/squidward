@@ -29,7 +29,7 @@ conda create --name squidward_env python=3.6
 source activate squidward_env
 ```
 
-To install the latest stable version, simply pip install from pypi!
+To install the latest stable version, simply [pip install from pypi](https://pypi.org/project/squidward/)!
 
 ```
 pip install squidward

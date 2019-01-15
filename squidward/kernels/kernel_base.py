@@ -39,15 +39,40 @@ class Kernel(object):
         self.distance_function = distance_function
         self.pool = multiprocessing.Pool(processes=pool_size)
         if method == 'k1':
-            self.k = self._k1
-        # elif method == 'k2':
-        #     self.k = self._k2
+            self._k = self._k1
+        elif method == 'k2':
+            self._k = self._k2
         # elif method == 'k3':
         #     self.k = self._k3
         else:
             raise Exception("Invalid argument for kernel method")
 
+    def __call__(self, alpha, beta):
+        """
+        Parameters
+        ----------
+        alpha: array-like
+            The first array to compare.
+        beta: array-like
+            The second array to compare.
+        """
+        return self._k(alpha, beta)
+
     def _k1(self, alpha, beta):
+        """
+        """
+        # lengths of each vector to compare
+        n_len, m_len = alpha.shape[0], beta.shape[0]
+        # create an empty array to fill with element wise vector distances
+        cov = np.full((n_len, m_len), 0.0)
+        # loop through each vector
+        for i in range(n_len):
+            for j in range(i, m_len):
+                # assign distances to each element in covariance matrix
+                cov[i, j] = cov[j, i] = self.distance_function(alpha[i], beta[j])
+        return cov
+
+    def _k2(self, alpha, beta):
         """
         Implementation inspired by scipy.spacial.distance cdist v1.2.0
         For loop through every index i,j for input vectors alpha_i and beta_j
