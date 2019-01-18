@@ -16,16 +16,15 @@ def worker(i, alpha_element, beta, m_len, distance_function):
     return output.reshape(-1)
 
 class Kernel(object):
-    """
-    This class is the base class for a kernel object. It basically takes the
-    input distance fucntion and finds the the distance between all vectors in
-    two lists and returns that matrix as a covariance matrix.
-    """
+    """Base class for Kernel object."""
+    
     def __init__(self, distance_function, client=None):
         """
         Description
         ----------
-        Kernel base class for creating GP kernels.
+        This class is the base class for a kernel object. It basically takes the
+        input distance fucntion and finds the the distance between all vectors in
+        two lists and returns that matrix as a covariance matrix.
 
         Parameters
         ----------

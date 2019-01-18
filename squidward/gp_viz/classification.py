@@ -16,7 +16,7 @@ except:
     import seaborn as sns
 
 def plot_contour(model, coordinates=(-1, 1, .1), show_var=False):
-    '''
+    """
     Description
     ----------
     Function to plot a contour plot for a two dimensional guassian process
@@ -38,7 +38,7 @@ def plot_contour(model, coordinates=(-1, 1, .1), show_var=False):
     ----------
     Matplotlib plot of mean function or variance of the gaussian process
     model as a contour plot.
-    '''
+    """
     x_test, size = make_grid(coordinates)
     if not show_var:
         mean = model.posterior_predict(x_test)

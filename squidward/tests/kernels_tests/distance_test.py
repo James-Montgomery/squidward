@@ -8,21 +8,21 @@ np.random.seed(0)
 np.set_printoptions(suppress=True)
 
 class distanceTestCase(unittest.TestCase):
-    """
-    Class for distance function tests.
-    """
+    """Class for distance function tests."""
+
     def setUp(self):
         """
+        Set Up
         Set up shared environment or variables for tests
         """
         pass
 
 class RBFTestCase(distanceTestCase):
-    """
-    Tests for radial basis function.
-    """
+    """Tests for radial basis function."""
+
     def test_normal_input(self):
         """
+        Normal Input
         Test case for expected inputs
         """
         d = distance.RBF(12.0,14.0**2)
@@ -36,6 +36,7 @@ class RBFTestCase(distanceTestCase):
 
     def test_params_assertions(self):
         """
+        Params Assertions
         Test case for invalid kernal parameter arguments.
         """
         with self.assertRaises(Exception) as context:

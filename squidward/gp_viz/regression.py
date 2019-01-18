@@ -16,7 +16,7 @@ except:
     import seaborn as sns
 
 def plot_1d(x_test, mean, var):
-    '''
+    """
     Description
     ----------
     Function to plot one dimensional gaussian process regressor mean and
@@ -38,7 +38,7 @@ def plot_1d(x_test, mean, var):
     ----------
     Matplotlib plot of mean function and variance of the gaussian process
     model.
-    '''
+    """
     x_test = atmost_1d(x_test)
     mean = atmost_1d(mean)
     var = atmost_1d(var)
@@ -63,7 +63,7 @@ def plot_1d(x_test, mean, var):
     return None
 
 def plot_point_grid(model, coordinates=(-1, 1, .1), show_var=False):
-    '''
+    """
     Description
     ----------
     Function to plot a point grid for a two dimensional guassian process
@@ -85,7 +85,7 @@ def plot_point_grid(model, coordinates=(-1, 1, .1), show_var=False):
     ----------
     Matplotlib plot of mean function or variance of the gaussian process
     model over each point in the grid.
-    '''
+    """
     x_test, _ = make_grid(coordinates)
     mean, var = model.posterior_predict(x_test)
     mean = atmost_1d(mean)
@@ -97,7 +97,7 @@ def plot_point_grid(model, coordinates=(-1, 1, .1), show_var=False):
     return None
 
 def plot_contour(model, coordinates=(-1, 1, .1), show_var=False):
-    '''
+    """
     Description
     ----------
     Function to plot a contour plot for a two dimensional guassian process
@@ -119,7 +119,7 @@ def plot_contour(model, coordinates=(-1, 1, .1), show_var=False):
     ----------
     Matplotlib plot of mean function or variance of the gaussian process
     model as a contour plot.
-    '''
+    """
     x_test, size = make_grid(coordinates)
     mean, var = model.posterior_predict(x_test)
     mean = atmost_1d(mean)
@@ -135,8 +135,9 @@ def plot_contour(model, coordinates=(-1, 1, .1), show_var=False):
     plt.clabel(contours, inline=True, fontsize=8)
     return None
 
+# TODO: Implement
 def plot_3d(model, coordinates=(-1, 1, .1), show_var=False):
-    '''
+    """
     Description
     ----------
     Function to make a 3D plot for a two dimensional guassian process
@@ -158,7 +159,7 @@ def plot_3d(model, coordinates=(-1, 1, .1), show_var=False):
     ----------
     Matplotlib plot of mean function or variance of the gaussian process
     model as a 3D plot.
-    '''
+    """
     raise NotImplementedError()
     # x_test, size = make_grid(coordinates)
     # mean, var = model.posterior_predict(x_test)

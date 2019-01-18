@@ -1,3 +1,1 @@
-"""
-gp_viz tests.
-"""
+"""gp_viz tests."""

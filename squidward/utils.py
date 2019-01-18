@@ -64,16 +64,27 @@ def check_valid_cov(cov):
     if var[var < 0].shape[0] != 0:
         raise Exception('Negative values in diagonal of covariance matrix.\nLikely cause is kernel inversion instability.\nCheck kernel variance.')
 
-def atleast_2d(arr):
+def exactly_2d(arr):
     """
     Function to ensure that an array has a least 2 dimensions. Used to
     formalize output / input dimensions for certain functions.
     """
     if len(arr.shape) == 1:
-        arr = arr.reshape(-1, 1)
-    if len(arr.shape) == 2 and arr.shape[0] == 1:
-        arr = arr.reshape(-1, 1)
-    return arr
+        return arr.reshape(-1, 1)
+    if len(arr.shape) == 2:
+        if arr.shape[0] == 1:
+            return arr.reshape(-1, 1)
+        else:
+            return arr
+    if len(arr.shape) == 3:
+        if arr.shape[0] == 1:
+            return arr[0,:,:]
+        if arr.shape[2] == 1:
+            return arr[:,:,0]
+        raise Exception("Invalid array shape.")
+    if len(arr.shape) > 3:
+        raise Exception("Invalid array shape.")
+    raise Exception("Invalid array shape.")
 
 def atmost_1d(arr):
     """
@@ -105,8 +116,7 @@ def make_grid(coordinates=(-10, 10, 1)):
     return x_test, size
 
 class Invert(object):
-    """
-    """
+    """Invert matrices."""
     def __init__(self, method='inv'):
         """
         """

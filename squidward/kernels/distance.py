@@ -3,13 +3,14 @@ Distance functions to define how "far" apart two vectors are.
 """
 
 import numpy as np
-from squidward.utils import atleast_2d
+from squidward.utils import exactly_2d
 
 np.seterr(over="raise")
 
 class RBF(object):
     """Class for radial basis fucntion distance measure."""
-    def __init__(self, lengthscale, var_k, method=None):
+    
+    def __init__(self, lengthscale, var_k):
         """
         Description
         ----------
@@ -36,33 +37,14 @@ class RBF(object):
             raise Exception("Lengthscale parameter must be greater than zero.")
         if var_k <= 0.0:
             raise Exception("Kernel variance parameter must be greater than zero.")
-        if method is None:
-            self.distance = self._standard_dist
-        else:
-            raise Exception("Invalid method.")
 
     def __call__(self, alpha, beta):
         """
-        Calls the distance fucntion defined by the initializing method.
+        Radial basis function.
         """
-        return self.distance(alpha, beta)
-
-    def _standard_dist(self, alpha, beta):
-        """
-        Description
-        ----------
-        Homebrew implementation of rbf.
-
-        k(x_i, x_j) = var_k * exp( -.5/l^2 * sum( sqrt( (a-b)^2 ) ) )
-                    = var_k * exp( g * |a-b| )
-
-        Returns
-        ----------
-        distance: Float
-        """
-        alpha, beta = atleast_2d(alpha), (beta)
-        #distance = np.linalg.norm(alpha-beta)
-        distance = np.sqrt(np.sum((alpha - beta)**2))
+        alpha, beta = exactly_2d(alpha), (beta)
+        distance = np.linalg.norm(alpha-beta)
+        #distance = np.sum((alpha - beta)**2)
         # same as np.sum((alpha - beta)**2)
         amp = -0.5/self.lengthscale**2
         return self.var_k*np.exp(amp*distance)

@@ -9,11 +9,11 @@ np.random.seed(0)
 np.set_printoptions(suppress=True)
 
 class RegressionTestCase(unittest.TestCase):
-    """
-    Class for guassian process classification tests.
-    """
+    """Class for guassian process classification tests."""
+
     def setUp(self):
         """
+        Set Up
         Set up shared environment or variables for tests.
         """
         # train data
@@ -41,12 +41,11 @@ class RegressionTestCase(unittest.TestCase):
         self.kernel = kernel
 
 class GaussianProcessTestCase(RegressionTestCase):
-    """
-    Tests for guassian process.
-    """
+    """Tests for guassian process."""
 
     def test_prior_prediction(self):
         """
+        Prior Prediction
         Test that the prior statistics for gpr makes sense.
         """
         x_train = self.x_train
@@ -72,6 +71,7 @@ class GaussianProcessTestCase(RegressionTestCase):
 
     def test_prior_sample(self):
         """
+        Prior Sample
         Test that samples from the prior make sense.
         """
         x_train = self.x_train
@@ -86,7 +86,7 @@ class GaussianProcessTestCase(RegressionTestCase):
         for i in range(100):
             sample.append( model.prior_sample(x_train) )
         mean = np.mean(sample, axis=0)
-        true = np.array([-90.9387249999, 820.9311221566, 336.3775325309])
+        true = np.array([ -848.8631891109,  -891.0294302347, -1239.8323497304])
         npt.assert_almost_equal(mean, true, decimal=10)
         var = np.std(sample, axis=0)**2
         true = np.array([1.0268415343, 1.0282576537, 0.9955303171])
@@ -95,6 +95,7 @@ class GaussianProcessTestCase(RegressionTestCase):
 
     def test_posterior_prediction(self):
         """
+        Posterior Prediction
         Test that posterior statistics make sense.
         """
         x_train = self.x_train
@@ -122,6 +123,7 @@ class GaussianProcessTestCase(RegressionTestCase):
 
     def test_posterior_sample(self):
         """
+        Posterior Sample
         Test that samples from the posterior make sense.
         """
         x_train = self.x_train
@@ -147,6 +149,7 @@ class GaussianProcessTestCase(RegressionTestCase):
 
     def test_params_assertions(self):
         """
+        Params Assertions
         Test that the gpr assertions work to raise exceptions for invalid parameters.
         """
         kernel = self.kernel
@@ -165,12 +168,11 @@ class GaussianProcessTestCase(RegressionTestCase):
         self.assertTrue('Please fit the model before trying to make posterior predictions!' in str(context.exception))
 
 class GaussianProcessStableCholeskyTestCase(RegressionTestCase):
-    """
-    Tests for guassian process stable cholesky.
-    """
+    """Tests for guassian process stable cholesky."""
 
     def test_guassian_process_stable_cholesky(self):
         """
+        Guassian process Stable Cholesky
         Test that the stable cholesky implementation of gpr returns valid
         posterior predictions.
         """
@@ -194,6 +196,7 @@ class GaussianProcessStableCholeskyTestCase(RegressionTestCase):
 
     def test_params_assertions(self):
         """
+        Params Assertions
         Test that the gpr assertions work to raise exceptions for invalid parameters.
         """
         kernel = self.kernel

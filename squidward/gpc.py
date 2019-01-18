@@ -6,7 +6,7 @@ a model object.
 
 import numpy as np
 from squidward import gpr
-from squidward.utils import atleast_2d, sigmoid, softmax, reversehot
+from squidward.utils import exactly_2d, sigmoid, softmax, reversehot
 
 np.seterr(over="raise")
 
@@ -14,9 +14,8 @@ np.seterr(over="raise")
 # only need to train one regressor for binary case
 
 class GaussianProcess(object):
-    """
-    Model object for single output gaussian process classification.
-    """
+    """Model object for single output gaussian process classification."""
+    
     def __init__(self, kernel=None, var_l=1e-15, inv_method="inv"):
         """
         Description
@@ -74,9 +73,9 @@ class GaussianProcess(object):
         ----------
         None
         """
-        self.x_obs = atleast_2d(x_obs)
+        self.x_obs = exactly_2d(x_obs)
         y_obs = reversehot(y_obs)
-        self.y_obs = atleast_2d(y_obs)
+        self.y_obs = exactly_2d(y_obs)
         # TODO: change to accomodate situation
         # where a class is missing from train set
         self.n_classes = np.unique(self.y_obs).shape[0]
@@ -117,7 +116,7 @@ class GaussianProcess(object):
         """
         assert self.fitted and self.predictors, "Please fit the model before trying to make posterior predictions!"
 
-        x_test = atleast_2d(x_test)
+        x_test = exactly_2d(x_test)
         means = []
         variances = []
         for model in self.predictors:
@@ -128,10 +127,10 @@ class GaussianProcess(object):
         if logits:
             means = np.array(means)[:, :, 0].T
             variances = np.array(variances)[:, :, 0].T
-            return atleast_2d(means), atleast_2d(variances)
+            return exactly_2d(means), exactly_2d(variances)
 
         means = softmax(sigmoid(np.array(means)[:, :, 0].T, True))
-        return atleast_2d(means)
+        return exactly_2d(means)
 
     def prior_predict(self, x_test, logits=False):
         """
@@ -172,7 +171,7 @@ class GaussianProcess(object):
         assert self.fitted and self.predictors, \
                "Please fit the model before trying to make posterior predictions!"
 
-        x_test = atleast_2d(x_test)
+        x_test = exactly_2d(x_test)
         samples = []
         for model in self.predictors:
             sample = model.prior_sample(x_test)
@@ -183,7 +182,7 @@ class GaussianProcess(object):
             return samples
 
         samples = softmax(sigmoid(np.array(samples).T, True))
-        return atleast_2d(samples)
+        return exactly_2d(samples)
 
     def prior_sample(self, x_test, n_classes=None, logits=False):
         """
@@ -218,7 +217,7 @@ class GaussianProcess(object):
         if n_classes is None:
             n_classes = self.n_classes
 
-        x_test = atleast_2d(x_test)
+        x_test = exactly_2d(x_test)
         samples = []
         for _ in range(n_classes):
             model = gpr.GaussianProcess(kernel=self.kernel, var_l=self.var_l, \
@@ -231,4 +230,4 @@ class GaussianProcess(object):
             return samples
 
         samples = softmax(sigmoid(np.array(samples).T, True))
-        return atleast_2d(samples)
+        return exactly_2d(samples)

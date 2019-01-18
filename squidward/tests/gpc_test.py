@@ -9,11 +9,11 @@ np.random.seed(0)
 np.set_printoptions(suppress=True)
 
 class ClassificationTestCase(unittest.TestCase):
-    """
-    Class for guassian process classification tests.
-    """
+    """Class for guassian process classification tests."""
+
     def setUp(self):
         """
+        Set Up
         Set up shared environment or variables for tests.
         """
         # train data
@@ -43,12 +43,11 @@ class ClassificationTestCase(unittest.TestCase):
         self.kernel = kernel
 
 class GaussianProcessTestCase(ClassificationTestCase):
-    """
-    Tests for guassian process.
-    """
+    """Tests for guassian process."""
 
     def test_prior_predict(self):
         """
+        Prior Predict
         Prior predict should return not implemented.
         The prior over a one vs all gaussian process has no practical interpretation.
         """
@@ -66,6 +65,7 @@ class GaussianProcessTestCase(ClassificationTestCase):
 
     def test_prior_sample_not_fit(self):
         """
+        Prior Sample Not Fit
         Test that the samples from the gpc prior before fitting make sense.
         """
         x_train = self.x_train
@@ -97,6 +97,7 @@ class GaussianProcessTestCase(ClassificationTestCase):
 
     def test_prior_sample_fit(self):
         """
+        Prior Sample Fit
         Test that the samples from the gpc prior after fitting make sense.
         """
         x_train = self.x_train
@@ -128,6 +129,7 @@ class GaussianProcessTestCase(ClassificationTestCase):
 
     def test_posterior_predict(self):
         """
+        Posterior Predict
         Test that the statistics of the posterior of the gpc make sense.
         """
         x_train = self.x_train
@@ -160,6 +162,7 @@ class GaussianProcessTestCase(ClassificationTestCase):
 
     def test_posterior_sample(self):
         """
+        Posterior Sample
         Test that the predictions from the gpc posterior sense.
         """
         x_train = self.x_train
@@ -187,6 +190,7 @@ class GaussianProcessTestCase(ClassificationTestCase):
 
     def test_params_assertions(self):
         """
+        Params Assertions
         Test that the gpc assertions work to raise exceptions for invalid parameters.
         """
         x_train = self.x_train

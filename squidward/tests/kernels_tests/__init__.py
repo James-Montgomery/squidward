@@ -1,3 +1,1 @@
-"""
-kernels tests.
-"""
+"""kernels tests."""

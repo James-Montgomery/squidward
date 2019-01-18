@@ -14,16 +14,15 @@ def array_equal(alpha, beta):
     return alpha.shape == beta.shape and np.all(np.sort(alpha) == np.sort(beta))
 
 class Kernel(object):
-    """
-    This class is the base class for a kernel object. It basically takes the
-    input distance fucntion and finds the the distance between all vectors in
-    two lists and returns that matrix as a covariance matrix.
-    """
+    """Base class for Kernel object."""
+    
     def __init__(self, distance_function, method='k1'):
         """
         Description
         ----------
-        Kernel base class for creating GP kernels.
+        This class is the base class for a kernel object. It basically takes the
+        input distance fucntion and finds the the distance between all vectors in
+        two lists and returns that matrix as a covariance matrix.
 
         Parameters
         ----------

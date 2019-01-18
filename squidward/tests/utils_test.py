@@ -10,11 +10,11 @@ np.random.seed(0)
 np.set_printoptions(suppress=True)
 
 class utilsTestCase(unittest.TestCase):
-    """
-    Class for utilities tests.
-    """
+    """Class for utilities tests."""
+
     def test_sigmoid(self):
         """
+        Sigmoid
         Test sigmoid functions works.
         """
         x = np.array([[-8,0,6],[8,3,1],[10,-300,11]])
@@ -35,6 +35,7 @@ class utilsTestCase(unittest.TestCase):
 
     def test_softmax(self):
         """
+        Softmax
         Test softmax function works.
         """
         x = np.array([[-8,0,6],[8,3,1],[10,-300,11]])
@@ -48,6 +49,7 @@ class utilsTestCase(unittest.TestCase):
 
     def test_is_invertible_true(self):
         """
+        Is Intertible True
         Test that non-singular matricies return true.
         """
         arr = np.random.rand(10, 10)
@@ -67,6 +69,7 @@ class utilsTestCase(unittest.TestCase):
 
     def test_is_invertible_false(self):
         """
+        Is Invertible False
         Test that singular matricies return false.
         """
         arr = np.random.rand(10, 10)
@@ -83,6 +86,7 @@ class utilsTestCase(unittest.TestCase):
 
     def test_check_valid_cov(self):
         """
+        Check Valid Covariance
         Test that the function that validates covariance matricies works.
         """
         x = np.array([[1,1,1],[1,0,1],[1,1,0]])
@@ -94,26 +98,28 @@ class utilsTestCase(unittest.TestCase):
             utils.check_valid_cov(x)
         self.assertTrue('Negative values in diagonal of covariance matrix.\nLikely cause is kernel inversion instability.\nCheck kernel variance.' in str(context.exception))
 
-    def test_atleast_2d(self):
+    def test_exactly_2d(self):
         """
+        Exactly 2D
         Test that at least 2d always returns a >= 2d array.
         """
         true = np.ones(10).reshape(-1,1)
 
         x = np.ones(10)
-        output = utils.atleast_2d(x)
+        output = utils.exactly_2d(x)
         npt.assert_almost_equal(output, true, decimal=10)
 
         x = np.ones(10).reshape(1,-1)
-        output = utils.atleast_2d(x)
+        output = utils.exactly_2d(x)
         npt.assert_almost_equal(output, true, decimal=10)
 
         x = np.ones((10,10,2))
-        output = utils.atleast_2d(x)
+        output = utils.exactly_2d(x)
         npt.assert_almost_equal(output, x, decimal=10)
 
     def test_atmost_1d(self):
         """
+        At Most 1D
         Test that at 1d always returns a 1d array.
         """
         x = true = np.ones((10))
@@ -140,6 +146,7 @@ class utilsTestCase(unittest.TestCase):
 
     def test_make_grid(self):
         """
+        Make Grid
         Test that the make grid function returns a symmetric, uniform grid of
         points. Make grid is primarily used in the GPViz module.
         """
@@ -162,6 +169,7 @@ class utilsTestCase(unittest.TestCase):
 
     def test_invert(self):
         """
+        Invert
         Test that inversion methods work on a typical matrix input with a
         reasonable condition.
         """
@@ -220,6 +228,7 @@ class utilsTestCase(unittest.TestCase):
 
     def test_onehot(self):
         """
+        Onehot
         Test that one hot returns the appropriate one hot array.
         """
         y = np.array([0,1,0,2,1,0,1,2,0,1])
@@ -250,6 +259,7 @@ class utilsTestCase(unittest.TestCase):
 
     def test_reversehot(self):
         """
+        Reversehot
         Test that reverse hot appropriately reverses one hot arrays. Should do
         the exact opposite of one hot fucntion.
         """
@@ -285,6 +295,7 @@ class utilsTestCase(unittest.TestCase):
 
     def test_deprecated(self):
         """
+        Deprecated
         Ensure that the deprecated warning actually returns the right warning
         to the user.
         """

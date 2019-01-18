@@ -8,11 +8,11 @@ np.random.seed(0)
 np.set_printoptions(suppress=True)
 
 class kernel_baseTestCase(unittest.TestCase):
-    """
-    Class for kernel base tests.
-    """
+    """Class for kernel base tests."""
+
     def setUp(self):
         """
+        Set Up
         Set up shared environment or variables for tests.
         """
         def test_distance(alpha, beta):
@@ -56,6 +56,7 @@ class kernel_baseTestCase(unittest.TestCase):
 
     def test_params_assertions(self):
         """
+        Params Assertions
         Test that the kernel_base assertions work to raise exceptions for invalid parameters.
         """
         d = self.dist
@@ -65,11 +66,11 @@ class kernel_baseTestCase(unittest.TestCase):
         self.assertTrue('Invalid argument for kernel method' in str(context.exception))
 
 class KOneTestCase(kernel_baseTestCase):
-    """
-    Test that the k1 method of kernel_base returns valid kernels.
-    """
+    """Test that the k1 method of kernel_base returns valid kernels."""
+
     def test_normal_input(self):
         """
+        Normal Input
         Test that k1 normal inputs return expected result.
         """
         d = self.dist

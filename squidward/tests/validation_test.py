@@ -5,11 +5,11 @@ import numpy.testing as npt
 np.random.seed(0)
 
 class validationTestCase(unittest.TestCase):
-    """
-    Class for validation tests.
-    """
+    """Class for validation tests."""
+
     def test_preprocess(self):
         """
+        Preprocess
         Test classification validation preprocessing code.
         """
         preprocess = validation.preprocess
@@ -27,6 +27,7 @@ class validationTestCase(unittest.TestCase):
 
     def test_likelihood(self):
         """
+        Likelihood
         Test that the likelihood function returns the correct likeliohood or
         log likelihood.
         """
@@ -45,6 +46,7 @@ class validationTestCase(unittest.TestCase):
 
     def test_rmse(self):
         """
+        RMSE
         Test that rmse returns the correct root mean squared error.
         """
         prediction = np.random.rand(10)
@@ -55,6 +57,7 @@ class validationTestCase(unittest.TestCase):
 
     def test_acc(self):
         """
+        Acc
         Test that acc returns the correct accuracy.
         """
         target = np.array([0,1,2,1,0,1,0,2,1]).reshape(-1,1)
