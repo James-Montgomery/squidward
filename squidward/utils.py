@@ -3,12 +3,23 @@ This script contains code for useful data transformations and data checks
 used in the other modules of squidward.
 """
 
+# run np.show_config() to see
+# if numpy is runniing with MKL
+# backend
+
 import sys
 import warnings
 import functools
 import numpy as np
 import scipy.linalg as la
 from scipy.special import expit
+import multiprocessing
+
+# watch out for error:
+# too many open files
+# meaning that you have spun up too many processes
+# only need 3 processes for LU decomp inversion
+pool = multiprocessing.Pool(processes=3)
 
 np.seterr(over="raise")
 
@@ -93,32 +104,60 @@ def make_grid(coordinates=(-10, 10, 1)):
         raise Exception('Plot topology not square!')
     return x_test, size
 
-def invert(arr, method='inv'):
+class Invert(object):
     """
-    Function to invert matrices. A variety of inversion solutions are available.
     """
-    if not is_invertible(arr):
-        warnings.warn('Matrix has high condition. Inverting matrix may result in errors.')
-    if method == 'inv':
-        return np.linalg.inv(arr)
-    if method == 'pinv':
-        return np.linalg.pinv(arr)
-    if method == 'solve':
+    def __init__(self, method='inv'):
+        """
+        """
+        if method == 'inv':
+            self.inv = np.linalg.inv
+        elif method == 'pinv':
+            self.inv = np.linalg.pinv
+        elif method == 'solve':
+            self.inv = self.solve
+        elif method == 'cholesky':
+            self.inv = self.cholesky
+        elif method == 'svd':
+            self.inv = self.svd
+        elif method == 'lu':
+            self.inv = self.lu
+        elif method == 'mp_lu':
+            self.inv = self.mp_lu
+        else:
+            raise Exception('Invalid inversion method argument.')
+
+    def __call__(self, arr):
+        if not is_invertible(arr):
+            warnings.warn('Matrix has high condition. Inverting matrix may result in errors.')
+        return self.inv(arr)
+
+    def solve(self, arr):
         identity = np.identity(arr.shape[-1], dtype=arr.dtype)
         return np.linalg.solve(arr, identity)
-    if method == 'cholesky':
+
+    def cholesky(self, arr):
         inv_cholesky = np.linalg.inv(np.linalg.cholesky(arr))
         return np.dot(inv_cholesky.T, inv_cholesky)
-    if method == 'svd':
+
+    def svd(self, arr):
         unitary_u, singular_values, unitary_v = np.linalg.svd(arr)
         return np.dot(unitary_v.T, np.dot(np.diag(singular_values**-1), unitary_u.T))
-    if method == 'lu':
+
+    def lu(self, arr):
         permutation, lower, upper = la.lu(arr)
         inv_u = np.linalg.inv(upper)
         inv_l = np.linalg.inv(lower)
         inv_p = np.linalg.inv(permutation)
         return inv_u.dot(inv_l).dot(inv_p)
-    raise Exception('Invalid inversion method argument.')
+
+    def mp_lu(self, arr):
+        permutation, lower, upper = la.lu(arr)
+        results = pool.map(np.linalg.inv,[upper, lower, permutation])
+        # arrays of equal dimension so
+        # multi_dot might be overkill
+        #return np.linalg.multi_dot(results)
+        return np.linalg.multi_dot(results)
 
 def onehot(arr, num_classes=None, safe=True):
     """
@@ -161,3 +200,18 @@ def deprecated(func):
         warnings.simplefilter('default', DeprecationWarning)  # reset filter
         return func(*args, **kwargs)
     return new_func
+
+# keep worker function in utils rather than
+# kernel_base_multiprocessing since
+# multiprocessing throws AttributeError
+# if worker function in the same file as
+# multiprocessing module when imported
+# I know...it's weird https://bugs.python.org/issue25053
+def worker(i, alpha_element, beta, m_len, distance_function):
+    """
+    Worker function for kernel_base_multiprocessing.
+    """
+    output = np.full(m_len, 0.0)
+    for j in range(m_len):
+        output[j] = distance_function(alpha_element, beta[j])
+    return i, output.reshape(-1)

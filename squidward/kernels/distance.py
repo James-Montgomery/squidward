@@ -42,6 +42,9 @@ class RBF(object):
             raise Exception("Invalid method.")
 
     def __call__(self, alpha, beta):
+        """
+        Calls the distance fucntion defined by the initializing method.
+        """
         return self.distance(alpha, beta)
 
     def _standard_dist(self, alpha, beta):
@@ -58,7 +61,8 @@ class RBF(object):
         distance: Float
         """
         alpha, beta = atleast_2d(alpha), (beta)
-        distance = np.sum((alpha - beta)**2)
-        # could calculate d using np.linalg.norm(a-b)
+        #distance = np.linalg.norm(alpha-beta)
+        distance = np.sqrt(np.sum((alpha - beta)**2))
+        # same as np.sum((alpha - beta)**2)
         amp = -0.5/self.lengthscale**2
         return self.var_k*np.exp(amp*distance)

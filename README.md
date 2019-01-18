@@ -22,10 +22,17 @@ These instructions will get you a copy of the project up and running on your loc
 
 This is a step by step guide to installing squidward for your local environment.
 
-I recommend installing squidward in a virtual environment for organized dependency control. Personally, I prefer conda environments. Create your environment and then go into it.
+I recommend installing squidward in a virtual environment for organized dependency control. Personally, I prefer conda environments. First, let's create and open our environment.
 
 ```
 conda create --name squidward_env python=3.6
+source activate squidward_env
+```
+
+MKL backend for numpy can help increase performance of this code. Anaconda now comes with mkl by default. To make use of mkl simply set up your virtual environment with anaconda like below.
+
+```
+conda create --name squidward_env python=3.6 anaconda
 source activate squidward_env
 ```
 
@@ -41,7 +48,7 @@ However, if you want the latest version git clone this repository to your local 
 git clone https://github.com/looyclark/squidward.git
 ```
 
-Change directory (cd) into the root of the squidward repository.
+Change directory (cd) into the root of the squidward repository. Updates staged for the next stable release will be in the `master` branch and experimental updates will be in the `dev_branch` branch of this repo. 
 
 ```
 cd ./squidward

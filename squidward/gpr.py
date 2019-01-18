@@ -4,7 +4,7 @@ model can be created by calling one of these classes to create a model object.
 """
 
 import numpy as np
-from squidward.utils import invert, atleast_2d, check_valid_cov
+from squidward.utils import Invert, atleast_2d, check_valid_cov
 
 np.seterr(over="raise")
 
@@ -39,7 +39,7 @@ class GaussianProcess(object):
         self.var_l = var_l
         self.x_obs = None
         self.y_obs = None
-        self.inv_method = inv_method
+        self.inv = Invert(inv_method)
         self.K = None
         self.fitted = False
         assert self.kernel is not None, \
@@ -76,7 +76,7 @@ class GaussianProcess(object):
         identity[idx] = self.var_l
         K += identity
 
-        self.K = invert(K, self.inv_method)
+        self.K = self.inv(K)
         self.fitted = True
 
     def posterior_predict(self, x_test, return_cov=False):

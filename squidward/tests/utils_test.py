@@ -173,26 +173,36 @@ class utilsTestCase(unittest.TestCase):
                          [  -0.88702483,  -22.1530339,    12.99237804,   10.8927777,     3.57616868],
                          [ -67.39164907,   67.13403575, -119.02932256,    3.57616868,   96.96479211]])
 
-        output = utils.invert(arr,"inv")
+        inv = utils.Invert("inv")
+        output = inv(arr)
         npt.assert_almost_equal(output, true, decimal=7)
 
-        output = utils.invert(arr,"pinv")
+        inv = utils.Invert("pinv")
+        output = inv(arr)
         npt.assert_almost_equal(output, true, decimal=7)
 
-        output = utils.invert(arr,"solve")
+        inv = utils.Invert("solve")
+        output = inv(arr)
         npt.assert_almost_equal(output, true, decimal=7)
 
-        output = utils.invert(arr,"cholesky")
+        inv = utils.Invert("cholesky")
+        output = inv(arr)
         npt.assert_almost_equal(output, true, decimal=7)
 
-        output = utils.invert(arr,"svd")
+        inv = utils.Invert("svd")
+        output = inv(arr)
         npt.assert_almost_equal(output, true, decimal=7)
 
-        output = utils.invert(arr,"lu")
+        inv = utils.Invert("lu")
+        output = inv(arr)
+        npt.assert_almost_equal(output, true, decimal=7)
+
+        inv = utils.Invert("mp_lu")
+        output = inv(arr)
         npt.assert_almost_equal(output, true, decimal=7)
 
         with self.assertRaises(Exception) as context:
-            output = utils.invert(arr,"fake")
+            utils.Invert("fake")
         self.assertTrue('Invalid inversion method argument.' in str(context.exception))
 
         arr = np.random.rand(10, 10)
@@ -202,7 +212,8 @@ class utilsTestCase(unittest.TestCase):
             # Cause all warnings to always be triggered.
             warnings.simplefilter("always")
             # Trigger a warning.
-            utils.invert(arr)
+            inv = utils.Invert()
+            inv(arr)
             # Verify some things
             assert len(w) == 1
             assert "Matrix has high condition." in str(w[-1].message)
