@@ -4,7 +4,7 @@ Modules for GPC visualizations.
 
 import numpy as np
 from mpl_toolkits.mplot3d import axes3d
-from squidward.utils import make_grid, atmost_1d
+from squidward.utils import make_grid, exactly_1d
 
 try:
     import matplotlib.pyplot as plt
@@ -16,7 +16,7 @@ except:
     import seaborn as sns
 
 def plot_contour(model, coordinates=(-1, 1, .1), show_var=False):
-    '''
+    """
     Description
     ----------
     Function to plot a contour plot for a two dimensional guassian process
@@ -38,7 +38,7 @@ def plot_contour(model, coordinates=(-1, 1, .1), show_var=False):
     ----------
     Matplotlib plot of mean function or variance of the gaussian process
     model as a contour plot.
-    '''
+    """
     x_test, size = make_grid(coordinates)
     if not show_var:
         mean = model.posterior_predict(x_test)

@@ -4,14 +4,13 @@ model can be created by calling one of these classes to create a model object.
 """
 
 import numpy as np
-from squidward.utils import invert, atleast_2d, check_valid_cov
+from squidward.utils import Invert, exactly_2d, check_valid_cov
 
 np.seterr(over="raise")
 
 class GaussianProcess(object):
-    """
-    Model object for single output gaussian process (SOGP) regression.
-    """
+    """Model object for single output gaussian process (SOGP) regression."""
+
     def __init__(self, kernel=None, var_l=1e-15, inv_method="inv"):
         """
         Description
@@ -39,7 +38,7 @@ class GaussianProcess(object):
         self.var_l = var_l
         self.x_obs = None
         self.y_obs = None
-        self.inv_method = inv_method
+        self.inv = Invert(inv_method)
         self.K = None
         self.fitted = False
         assert self.kernel is not None, \
@@ -67,8 +66,8 @@ class GaussianProcess(object):
         ----------
         None
         """
-        self.x_obs = atleast_2d(x_obs)
-        self.y_obs = atleast_2d(y_obs)
+        self.x_obs = exactly_2d(x_obs)
+        self.y_obs = exactly_2d(y_obs)
         K = self.kernel(x_obs, x_obs)
 
         identity = np.zeros(K.shape)
@@ -76,7 +75,7 @@ class GaussianProcess(object):
         identity[idx] = self.var_l
         K += identity
 
-        self.K = invert(K, self.inv_method)
+        self.K = self.inv(K)
         self.fitted = True
 
     def posterior_predict(self, x_test, return_cov=False):
@@ -117,7 +116,7 @@ class GaussianProcess(object):
         check_valid_cov(cov)
         if return_cov:
             return mean, cov
-        var = atleast_2d(np.diag(cov))
+        var = exactly_2d(np.diag(cov))
         return mean, var
 
     def prior_predict(self, x_test, return_cov=False):
@@ -151,10 +150,11 @@ class GaussianProcess(object):
         # update to take into account constant kernels
         mean = np.zeros(x_test.shape[0]).reshape(-1, 1)
         cov = self.kernel(x_test, x_test)
+
         check_valid_cov(cov)
         if return_cov:
             return mean, cov
-        var = atleast_2d(np.diag(cov))
+        var = exactly_2d(np.diag(cov))
         return mean, var
 
     def posterior_sample(self, x_test):
@@ -200,11 +200,8 @@ class GaussianProcess(object):
         return np.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
 
 class GaussianProcessStableCholesky(object):
-    """
-    Model object for single output gaussian process (SOGP) regression using
-    algorithm 2.1 (pg.19) from Gaussian Processes for Machine Learning
-    for increased numerical stability and faster performance.
-    """
+    """Model object for single output gaussian process (SOGP) regression formulated for stability.."""
+
     def __init__(self, kernel=None, var_l=1e-15):
         """
         Description
@@ -274,8 +271,8 @@ class GaussianProcessStableCholesky(object):
             The full covariance matrix opf the gaussian process posterior.
         """
 
-        x_obs = atleast_2d(x_obs)
-        y_obs = atleast_2d(y_obs)
+        x_obs = exactly_2d(x_obs)
+        y_obs = exactly_2d(y_obs)
 
         # Gaussian Processes for Machine Learning Eq 2.18/2.19
         K = self.kernel(x_obs, x_obs)
@@ -297,5 +294,5 @@ class GaussianProcessStableCholesky(object):
         check_valid_cov(cov)
         if return_cov:
             return mean, cov
-        var = atleast_2d(np.diag(cov))
+        var = exactly_2d(np.diag(cov))
         return mean, var

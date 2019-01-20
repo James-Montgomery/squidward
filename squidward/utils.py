@@ -3,12 +3,30 @@ This script contains code for useful data transformations and data checks
 used in the other modules of squidward.
 """
 
+# run np.show_config() to see
+# if numpy is runniing with MKL
+# backend
+
 import sys
 import warnings
 import functools
+import multiprocessing
 import numpy as np
 import scipy.linalg as la
 from scipy.special import expit
+
+try:
+    # python 2
+    numeric_types = (int, float, long, complex)
+except:
+    # python 3
+    numeric_types = (int, float, complex)
+
+# watch out for error:
+# too many open files
+# meaning that you have spun up too many processes
+# only need 3 processes for LU decomp inversion
+pool = multiprocessing.Pool(processes=3)
 
 np.seterr(over="raise")
 
@@ -53,22 +71,35 @@ def check_valid_cov(cov):
     if var[var < 0].shape[0] != 0:
         raise Exception('Negative values in diagonal of covariance matrix.\nLikely cause is kernel inversion instability.\nCheck kernel variance.')
 
-def atleast_2d(arr):
+def exactly_2d(arr):
     """
     Function to ensure that an array has a least 2 dimensions. Used to
     formalize output / input dimensions for certain functions.
     """
     if len(arr.shape) == 1:
-        arr = arr.reshape(-1, 1)
-    if len(arr.shape) == 2 and arr.shape[0] == 1:
-        arr = arr.reshape(-1, 1)
-    return arr
+        return arr.reshape(-1, 1)
+    if len(arr.shape) == 2:
+        if arr.shape[0] == 1:
+            return arr.reshape(-1, 1)
+        return arr
+    if len(arr.shape) == 3:
+        if arr.shape[0] == 1:
+            return arr[0, :, :]
+        if arr.shape[2] == 1:
+            return arr[:, :, 0]
+        raise Exception("Not appropriate input shape.")
+    if len(arr.shape) > 3:
+        raise Exception("Not appropriate input shape.")
+    raise Exception("Not appropriate input shape.")
 
-def atmost_1d(arr):
+def exactly_1d(arr):
     """
     Function to ensure that an array has a most 1 dimension. Used to
     formalize output / input dimensions for certain functions.
     """
+    if not arr.shape:
+        if isinstance(arr, numeric_types):
+            return np.array([arr])
     if len(arr.shape) == 1:
         return arr
     if len(arr.shape) == 2:
@@ -93,39 +124,94 @@ def make_grid(coordinates=(-10, 10, 1)):
         raise Exception('Plot topology not square!')
     return x_test, size
 
-def invert(arr, method='inv'):
-    """
-    Function to invert matrices. A variety of inversion solutions are available.
-    """
-    if not is_invertible(arr):
-        warnings.warn('Matrix has high condition. Inverting matrix may result in errors.')
-    if method == 'inv':
-        return np.linalg.inv(arr)
-    if method == 'pinv':
-        return np.linalg.pinv(arr)
-    if method == 'solve':
+class Invert(object):
+    """Invert matrices."""
+    def __init__(self, method='inv'):
+        """
+        Description
+        ----------
+        Class to handle inverting matrices.
+
+        Parameters
+        ----------
+        method: String
+            The name of the method to be used for inverting matrices.
+            Options: inv, pinv, solve, cholesky, svd, lu, mp_lu
+        """
+        if method == 'inv':
+            self.inv = np.linalg.inv
+        elif method == 'pinv':
+            self.inv = np.linalg.pinv
+        elif method == 'solve':
+            self.inv = self.solve
+        elif method == 'cholesky':
+            self.inv = self.cholesky
+        elif method == 'svd':
+            self.inv = self.svd
+        elif method == 'lu':
+            self.inv = self.lu
+        elif method == 'mp_lu':
+            self.inv = self.mp_lu
+        else:
+            raise Exception('Invalid inversion method argument.')
+
+    def __call__(self, arr):
+        """
+        Inverts matrix.
+        """
+        if not is_invertible(arr):
+            warnings.warn('Matrix has high condition. Inverting matrix may result in errors.')
+        return self.inv(arr)
+
+    def solve(self, arr):
+        """
+        Use cramer emthod for finding matrix inversion.
+        """
         identity = np.identity(arr.shape[-1], dtype=arr.dtype)
         return np.linalg.solve(arr, identity)
-    if method == 'cholesky':
+
+    def cholesky(self, arr):
+        """
+        Use cholesky decomposition for finding matrix inversion.
+        """
         inv_cholesky = np.linalg.inv(np.linalg.cholesky(arr))
         return np.dot(inv_cholesky.T, inv_cholesky)
-    if method == 'svd':
+
+    def svd(self, arr):
+        """
+        Use singular value decomposition for finidng matrix inversion.
+        """
         unitary_u, singular_values, unitary_v = np.linalg.svd(arr)
         return np.dot(unitary_v.T, np.dot(np.diag(singular_values**-1), unitary_u.T))
-    if method == 'lu':
+
+    def lu(self, arr):
+        """
+        Use lower upper decomposition for finding amtrix inversion.
+        """
         permutation, lower, upper = la.lu(arr)
         inv_u = np.linalg.inv(upper)
         inv_l = np.linalg.inv(lower)
         inv_p = np.linalg.inv(permutation)
         return inv_u.dot(inv_l).dot(inv_p)
-    raise Exception('Invalid inversion method argument.')
+
+    def mp_lu(self, arr):
+        """
+        Use lower upper decomposition for finding amtrix inversion. Upper
+        and lower and inverted as seperate processes.
+        """
+        permutation, lower, upper = la.lu(arr)
+        results = pool.map(np.linalg.inv, [upper, lower, permutation])
+        # arrays of equal dimension so
+        # multi_dot might be overkill
+        #return np.linalg.multi_dot(results)
+        return np.linalg.multi_dot(results)
 
 def onehot(arr, num_classes=None, safe=True):
     """
     Function to take in a 1D label array and returns the one hot encoded
     transformation.
     """
-    arr = atmost_1d(arr)
+    arr = exactly_1d(arr)
     if num_classes is None:
         num_classes = np.unique(arr).shape[0]
     if safe:
@@ -146,18 +232,38 @@ def reversehot(arr):
         return arr.argmax(axis=1)
     return arr
 
+def array_equal(alpha, beta):
+    """
+    Function returns true if two arrays are identical.
+    """
+    return alpha.shape == beta.shape and np.all(np.sort(alpha) == np.sort(beta))
+
 def deprecated(func):
     """
     A decorator used to mark functions that are deprecated with a warning.
     """
     @functools.wraps(func)
-    def new_func(*args, **kwargs):
+    def wrapper(*args, **kwargs):
         # https://stackoverflow.com/questions/2536307/decorators-in-the-python-standard-lib-deprecated-specifically
         # may not want to turn filter on and off
         warnings.simplefilter('always', DeprecationWarning)  # turn off filter
-        warnings.warn("Call to deprecated function {}.".format(func.__name__),
-                      category=DeprecationWarning,
-                      stacklevel=2)
+        primary_message = "Call to deprecated function {}.".format(func.__name__)
+        warnings.warn(primary_message, category=DeprecationWarning, stacklevel=2)
         warnings.simplefilter('default', DeprecationWarning)  # reset filter
         return func(*args, **kwargs)
-    return new_func
+    return wrapper
+
+# keep worker function in utils rather than
+# kernel_base_multiprocessing since
+# multiprocessing throws AttributeError
+# if worker function in the same file as
+# multiprocessing module when imported
+# I know...it's weird https://bugs.python.org/issue25053
+def worker(i, alpha_element, beta, m_len, distance_function):
+    """
+    Worker function for kernel_base_multiprocessing.
+    """
+    output = np.full(m_len, 0.0)
+    for j in range(m_len):
+        output[j] = distance_function(alpha_element, beta[j])
+    return i, output.reshape(-1)
