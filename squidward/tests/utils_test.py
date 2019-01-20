@@ -98,6 +98,16 @@ class utilsTestCase(unittest.TestCase):
             utils.check_valid_cov(x)
         self.assertTrue('Negative values in diagonal of covariance matrix.\nLikely cause is kernel inversion instability.\nCheck kernel variance.' in str(context.exception))
 
+
+        arr = np.random.rand(10, 10)
+        arr[-1] = arr[0] + arr[1]
+        with warnings.catch_warnings(record=True) as w:
+            # Cause all warnings to always be triggered.
+            warnings.simplefilter("always")
+            # Trigger a warning.
+            utils.check_valid_cov(arr)
+            assert "Cov has high condition. Inverting matrix may result in errors." in str(w[-1].message)
+
     def test_exactly_2d(self):
         """
         Exactly 2D
@@ -105,7 +115,7 @@ class utilsTestCase(unittest.TestCase):
         """
         true = np.ones(10).reshape(-1,1)
 
-        x = np.ones(10)
+        x = np.ones(10).reshape(-1,1)
         output = utils.exactly_2d(x)
         npt.assert_almost_equal(output, true, decimal=10)
 
@@ -113,35 +123,56 @@ class utilsTestCase(unittest.TestCase):
         output = utils.exactly_2d(x)
         npt.assert_almost_equal(output, true, decimal=10)
 
-        x = np.ones((10,10,2))
+        x = np.ones(10)
         output = utils.exactly_2d(x)
-        npt.assert_almost_equal(output, x, decimal=10)
+        npt.assert_almost_equal(output, true, decimal=10)
 
-    def test_atmost_1d(self):
+        true = np.ones((10,10))
+
+        x = np.ones((10,10,1))
+        output = utils.exactly_2d(x)
+        npt.assert_almost_equal(output, true, decimal=10)
+
+        x = np.ones((1,10,10))
+        output = utils.exactly_2d(x)
+        npt.assert_almost_equal(output, true, decimal=10)
+
+        x = np.ones((10,1,10))
+        with self.assertRaises(Exception) as context:
+            output = utils.exactly_2d(x)
+        self.assertTrue('Not appropriate input shape.' in str(context.exception))
+
+        x = np.ones((10,1,10,1))
+        with self.assertRaises(Exception) as context:
+            output = utils.exactly_2d(x)
+        self.assertTrue('Not appropriate input shape.' in str(context.exception))
+
+
+    def test_exactly_1d(self):
         """
-        At Most 1D
+        Exactly 1D
         Test that at 1d always returns a 1d array.
         """
         x = true = np.ones((10))
-        output = utils.atmost_1d(x)
+        output = utils.exactly_1d(x)
         npt.assert_almost_equal(output, x, decimal=10)
 
         x = np.ones((10,1))
-        output = utils.atmost_1d(x)
+        output = utils.exactly_1d(x)
         npt.assert_almost_equal(output, true, decimal=10)
 
         x = np.ones((1,10))
-        output = utils.atmost_1d(x)
+        output = utils.exactly_1d(x)
         npt.assert_almost_equal(output, true, decimal=10)
 
         x = np.ones((2,10))
         with self.assertRaises(Exception) as context:
-            output = utils.atmost_1d(x)
+            output = utils.exactly_1d(x)
         self.assertTrue('Not appropriate input shape.' in str(context.exception))
 
         x = np.ones((2,10,1))
         with self.assertRaises(Exception) as context:
-            output = utils.atmost_1d(x)
+            output = utils.exactly_1d(x)
         self.assertTrue('Not appropriate input shape.' in str(context.exception))
 
     def test_make_grid(self):
@@ -173,13 +204,17 @@ class utilsTestCase(unittest.TestCase):
         Test that inversion methods work on a typical matrix input with a
         reasonable condition.
         """
-        arr = np.random.rand(5, 5)
+        arr = np.array([[0.08647087, 0.44631909, 0.20543369, 0.80556576, 0.484415  ],
+                        [0.83409753, 0.7406405 , 0.72326909, 0.59616491, 0.86701306],
+                        [0.83761527, 0.49645837, 0.64037925, 0.95100387, 0.13899134],
+                        [0.97684547, 0.30623548, 0.95194714, 0.28353989, 0.831871  ],
+                        [0.45327912, 0.74906165, 0.94224464, 0.30019356, 0.56802402]])
         arr = arr.dot(arr.T)
-        true = np.array([[  52.02885046,  -53.32959006,   84.43016798,   -0.88702483,  -67.39164907],
-                         [ -53.32959006,  109.01905249, -126.15797593,  -22.1530339,    67.13403575],
-                         [  84.43016798, -126.15797593,  179.4915856,    12.99237804, -119.02932256],
-                         [  -0.88702483,  -22.1530339,    12.99237804,   10.8927777,     3.57616868],
-                         [ -67.39164907,   67.13403575, -119.02932256,    3.57616868,   96.96479211]])
+        true = np.array([[ 6.39675434, -7.5605537 , -1.01890231,  4.9418642 ,  0.76873378],
+                         [-7.5605537 , 15.51247025, -0.63188021, -8.45294531, -3.96604294],
+                         [-1.01890231, -0.63188021,  1.95649949, -0.52470477,  0.14555444],
+                         [ 4.9418642 , -8.45294531, -0.52470477,  6.88240616,  0.11092939],
+                         [ 0.76873378, -3.96604294,  0.14555444,  0.11092939,  4.23098611]])
 
         inv = utils.Invert("inv")
         output = inv(arr)
@@ -312,6 +347,26 @@ class utilsTestCase(unittest.TestCase):
             assert len(w) == 1
             assert issubclass(w[-1].category, DeprecationWarning)
             assert "deprecated" in str(w[-1].message)
+
+    def test_worker(self):
+        """
+        Worker
+        Test that the worker function used by kernel base multiprocessing
+        returns the correct index and row values.
+        """
+        i = 0
+        alpha_element = 1.9
+        beta = np.array([0.57324623, 0.63076988, 0.39473171, 0.28353518, 0.11301261])
+        m_len = beta.shape[0]
+        distance_function = lambda a, b: a + b
+
+        true_idx = 0
+        true_row = np.array([2.47324623, 2.53076988, 2.29473171, 2.18353518, 2.01301261])
+
+        idx, row = utils.worker(i, alpha_element, beta, m_len, distance_function)
+
+        self.assertEquals(idx, true_idx)
+        npt.assert_almost_equal(row, true_row, decimal=10)
 
 if __name__ == '__main__':
     unittest.main()

@@ -27,12 +27,26 @@ class RBFTestCase(distanceTestCase):
         """
         d = distance.RBF(12.0,14.0**2)
 
-        a = np.random.rand(10,11,12)
-        b = np.random.rand(10,11,12)
+        a = np.array([0.70908325, 0.97063918, 0.2901618 , 0.20842557, 0.12981446,
+                      0.86155565, 0.71940193, 0.34456898, 0.65642592, 0.70362763])
+        b = np.array([0.89592768, 0.83254226, 0.67318587, 0.06753976, 0.4851254 ,
+                      0.60731089, 0.29373965, 0.59003959, 0.40602443, 0.34742655])
 
-        true = 89.7086004545091
+        true = 195.42750477495602
         output = d(a, b)
         self.assertEqual(output, true)
+
+        a = a.reshape(-1, 1)
+        b = b.reshape(-1, 1)
+
+        true = 195.42750477495602
+        output = d(a, b)
+        self.assertEqual(output, true)
+
+        a = np.random.rand(10,2)
+        with self.assertRaises(Exception) as context:
+            output = d(a, a)
+        self.assertTrue('Not appropriate input shape.' in str(context.exception))
 
     def test_params_assertions(self):
         """

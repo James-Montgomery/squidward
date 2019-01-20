@@ -4,24 +4,19 @@ gaussian process modeling.
 """
 
 import numpy as np
+from squidward.utils import array_equal, exactly_2d
 
 np.seterr(over="raise")
 
-def array_equal(alpha, beta):
-    """
-    Function returns true if two arrays are identical.
-    """
-    return alpha.shape == beta.shape and np.all(np.sort(alpha) == np.sort(beta))
-
 class Kernel(object):
     """Base class for Kernel object."""
-    
+
     def __init__(self, distance_function, method='k1'):
         """
         Description
         ----------
         This class is the base class for a kernel object. It basically takes the
-        input distance fucntion and finds the the distance between all vectors in
+        input distance function and finds the the distance between all vectors in
         two lists and returns that matrix as a covariance matrix.
 
         Parameters
@@ -43,17 +38,20 @@ class Kernel(object):
         elif method == 'k2':
             self._k = self._k2
         else:
-            raise Exception("Invalid argument for kernel method")
+            raise Exception("Invalid argument for kernel method.")
 
     def __call__(self, alpha, beta):
         """
         Parameters
         ----------
         alpha: array-like
-            The first array to compare.
+            The first array to compare. Must either be a 1 or 2D array.
         beta: array-like
-            The second array to compare.
+            The second array to compare. Must match dimensions for alpha.
         """
+        alpha, beta = exactly_2d(alpha), exactly_2d(beta)
+        if alpha.shape[1] != beta.shape[1]:
+            raise Exception("Input arrays have differing number of features.")
         return self._k(alpha, beta)
 
     def _k1(self, alpha, beta):
@@ -69,7 +67,7 @@ class Kernel(object):
         for i in range(n_len):
             for j in range(m_len):
                 # assign distances to each element in covariance matrix
-                cov[i, j] = self.distance_function(alpha[i], beta[j])
+                cov[i, j] = self.distance_function(alpha[i, :], beta[j, :])
         return cov
 
     def _k2(self, alpha, beta):
@@ -87,6 +85,6 @@ class Kernel(object):
             for i in range(n_len):
                 for j in range(i, m_len):
                     # assign distances to each element in covariance matrix
-                    cov[i, j] = cov[j, i] = self.distance_function(alpha[i], beta[j])
+                    cov[i, j] = cov[j, i] = self.distance_function(alpha[i, :], beta[j, :])
             return cov
         return self._k1(alpha, beta)

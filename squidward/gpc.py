@@ -15,7 +15,7 @@ np.seterr(over="raise")
 
 class GaussianProcess(object):
     """Model object for single output gaussian process classification."""
-    
+
     def __init__(self, kernel=None, var_l=1e-15, inv_method="inv"):
         """
         Description

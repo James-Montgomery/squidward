@@ -150,6 +150,7 @@ class GaussianProcess(object):
         # update to take into account constant kernels
         mean = np.zeros(x_test.shape[0]).reshape(-1, 1)
         cov = self.kernel(x_test, x_test)
+
         check_valid_cov(cov)
         if return_cov:
             return mean, cov

@@ -3,13 +3,13 @@ Distance functions to define how "far" apart two vectors are.
 """
 
 import numpy as np
-from squidward.utils import exactly_2d
+from squidward.utils import exactly_1d
 
 np.seterr(over="raise")
 
 class RBF(object):
     """Class for radial basis fucntion distance measure."""
-    
+
     def __init__(self, lengthscale, var_k):
         """
         Description
@@ -24,8 +24,6 @@ class RBF(object):
         var_k: Float
             The kernel variance or amplitude. This can be thought of as the maximum
             value that the rbf function can take.
-        method: String
-            The particular implementation method for rbf calculation.
 
         Returns
         ----------
@@ -42,9 +40,7 @@ class RBF(object):
         """
         Radial basis function.
         """
-        alpha, beta = exactly_2d(alpha), (beta)
-        distance = np.linalg.norm(alpha-beta)
-        #distance = np.sum((alpha - beta)**2)
-        # same as np.sum((alpha - beta)**2)
+        alpha, beta = exactly_1d(alpha), exactly_1d(beta)
+        distance = np.sum((alpha - beta)**2)
         amp = -0.5/self.lengthscale**2
         return self.var_k*np.exp(amp*distance)

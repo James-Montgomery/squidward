@@ -1,6 +1,7 @@
 import unittest
 import numpy as np
-from squidward.kernels import kernel_base
+from squidward.kernels import kernel_base_dask as kernel_base
+from distributed import Client
 import numpy.testing as npt
 np.random.seed(0)
 
@@ -44,17 +45,6 @@ class kernel_baseTestCase(unittest.TestCase):
         self.alpha = alpha
         self.beta = beta
 
-    def test_params_assertions(self):
-        """
-        Params Assertions
-        Test that the kernel_base assertions work to raise exceptions for invalid parameters.
-        """
-        d = self.dist
-
-        with self.assertRaises(Exception) as context:
-            kernel_base.Kernel(d, 'fake')
-        self.assertTrue('Invalid argument for kernel method' in str(context.exception))
-
     def test_unequal_features(self):
         """
         Unequal Features
@@ -71,55 +61,44 @@ class kernel_baseTestCase(unittest.TestCase):
             kernel(a,b)
         self.assertTrue('Input arrays have differing number of features.' in str(context.exception))
 
-class KOneTestCase(kernel_baseTestCase):
+class KernelTestCase(kernel_baseTestCase):
     """Test that the k1 method of kernel_base returns valid kernels."""
 
     def test_normal_input(self):
         """
         Normal Input
-        Test that k1 normal inputs return expected result.
+        Test that normal inputs return expected result.
         """
         d = self.dist
         a = self.alpha
         b = self.beta
 
-        kernel = kernel_base.Kernel(d, 'k1')
+        kernel = kernel_base.Kernel(d)
         output = kernel(a, b)
         true = np.array([[4.44163514, 4.6390406,  3.84402371, 4.82735094, 5.49510225],
                          [6.36903871, 6.56644417, 5.77142728, 6.75475451, 7.42250582],
                          [4.38589731, 4.58330277, 3.78828588, 4.77161311, 5.43936442],
                          [5.25371601, 5.45112147, 4.65610458, 5.63943181, 6.30718312],
                          [5.30430792, 5.50171338, 4.70669649, 5.69002372, 6.35777503]])
+        print(output)
         npt.assert_almost_equal(output, true, decimal=7)
 
-class KTwoTestCase(kernel_baseTestCase):
-    """Test that the k2 method of kernel_base returns valid kernels."""
-
-    def test_normal_input(self):
+    def test_passing_client(self):
         """
-        Normal Input
-        Test that k2 normal inputs return expected result.
+        Passing Client.
+        Test that the class behaves as intended when a client is passed in.
         """
+        client = Client(processes=False)
         d = self.dist
         a = self.alpha
         b = self.beta
 
-        kernel = kernel_base.Kernel(d, 'k2')
+        kernel = kernel_base.Kernel(d, client)
         output = kernel(a, b)
         true = np.array([[4.44163514, 4.6390406,  3.84402371, 4.82735094, 5.49510225],
                          [6.36903871, 6.56644417, 5.77142728, 6.75475451, 7.42250582],
                          [4.38589731, 4.58330277, 3.78828588, 4.77161311, 5.43936442],
                          [5.25371601, 5.45112147, 4.65610458, 5.63943181, 6.30718312],
                          [5.30430792, 5.50171338, 4.70669649, 5.69002372, 6.35777503]])
+        print(output)
         npt.assert_almost_equal(output, true, decimal=7)
-
-        output = kernel(a, a)
-        true = np.array([[4.22694436, 6.15434793, 4.17120653, 5.03902523, 5.08961714],
-                         [6.15434793, 8.0817515 , 6.0986101 , 6.9664288 , 7.01702071],
-                         [4.17120653, 6.0986101 , 4.1154687 , 4.9832874 , 5.03387931],
-                         [5.03902523, 6.9664288 , 4.9832874 , 5.8511061 , 5.90169801],
-                         [5.08961714, 7.01702071, 5.03387931, 5.90169801, 5.95228992]])
-        npt.assert_almost_equal(output, true, decimal=7)
-
-if __name__ == '__main__':
-    unittest.main()

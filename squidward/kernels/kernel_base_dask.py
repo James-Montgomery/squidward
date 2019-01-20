@@ -5,10 +5,11 @@ gaussian process modeling with multiprocessing functionality using Dask.
 
 import numpy as np
 from distributed import Client
+from squidward.utils import exactly_2d
 
-def worker(i, alpha_element, beta, m_len, distance_function):
+def worker(alpha_element, beta, m_len, distance_function):
     """
-    Worker function for kernel_base_multiprocessing.
+    Worker function for kernel_base_dask.
     """
     output = np.full(m_len, 0.0)
     for j in range(m_len):
@@ -17,13 +18,13 @@ def worker(i, alpha_element, beta, m_len, distance_function):
 
 class Kernel(object):
     """Base class for Kernel object."""
-    
+
     def __init__(self, distance_function, client=None):
         """
         Description
         ----------
         This class is the base class for a kernel object. It basically takes the
-        input distance fucntion and finds the the distance between all vectors in
+        input distance function and finds the the distance between all vectors in
         two lists and returns that matrix as a covariance matrix.
 
         Parameters
@@ -46,18 +47,23 @@ class Kernel(object):
 
     def __call__(self, alpha, beta):
         """
-        Crude multiprocessing implementation of kernel evaluation
-        Memory hungry
+        Multiprocessing implementation of kernel evaluation using Dask to
+        handle the pool of workers.
         """
-
+        alpha, beta = exactly_2d(alpha), exactly_2d(beta)
+        if alpha.shape[1] != beta.shape[1]:
+            raise Exception("Input arrays have differing number of features.")
+        # lengths of each vector to compare
         n_len, m_len = alpha.shape[0], beta.shape[0]
-
+        # create an empty array to fill with element wise vector distances
         cov = np.full((n_len, m_len), None)
-
-        [distributed_beta] = self.client.scatter([beta], broadcast=True)
-        futures = [self.client.submit(worker, i, alpha[i], distributed_beta, m_len, self.distance_function) for i in range(n_len)]
+        # loop through each vector and put future object into list
+        scattered_beta = self.client.scatter(beta)
+        futures = [self.client.submit(worker, alpha[i], scattered_beta, m_len, self.distance_function) for i in range(n_len)]
+        # get futures from futures list
         results = self.client.gather(futures)
+        # assign futures to covairance matrix
         for i, row in enumerate(results):
-            cov[i,:] = row
+            cov[i, :] = row
 
         return cov

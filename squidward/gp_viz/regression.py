@@ -4,7 +4,7 @@ Modules for GPR visualizations.
 
 import numpy as np
 from mpl_toolkits.mplot3d import axes3d
-from squidward.utils import make_grid, atmost_1d
+from squidward.utils import make_grid, exactly_1d
 
 try:
     import matplotlib.pyplot as plt
@@ -39,9 +39,9 @@ def plot_1d(x_test, mean, var):
     Matplotlib plot of mean function and variance of the gaussian process
     model.
     """
-    x_test = atmost_1d(x_test)
-    mean = atmost_1d(mean)
-    var = atmost_1d(var)
+    x_test = exactly_1d(x_test)
+    mean = exactly_1d(mean)
+    var = exactly_1d(var)
 
     plt.fill_between(x_test,
                      mean-.674*np.sqrt(var),
@@ -88,8 +88,8 @@ def plot_point_grid(model, coordinates=(-1, 1, .1), show_var=False):
     """
     x_test, _ = make_grid(coordinates)
     mean, var = model.posterior_predict(x_test)
-    mean = atmost_1d(mean)
-    var = atmost_1d(var)
+    mean = exactly_1d(mean)
+    var = exactly_1d(var)
     if not show_var:
         plt.scatter(x_test[:, 0], x_test[:, 1], c=mean)
     else:
@@ -122,8 +122,8 @@ def plot_contour(model, coordinates=(-1, 1, .1), show_var=False):
     """
     x_test, size = make_grid(coordinates)
     mean, var = model.posterior_predict(x_test)
-    mean = atmost_1d(mean)
-    var = atmost_1d(var)
+    mean = exactly_1d(mean)
+    var = exactly_1d(var)
     if not show_var:
         zed = mean.T.reshape(size, size)
     else:
@@ -163,8 +163,8 @@ def plot_3d(model, coordinates=(-1, 1, .1), show_var=False):
     raise NotImplementedError()
     # x_test, size = make_grid(coordinates)
     # mean, var = model.posterior_predict(x_test)
-    # mean = atmost_1d(mean)
-    # var = atmost_1d(var)
+    # mean = exactly_1d(mean)
+    # var = exactly_1d(var)
     # if not show_var:
     #     zed = mean.T.reshape(size, size)
     # else:

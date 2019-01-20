@@ -25,34 +25,17 @@ class validationTestCase(unittest.TestCase):
            f(prediction, target)
         self.assertTrue('Number of predictions does not match number of targets' in str(context.exception))
 
-    def test_likelihood(self):
-        """
-        Likelihood
-        Test that the likelihood function returns the correct likeliohood or
-        log likelihood.
-        """
-        means = np.linspace(0, 4, 5).reshape(-1, 1)
-        cov = np.random.rand(5, 5)
-        cov = cov.dot(cov.T)
-        prediction = np.array([1.2815938,  2.46052947, 3.49448986, 3.71525343, 5.5182648 ])
-
-        true = -1.941715114406031
-        output = validation.likelihood(means, cov, prediction, True)
-        self.assertEqual(output, true)
-
-        true = 0.14345769230347272
-        output = validation.likelihood(means, cov, prediction, False)
-        self.assertEqual(output, true)
-
     def test_rmse(self):
         """
         RMSE
         Test that rmse returns the correct root mean squared error.
         """
-        prediction = np.random.rand(10)
-        target = np.random.rand(10) + 1.0
+        prediction = np.array([0.76392998, 0.75568339, 0.41298595, 0.74049558, 0.92748847,
+                            0.72007371, 0.52249059, 0.59100948, 0.86575088, 0.19507582])
+        target = np.array([0.18075874, 0.58670919, 0.60749056, 0.81186994, 0.20804091,
+                        0.1987932 , 0.92317227, 0.26883039, 0.24775426, 0.10320547]) + 1.0
         output = validation.rmse(prediction=prediction, target=target)
-        true = 1.1545450663694088
+        true = 0.844919688370596
         self.assertEqual(output, true)
 
     def test_acc(self):
