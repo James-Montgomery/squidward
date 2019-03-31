@@ -10,4 +10,4 @@ Welcome to Squidward's documentation!
    :maxdepth: 3
    :caption: Contents:
 
-   README
+   ./markdown/README

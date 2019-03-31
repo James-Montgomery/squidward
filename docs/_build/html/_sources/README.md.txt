@@ -48,7 +48,7 @@ However, if you want the latest version git clone this repository to your local 
 git clone https://github.com/looyclark/squidward.git
 ```
 
-Change directory (cd) into the root of the squidward repository. Updates staged for the next stable release will be in the `master` branch and experimental updates will be in the `dev_branch` branch of this repo. 
+Change directory (cd) into the root of the squidward repository. Updates staged for the next stable release will be in the `master` branch and experimental updates will be in the `dev_branch` branch of this repo.
 
 ```
 cd ./squidward
@@ -76,7 +76,7 @@ Testing is an important part of creating maintainable, production grade code.
 To run the unit tests cd to `squidward/squidward` so that `/tests` is a subdirectory.
 
 ```
-cd ./squidward/squidward
+cd ./squidward/tests
 ```
 
 Use `nosetests` to run all unit tests for squidward. If you installed squidward in a virtual environment, please run the tests in that same environment.
@@ -97,7 +97,7 @@ nosetests --with-coverage --cover-package=squidward
 I attempt to adhere to the [pep8](https://www.python.org/dev/peps/pep-0008/) style guide for the squidward project. To run the style tests cd to the root directory of the repository `squidward/` so that `/squidward` is a subdirectory. Use `pylint squidward` to run all style tests for squidward.
 
 ```
-cd ./ squidward
+cd ./squidward
 pylint squidward
 ```
 

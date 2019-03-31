@@ -21,11 +21,11 @@
 from shutil import copyfile
 
 src = "../README.md"
-dst = "./README.md"
+dst = "./markdown/README.md"
 copyfile(src, dst)
 
 src = "../LICENSE.md"
-dst = "./LICENSE.md"
+dst = "./markdown/LICENSE.md"
 copyfile(src, dst)
 
 # -- Project information -----------------------------------------------------
