@@ -12,25 +12,20 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-#
-# sys.path.insert(0, os.path.abspath('./'))
-# sys.path.insert(0, os.path.abspath('../'))
-
 from shutil import copyfile
 
-src = "../README.md"
+src = "../../README.md"
 dst = "./markdown/README.md"
 copyfile(src, dst)
 
-src = "../LICENSE.md"
+src = "../../LICENSE.md"
 dst = "./markdown/LICENSE.md"
 copyfile(src, dst)
 
+
 # -- Project information -----------------------------------------------------
 
-project = 'squidward'
+project = 'Squidward'
 copyright = '2019, James Montgomery'
 author = 'James Montgomery'
 
@@ -53,10 +48,11 @@ extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ['stemplates']
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
+#
 from recommonmark.parser import CommonMarkParser
 
 source_parsers = {
@@ -64,8 +60,6 @@ source_parsers = {
 }
 
 source_suffix = ['.rst', '.md']
-
-
 
 # The master toctree document.
 master_doc = 'index'
@@ -80,7 +74,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = None
@@ -102,7 +96,7 @@ html_theme = 'sphinx_rtd_theme'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ['sstatic']
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -118,7 +112,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'squidwarddoc'
+htmlhelp_basename = 'Squidwarddoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -145,7 +139,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'squidward.tex', 'squidward Documentation',
+    (master_doc, 'Squidward.tex', 'Squidward Documentation',
      'James Montgomery', 'manual'),
 ]
 
@@ -155,7 +149,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'squidward', 'squidward Documentation',
+    (master_doc, 'squidward', 'Squidward Documentation',
      [author], 1)
 ]
 
@@ -166,8 +160,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'squidward', 'squidward Documentation',
-     author, 'squidward', 'One line description of project.',
+    (master_doc, 'Squidward', 'Squidward Documentation',
+     author, 'Squidward', 'One line description of project.',
      'Miscellaneous'),
 ]
 
