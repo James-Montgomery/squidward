@@ -16,7 +16,7 @@ setuptools.setup(
     description="Package for implementing Gaussian Process models in python.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/looyclark/squidward",
+    url="https://github.com/James-Montgomery/squidward",
     packages=setuptools.find_packages(),
     install_requires=[
         'numpy>=1.15.1',
