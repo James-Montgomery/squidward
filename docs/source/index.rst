@@ -1,5 +1,5 @@
 .. Squidward documentation master file, created by
-   sphinx-quickstart on Sun Mar 31 19:49:14 2019.
+   sphinx-quickstart on Sun Mar 31 20:09:10 2019.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
