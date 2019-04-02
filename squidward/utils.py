@@ -22,12 +22,6 @@ except:
     # python 3
     numeric_types = (int, float, complex)
 
-# watch out for error:
-# too many open files
-# meaning that you have spun up too many processes
-# only need 3 processes for LU decomp inversion
-pool = multiprocessing.Pool(processes=3)
-
 np.seterr(over="raise")
 
 def sigmoid(z, ingore_overflow=False):
@@ -194,18 +188,6 @@ class Invert(object):
         inv_p = np.linalg.inv(permutation)
         return inv_u.dot(inv_l).dot(inv_p)
 
-    def mp_lu(self, arr):
-        """
-        Use lower upper decomposition for finding amtrix inversion. Upper
-        and lower and inverted as seperate processes.
-        """
-        permutation, lower, upper = la.lu(arr)
-        results = pool.map(np.linalg.inv, [upper, lower, permutation])
-        # arrays of equal dimension so
-        # multi_dot might be overkill
-        #return np.linalg.multi_dot(results)
-        return np.linalg.multi_dot(results)
-
 def onehot(arr, num_classes=None, safe=True):
     """
     Function to take in a 1D label array and returns the one hot encoded
@@ -252,18 +234,3 @@ def deprecated(func):
         warnings.simplefilter('default', DeprecationWarning)  # reset filter
         return func(*args, **kwargs)
     return wrapper
-
-# keep worker function in utils rather than
-# kernel_base_multiprocessing since
-# multiprocessing throws AttributeError
-# if worker function in the same file as
-# multiprocessing module when imported
-# I know...it's weird https://bugs.python.org/issue25053
-def worker(i, alpha_element, beta, m_len, distance_function):
-    """
-    Worker function for kernel_base_multiprocessing.
-    """
-    output = np.full(m_len, 0.0)
-    for j in range(m_len):
-        output[j] = distance_function(alpha_element, beta[j])
-    return i, output.reshape(-1)
