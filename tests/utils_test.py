@@ -240,10 +240,6 @@ class utilsTestCase(unittest.TestCase):
         output = inv(arr)
         npt.assert_almost_equal(output, true, decimal=7)
 
-        inv = utils.Invert("mp_lu")
-        output = inv(arr)
-        npt.assert_almost_equal(output, true, decimal=7)
-
         with self.assertRaises(Exception) as context:
             utils.Invert("fake")
         self.assertTrue('Invalid inversion method argument.' in str(context.exception))
@@ -347,26 +343,6 @@ class utilsTestCase(unittest.TestCase):
             assert len(w) == 1
             assert issubclass(w[-1].category, DeprecationWarning)
             assert "deprecated" in str(w[-1].message)
-
-    def test_worker(self):
-        """
-        Worker
-        Test that the worker function used by kernel base multiprocessing
-        returns the correct index and row values.
-        """
-        i = 0
-        alpha_element = 1.9
-        beta = np.array([0.57324623, 0.63076988, 0.39473171, 0.28353518, 0.11301261])
-        m_len = beta.shape[0]
-        distance_function = lambda a, b: a + b
-
-        true_idx = 0
-        true_row = np.array([2.47324623, 2.53076988, 2.29473171, 2.18353518, 2.01301261])
-
-        idx, row = utils.worker(i, alpha_element, beta, m_len, distance_function)
-
-        self.assertEquals(idx, true_idx)
-        npt.assert_almost_equal(row, true_row, decimal=10)
 
 if __name__ == '__main__':
     unittest.main()

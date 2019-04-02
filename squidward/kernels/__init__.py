@@ -4,5 +4,4 @@ gaussian processes modeling.
 """
 
 import squidward.kernels.kernel_base
-import squidward.kernels.kernel_base_multiprocessing
 import squidward.kernels.distance
