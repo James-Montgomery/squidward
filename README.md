@@ -104,7 +104,7 @@ pylint squidward
 Some of the naming conventions I've chosen intentionally do not adhere to pep8 in order to better resemble mathematical conventions. For example, I often borrow the matrix naming conventions of Rassmussen such as `K` and `K_ss`. You can run `pylint --disable=invalid-name` if you would like to ignore the resulting pylint warnings.
 
 ```
-pylint squidward --disable=invalid-name --ignore=gp_viz
+pylint squidward --disable=invalid-name
 ```
 
 ## Acknowledgments

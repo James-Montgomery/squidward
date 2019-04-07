@@ -175,29 +175,6 @@ class utilsTestCase(unittest.TestCase):
             output = utils.exactly_1d(x)
         self.assertTrue('Not appropriate input shape.' in str(context.exception))
 
-    def test_make_grid(self):
-        """
-        Make Grid
-        Test that the make grid function returns a symmetric, uniform grid of
-        points. Make grid is primarily used in the GPViz module.
-        """
-        true = (np.array([[-1, -1],
-                          [-1,  0],
-                          [ 0, -1],
-                          [ 0,  0]]), 2)
-
-        output = utils.make_grid((-1,1,1))
-        npt.assert_almost_equal(output[0], true[0], decimal=10)
-        assert output[1] == true[1]
-
-        with self.assertRaises(Exception) as context:
-            output = utils.make_grid((2,1,1))
-        self.assertTrue('Min value greater than max value.' in str(context.exception))
-
-        with self.assertRaises(Exception) as context:
-            output = utils.make_grid((-2,1,1))
-        self.assertTrue('Plot topology not square!' in str(context.exception))
-
     def test_invert(self):
         """
         Invert

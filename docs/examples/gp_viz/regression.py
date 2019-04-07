@@ -4,7 +4,7 @@ Modules for GPR visualizations.
 
 import numpy as np
 from mpl_toolkits.mplot3d import axes3d
-from squidward.utils import make_grid, exactly_1d
+from squidward.utils import exactly_1d
 
 try:
     import matplotlib.pyplot as plt

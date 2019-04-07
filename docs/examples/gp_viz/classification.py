@@ -4,7 +4,10 @@ Modules for GPC visualizations.
 
 import numpy as np
 from mpl_toolkits.mplot3d import axes3d
-from squidward.utils import make_grid, exactly_1d
+from squidward.utils import exactly_1d
+from . import common
+
+make_grid = common.make_grid
 
 try:
     import matplotlib.pyplot as plt
