@@ -3,10 +3,6 @@ This script contains code for useful data transformations and data checks
 used in the other modules of squidward.
 """
 
-# run np.show_config() to see
-# if numpy is runniing with MKL
-# backend
-
 import sys
 import warnings
 import functools
@@ -24,25 +20,13 @@ except:
 
 np.seterr(over="raise")
 
-def sigmoid(z, ingore_overflow=False):
-    """
-    Function to return the sigmoid transformation for every
-    term in a vector.
-    """
-    try:
-        return 1.0 / (1.0 + np.exp(-z))
-    except Exception as e:
-        if "overflow encountered in exp" in str(e):
-            if ingore_overflow:
-                return 1.0 / (1.0 + expit(-z))
-        raise e
+# run np.show_config() to see
+# if numpy is runniing with MKL
+# backend
 
-def softmax(z):
-    """
-    Function to return the softmax transformation over an
-    input vector.
-    """
-    return z / z.sum(axis=1).reshape(-1, 1)
+# ---------------------------------------------------------------------------------------------------------------------
+# Inversions
+# ---------------------------------------------------------------------------------------------------------------------
 
 def is_invertible(arr, strength='condition'):
     """
@@ -55,53 +39,18 @@ def is_invertible(arr, strength='condition'):
         return arr.shape[0] == arr.shape[1] and np.linalg.matrix_rank(arr) == arr.shape[0]
     return 1.0 / np.linalg.cond(arr) >= sys.float_info.epsilon
 
-def check_valid_cov(cov):
+def check_valid_cov(cov, safe=True):
     """
     Function to do safety checks on covariance matrices.
     """
+    if not safe:
+        return None
     if not is_invertible(cov):
         warnings.warn('Cov has high condition. Inverting matrix may result in errors.')
     var = np.diag(cov)
     if var[var < 0].shape[0] != 0:
         raise Exception('Negative values in diagonal of covariance matrix.\nLikely cause is kernel inversion instability.\nCheck kernel variance.')
 
-def exactly_2d(arr):
-    """
-    Function to ensure that an array has a least 2 dimensions. Used to
-    formalize output / input dimensions for certain functions.
-    """
-    if len(arr.shape) == 1:
-        return arr.reshape(-1, 1)
-    if len(arr.shape) == 2:
-        if arr.shape[0] == 1:
-            return arr.reshape(-1, 1)
-        return arr
-    if len(arr.shape) == 3:
-        if arr.shape[0] == 1:
-            return arr[0, :, :]
-        if arr.shape[2] == 1:
-            return arr[:, :, 0]
-        raise Exception("Not appropriate input shape.")
-    if len(arr.shape) > 3:
-        raise Exception("Not appropriate input shape.")
-    raise Exception("Not appropriate input shape.")
-
-def exactly_1d(arr):
-    """
-    Function to ensure that an array has a most 1 dimension. Used to
-    formalize output / input dimensions for certain functions.
-    """
-    if not arr.shape:
-        if isinstance(arr, numeric_types):
-            return np.array([arr])
-    if len(arr.shape) == 1:
-        return arr
-    if len(arr.shape) == 2:
-        if arr.shape[0] == 1:
-            return arr[0, :]
-        if arr.shape[1] == 1:
-            return arr[:, 0]
-    raise Exception("Not appropriate input shape.")
 
 class Invert(object):
     """Invert matrices."""
@@ -173,6 +122,10 @@ class Invert(object):
         inv_p = np.linalg.inv(permutation)
         return inv_u.dot(inv_l).dot(inv_p)
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Preprocessing
+# ---------------------------------------------------------------------------------------------------------------------
+
 def onehot(arr, num_classes=None, safe=True):
     """
     Function to take in a 1D label array and returns the one hot encoded
@@ -199,11 +152,80 @@ def reversehot(arr):
         return arr.argmax(axis=1)
     return arr
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Array Checks
+# ---------------------------------------------------------------------------------------------------------------------
+
 def array_equal(alpha, beta):
     """
     Function returns true if two arrays are identical.
     """
-    return alpha.shape == beta.shape and np.all(np.sort(alpha) == np.sort(beta))
+    #if alpha.shape == beta.shape:
+        #if np.all(np.sort(alpha) == np.sort(beta):
+            #return True
+    #return False
+    return np.array_equal(alpha, beta)
+
+def exactly_2d(arr):
+    """
+    Function to ensure that an array has a least 2 dimensions. Used to
+    formalize output / input dimensions for certain functions.
+    """
+    if len(arr.shape) == 1:
+        return arr.reshape(-1, 1)
+    if len(arr.shape) == 2:
+        if arr.shape[0] == 1:
+            return arr.reshape(-1, 1)
+        return arr
+    if len(arr.shape) == 3:
+        if arr.shape[0] == 1:
+            return arr[0, :, :]
+        if arr.shape[2] == 1:
+            return arr[:, :, 0]
+        raise Exception("Not appropriate input shape.")
+    if len(arr.shape) > 3:
+        raise Exception("Not appropriate input shape.")
+    raise Exception("Not appropriate input shape.")
+
+def exactly_1d(arr):
+    """
+    Function to ensure that an array has a most 1 dimension. Used to
+    formalize output / input dimensions for certain functions.
+    """
+    if not arr.shape:
+        if isinstance(arr, numeric_types):
+            return np.array([arr])
+    if len(arr.shape) == 1:
+        return arr
+    if len(arr.shape) == 2:
+        if arr.shape[0] == 1:
+            return arr[0, :]
+        if arr.shape[1] == 1:
+            return arr[:, 0]
+    raise Exception("Not appropriate input shape.")
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Classification Specific
+# ---------------------------------------------------------------------------------------------------------------------
+
+def sigmoid(z):
+    """
+    Function to return the sigmoid transformation for every
+    term in an array.
+    """
+    return 1.0 / (1.0 + np.exp(-z))
+
+def softmax(z):
+    """
+    Function to return the softmax transformation over an
+    input vector.
+    """
+    z = sigmoid(z)
+    return z / z.sum(axis=1).reshape(-1, 1)
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Miscellaneous
+# ---------------------------------------------------------------------------------------------------------------------
 
 def deprecated(func):
     """

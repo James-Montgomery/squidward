@@ -42,7 +42,7 @@ class RegressionTestCase(unittest.TestCase):
 class GaussianProcessTestCase(RegressionTestCase):
     """Tests for guassian process."""
 
-    def test_prior_prediction(self):
+    def test_1(self):
         """
         Prior Prediction
         Test that the prior statistics for gpr makes sense.
@@ -69,7 +69,7 @@ class GaussianProcessTestCase(RegressionTestCase):
                          [0.72016484, 0.76581563, 0.79148045, 0.91302549, 1.        ]])
         npt.assert_almost_equal(cov, true, decimal=7)
 
-    def test_prior_sample(self):
+    def test_2(self):
         """
         Prior Sample
         Test that samples from the prior make sense.
@@ -86,15 +86,14 @@ class GaussianProcessTestCase(RegressionTestCase):
         for i in range(100):
             sample.append( model.prior_sample(x_train) )
         mean = np.mean(sample, axis=0)
-        true = np.array([0.0259609459, 0.1419496868, 0.0408916199,
-                         0.1228658371, 0.0916301184])
+        true = np.array([0.076381005 , 0.0627892362, 0.0462841433, 0.1107081955, 0.1407366603])
         npt.assert_almost_equal(mean, true, decimal=10)
+
         var = np.std(sample, axis=0)**2
-        true = np.array([1.062698559 , 0.9289708607, 1.0481720372,
-                         1.0479906117, 1.0366729429])
+        true = np.array([1.0356226631, 1.0394182763, 1.002835054 , 0.9181960839, 1.0255528133])
         npt.assert_almost_equal(var, true, decimal=10)
 
-    def test_posterior_prediction(self):
+    def test_3(self):
         """
         Posterior Prediction
         Test that posterior statistics make sense.
@@ -111,12 +110,21 @@ class GaussianProcessTestCase(RegressionTestCase):
 
         # check posterior predict
         mean, var = model.posterior_predict(x_train)
-        true = np.array([0.0000017434, 0.0000015318, 0.0000019451,
-                         0.000001843 , 0.0000020154]).reshape(-1, 1)
-        npt.assert_almost_equal(mean, true, decimal=10)
-        true = np.array([0.9999977293, 0.9999976865, 0.9999973266,
-                         0.9999971976, 0.9999967663]).reshape(-1, 1)
-        npt.assert_almost_equal(var, true, decimal=10)
+        true = np.array([[0.00000174],
+                         [0.00000153],
+                         [0.00000195],
+                         [0.00000184],
+                         [0.00000202]])
+
+        npt.assert_almost_equal(mean, true, decimal=7)
+
+        true = np.array([[0.99999773],
+                         [0.99999769],
+                         [0.99999733],
+                         [0.9999972 ],
+                         [0.99999677]])
+
+        npt.assert_almost_equal(var, true, decimal=7)
 
         mean, cov = model.posterior_predict(x_train, True)
         true = np.array([[0.99999773, 0.40352642, 0.72806391, 0.54027216, 0.72016228],
@@ -124,9 +132,10 @@ class GaussianProcessTestCase(RegressionTestCase):
                          [0.72806391, 0.56040496, 0.99999733, 0.69052582, 0.79147758],
                          [0.54027216, 0.69804298, 0.69052582, 0.9999972 , 0.91302251],
                          [0.72016228, 0.76581299, 0.79147758, 0.91302251, 0.99999677]])
+
         npt.assert_almost_equal(cov, true, decimal=7)
 
-    def test_posterior_sample(self):
+    def test_4(self):
         """
         Posterior Sample
         Test that samples from the posterior make sense.
@@ -146,15 +155,16 @@ class GaussianProcessTestCase(RegressionTestCase):
         for i in range(100):
             sample.append( model.posterior_sample(x_train) )
         mean = np.mean(sample, axis=0)
-        true = np.array([0.0763826138, 0.0627906299, 0.046285941 ,
-                         0.1107098769, 0.1407385026])
-        npt.assert_almost_equal(mean, true, decimal=10)
-        var = np.std(sample, axis=0)**2
-        true = np.array([1.0356202215, 1.0394159088, 1.0028323773,
-                         0.9181934071, 1.0255494953])
-        npt.assert_almost_equal(var, true, decimal=10)
+        true = np.array([0.02596258, 0.14195107, 0.04089343, 0.12286752, 0.09163197])
+        
+        npt.assert_almost_equal(mean, true, decimal=7)
 
-    def test_params_assertions(self):
+        var = np.std(sample, axis=0)**2
+        true = np.array([1.06269602, 0.92896852, 1.0481692,  1.0479876,  1.03666952])
+
+        npt.assert_almost_equal(var, true, decimal=7)
+
+    def test_5(self):
         """
         Params Assertions
         Test that the gpr assertions work to raise exceptions for invalid parameters.
@@ -177,9 +187,9 @@ class GaussianProcessTestCase(RegressionTestCase):
 class GaussianProcessStableCholeskyTestCase(RegressionTestCase):
     """Tests for guassian process stable cholesky."""
 
-    def test_guassian_process_stable_cholesky(self):
+    def test_1(self):
         """
-        Guassian process Stable Cholesky
+        Guassian Process Stable Cholesky
         Test that the stable cholesky implementation of gpr returns valid
         posterior predictions.
         """
@@ -205,7 +215,7 @@ class GaussianProcessStableCholeskyTestCase(RegressionTestCase):
                          [0.72016228, 0.76581299, 0.79147758, 0.91302251, 0.99999677]])
         npt.assert_almost_equal(cov, true, decimal=7)
 
-    def test_params_assertions(self):
+    def test_2(self):
         """
         Params Assertions
         Test that the gpr assertions work to raise exceptions for invalid parameters.

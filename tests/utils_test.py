@@ -17,21 +17,28 @@ class utilsTestCase(unittest.TestCase):
         Sigmoid
         Test sigmoid functions works.
         """
+
+        x = 0.458
+        true = 0.61253961344091512
+        output = utils.sigmoid(x)
+        npt.assert_almost_equal(output, true, decimal=10)
+
         x = np.array([[-8,0,6],[8,3,1],[10,-300,11]])
-        true = np.array([[3.3535013047e-004, 5.0000000000e-001, 9.9752737684e-001],
-                         [9.9966464987e-001, 9.5257412682e-001, 7.3105857863e-001],
-                         [9.9995460213e-001, 5.1482002224e-131, 9.9998329858e-001]])
+        true = np.array([[0.0003353501, 0.5         , 0.9975273768],
+                         [0.9996646499, 0.9525741268, 0.7310585786],
+                         [0.9999546021, 0.          , 0.9999832986]])
 
         output = utils.sigmoid(x)
         npt.assert_almost_equal(output, true, decimal=10)
 
-        output = utils.sigmoid(-12345, True)
-        true = 0.5
+        output = utils.sigmoid(-12345)
+        true = 0.0
         npt.assert_almost_equal(output, true, decimal=10)
 
-        with self.assertRaises(Exception) as context:
-           utils.sigmoid(-12345)
-        self.assertTrue('overflow encountered in exp' in str(context.exception))
+        output = utils.sigmoid(12345)
+        true = 1.0
+        npt.assert_almost_equal(output, true, decimal=10)
+
 
     def test_softmax(self):
         """
@@ -39,7 +46,6 @@ class utilsTestCase(unittest.TestCase):
         Test softmax function works.
         """
         x = np.array([[-8,0,6],[8,3,1],[10,-300,11]])
-        x = utils.sigmoid(x)
         true = np.array([[2.2388575697e-004, 3.3380896059e-001, 6.6596715365e-001],
                          [3.7255082739e-001, 3.5500132884e-001, 2.7244784376e-001],
                          [4.9999282567e-001, 2.5741800386e-131, 5.0000717433e-001]])

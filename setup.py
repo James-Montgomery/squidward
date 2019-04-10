@@ -21,12 +21,7 @@ setuptools.setup(
     install_requires=[
         'numpy>=1.15.1',
         'scipy>=1.1.0',
-        'matplotlib>=2.2.3',
-        'seaborn>=0.9.0',
-        'nose>=1.3.7',
-        'coverage==4.0.0',
-        'pylint>=1.8.2',
-        'distributed>=1.25.2'
+        #'distributed>=1.25.2'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

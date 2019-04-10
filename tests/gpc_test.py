@@ -3,10 +3,10 @@ import numpy as np
 from squidward import gpc, utils
 from squidward.kernels import distance, kernel_base
 import numpy.testing as npt
-np.random.seed(0)
 
 # useful for debugging
 np.set_printoptions(suppress=True)
+np.random.seed(0)
 
 class ClassificationTestCase(unittest.TestCase):
     """Class for guassian process classification tests."""
@@ -16,6 +16,7 @@ class ClassificationTestCase(unittest.TestCase):
         Set Up
         Set up shared environment or variables for tests.
         """
+
         # train data
         x_train = np.array([[0.74775167, 0.09963786, 0.24078391,
                            0.16182137, 0.72764008, 0.13583729],
@@ -32,7 +33,7 @@ class ClassificationTestCase(unittest.TestCase):
         y_train = utils.onehot(y_train)
 
         # create distance function
-        d = distance.RBF(5.0,10000.0**2)
+        d = distance.RBF(5.0,1.0**2)
         # create kernel
         kernel = kernel_base.Kernel(d, 'k1')
 
@@ -43,191 +44,210 @@ class ClassificationTestCase(unittest.TestCase):
 class GaussianProcessTestCase(ClassificationTestCase):
     """Tests for guassian process."""
 
-    def test_prior_predict(self):
+    def test_1(self):
         """
         Prior Predict
         Prior predict should return not implemented.
         The prior over a one vs all gaussian process has no practical interpretation.
         """
+
         x_train = self.x_train
         y_train = self.y_train
         kernel = self.kernel
 
         # define model
-        model = gpc.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(n_classes=3, kernel=kernel, var_l=1050**2, inv_method='lu')
 
         # check prior predict
         with self.assertRaises(NotImplementedError):
             model.prior_predict(x_train)
 
-
-    def test_prior_sample_not_fit(self):
+    def test_2(self):
         """
         Prior Sample Not Fit
         Test that the samples from the gpc prior before fitting make sense.
         """
+
         x_train = self.x_train
         y_train = self.y_train
         kernel = self.kernel
 
         # define model
-        model = gpc.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(n_classes=7, kernel=kernel, var_l=0.1**2, inv_method='lu')
 
         # check prior sample without fitting
-        logits = model.prior_sample(x_train, 5, True)
-        true = np.array([[ 6.79441613,  2.33601883, -6.16797048,  5.59918781, 13.50425015],
-                         [ 6.67855488,  6.40610254, -6.5219386 ,  7.4951215 , 10.76057477],
-                         [ 4.90378057,  2.32233898, -8.15360192,  5.99475517, 10.80575891],
-                         [ 7.65826068,  4.5146641 , -8.2348693 ,  7.76399648, 10.66197811],
-                         [ 7.36801364,  4.38118452, -7.13180755,  7.16138391, 12.15323272]])
-        logits /= 1000
+        logits = model.prior_sample(x_train, True)
+        true = np.array([[-1.79067635,  1.09305832,  0.06399098, -0.14251713,  2.65510555,  1.35326968, -0.02482461],
+                         [-1.75757787,  0.83630506, -0.27627176, -0.52926018,  2.4971101 ,  1.40032055, -0.24361749],
+                         [-1.52572886,  1.01556157, -0.04330489, -0.22245361,  2.52040171,  1.58243624, -0.31409856],
+                         [-1.89730377,  0.93145475, -0.28865612, -0.38382497,  2.4111784 ,  1.43099233, -0.0810563 ],
+                         [-1.79204813,  0.97847252, -0.17067302, -0.3792619 ,  2.59903207,  1.45715448, -0.10615448]])
+
         npt.assert_almost_equal(logits.round(5), true.round(5), decimal=5)
 
+        pred = model.prior_sample(x_train)
+        true = np.array([[0.12480529, 0.1621448 , 0.14280534, 0.17604659, 0.09865555, 0.16052879, 0.13501364],
+                         [0.10440005, 0.17551207, 0.15464492, 0.16258954, 0.0939536 , 0.15516955, 0.15373026],
+                         [0.11712154, 0.18670788, 0.13810118, 0.1712029 , 0.09498927, 0.15366876, 0.13820848],
+                         [0.10031737, 0.18469903, 0.14504828, 0.16995779, 0.09271834, 0.16213637, 0.14512282],
+                         [0.10744391, 0.17595646, 0.14663246, 0.17046057, 0.09386693, 0.16097019, 0.14466948]])
 
-
-        pred = model.prior_sample(x_train, 5)
-        true = np.array([[0.16666667, 0.33333333, 0.16666667, 0.16666667, 0.16666667],
-                         [0.16666667, 0.33333333, 0.16666667, 0.16666667, 0.16666667],
-                         [0.16666667, 0.33333333, 0.16666667, 0.16666667, 0.16666667],
-                         [0.16666667, 0.33333333, 0.16666667, 0.16666667, 0.16666667],
-                         [0.16666667, 0.33333333, 0.16666667, 0.16666667, 0.16666667]])
         npt.assert_almost_equal(pred, true, decimal=5)
 
         prob_sums = pred.sum(axis=1)
         true = np.ones(5)
         npt.assert_almost_equal(prob_sums, true, decimal=5)
 
-    def test_prior_sample_fit(self):
+    def test_3(self):
         """
         Prior Sample Fit
         Test that the samples from the gpc prior after fitting make sense.
         """
+
         x_train = self.x_train
         y_train = self.y_train
         kernel = self.kernel
 
         # define model
-        model = gpc.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(n_classes=7, kernel=kernel, var_l=1050**2, inv_method='lu')
 
         # fit model
         model.fit(x_train, y_train)
 
         # check prior sample after fitting
-        logits = model.prior_sample(x_train, None, True)
-        true = np.array([[ -248.24608649,   637.64724596,  7095.17587862],
-                         [-2436.17487503, -2219.28149111, 10862.87661892],
-                         [-3140.98562788, -1093.34152028, 11175.76189559],
-                         [ -810.56295113, -3131.31822664, 12517.88721622],
-                         [-1061.54478592, -1949.66948799, 10421.20316781]])
+        logits = model.prior_sample(x_train, True)
+        true = np.array([[-0.61679705,  0.55991878,  1.35042501, -1.67640677,  0.51837072, -0.66095565, -2.11626318],
+                         [-0.65219386,  0.74951215,  1.07605748, -2.03375469,  0.25020942, -0.58177352, -1.78290087],
+                         [-0.81536019,  0.59947552,  1.08057589, -1.91333909,  0.55759789, -0.67482517, -1.87641489],
+                         [-0.82348693,  0.77639965,  1.06619781, -1.93809934,  0.30898196, -0.85869452, -1.6901788 ],
+                         [-0.71318076,  0.71613839,  1.21532327, -1.85642939,  0.3678186 , -0.73280298, -1.89014316]])
+
         npt.assert_almost_equal(logits, true, decimal=5)
 
-        pred = model.prior_sample(x_train, None)
-        true = np.array([[0.4, 0.4, 0.2],
-                         [0.4, 0.4, 0.2],
-                         [0.4, 0.4, 0.2],
-                         [0.4, 0.4, 0.2],
-                         [0.4, 0.4, 0.2]])
+        pred = model.prior_sample(x_train)
+        true = np.array([[0.04333675, 0.05466259, 0.13162566, 0.14371535, 0.2093348 , 0.27678021, 0.14054465],
+                         [0.049477  , 0.04579106, 0.11176354, 0.17622607, 0.22958224, 0.26035738, 0.12680271],
+                         [0.05382519, 0.06096332, 0.12594534, 0.15892353, 0.20749928, 0.25980799, 0.13303535],
+                         [0.0525714 , 0.05436961, 0.11911843, 0.16516277, 0.19969524, 0.27478564, 0.1342969 ],
+                         [0.05071181, 0.05142889, 0.12369409, 0.15913456, 0.21148355, 0.27230541, 0.13124169]])
+
         npt.assert_almost_equal(pred, true, decimal=5)
 
         prob_sums = true.sum(axis=1)
         true = np.ones(5)
         npt.assert_almost_equal(prob_sums, true, decimal=5)
 
-    def test_posterior_predict(self):
+    def test_4(self):
         """
         Posterior Predict
         Test that the statistics of the posterior of the gpc make sense.
         """
+
         x_train = self.x_train
         y_train = self.y_train
         kernel = self.kernel
 
         # define model
-        model = gpc.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(n_classes=6, kernel=kernel, var_l=1050**2, inv_method='lu')
 
         # fit model
         model.fit(x_train, y_train)
 
         # check posterior predict
         logits_mean, logits_var = model.posterior_predict(x_train, True)
-        true = np.array([[ 0.39533686, -1.07071283, -0.31980672],
-                         [-0.88143911,  0.42095943, -0.53481576],
-                         [-0.51579997, -0.8921191 ,  0.40949056],
-                         [ 0.11798784, -0.80783398, -0.30737432],
-                         [-0.12008728, -0.64851057, -0.23408299]])
+        true = np.array([[-0.00000087, -0.00000271, -0.00000088, -0.00000446, -0.00000446, -0.00000446],
+                         [-0.00000092, -0.00000265, -0.00000089, -0.00000446, -0.00000446, -0.00000446],
+                         [-0.0000009 , -0.00000271, -0.00000087, -0.00000448, -0.00000448, -0.00000448],
+                         [-0.0000009 , -0.0000027 , -0.00000089, -0.00000448, -0.00000448, -0.00000448],
+                         [-0.0000009 , -0.00000271, -0.00000089, -0.0000045 , -0.0000045 , -0.0000045 ]])
+
         npt.assert_almost_equal(logits_mean, true, decimal=5)
-        true = np.array([[770959.82101963, 770959.82101963, 770959.82101963],
-                         [780710.496435  , 780710.496435  , 780710.496435  ],
-                         [680817.79456477, 680817.79456477, 680817.79456477],
-                         [619194.49772668, 619194.49772668, 619194.49772668],
-                         [328391.97284918, 328391.97284918, 328391.97284918]])
+
+        true = np.array([[0.99999562, 0.99999562, 0.99999562, 0.99999562, 0.99999562, 0.99999562],
+                         [0.99999561, 0.99999561, 0.99999561, 0.99999561, 0.99999561, 0.99999561],
+                         [0.99999557, 0.99999557, 0.99999557, 0.99999557, 0.99999557, 0.99999557],
+                         [0.99999557, 0.99999557, 0.99999557, 0.99999557, 0.99999557, 0.99999557],
+                         [0.99999553, 0.99999553, 0.99999553, 0.99999553, 0.99999553, 0.99999553]])
+
         npt.assert_almost_equal(logits_var, true, decimal=5)
 
         pred = model.posterior_predict(x_train)
-        true = np.array([[0.4692108 , 0.20043666, 0.33035254],
-                         [0.23134494, 0.47687131, 0.29178375],
-                         [0.2954111 , 0.22969486, 0.47489403],
-                         [0.41968535, 0.2444193 , 0.33589535],
-                         [0.3744881 , 0.27354753, 0.35196437]])
+        true = np.array([[0.16666684, 0.16666669, 0.16666684, 0.16666654, 0.16666654, 0.16666654],
+                         [0.16666684, 0.16666669, 0.16666684, 0.16666654, 0.16666654, 0.16666654],
+                         [0.16666684, 0.16666669, 0.16666684, 0.16666654, 0.16666654, 0.16666654],
+                         [0.16666684, 0.16666669, 0.16666684, 0.16666654, 0.16666654, 0.16666654],
+                         [0.16666684, 0.16666669, 0.16666684, 0.16666654, 0.16666654, 0.16666654]])
+
         npt.assert_almost_equal(pred, true, decimal=5)
 
 
-    def test_posterior_sample(self):
+    def test_5(self):
         """
         Posterior Sample
         Test that the predictions from the gpc posterior sense.
         """
+
         x_train = self.x_train
         y_train = self.y_train
         kernel = self.kernel
 
         # define model
-        model = gpc.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(n_classes=3, kernel=kernel, var_l=1050**2, inv_method='lu')
 
         # fit model
         model.fit(x_train, y_train)
 
         # check posterior sample
         logits = model.posterior_sample(x_train, True)
-        true = np.array([[-17906.7635222 ,  10930.58323709,    639.90977875],
-                         [-17575.77871002,   8363.05058755,  -2762.7176007 ],
-                         [-15257.2885911 ,  10155.61567795,   -433.04889641],
-                         [-18973.03766274,   9314.54749922,  -2886.5611732 ],
-                         [-17920.48129187,   9784.72516109,  -1706.73015691]])
+        true = np.array([[ 1.48918898, -0.96043104,  0.3211009 ],
+                         [ 1.41376419, -0.73081545, -0.19096082],
+                         [ 1.56668453, -1.09638425,  0.08575354],
+                         [ 1.41274437, -0.97055041,  0.04850063],
+                         [ 1.5253572 , -0.93287597,  0.0746793 ]])
+        
         npt.assert_almost_equal(logits, true, decimal=5)
 
         pred = model.posterior_sample(x_train)
-        true = np.array([[0.2, 0.4, 0.4],
-                         [0.2, 0.4, 0.4],
-                         [0.2, 0.4, 0.4],
-                         [0.2, 0.4, 0.4],
-                         [0.2, 0.4, 0.4]])
+        true = np.array([[0.4259497 , 0.41844162, 0.15560868],
+                         [0.40883743, 0.38773097, 0.20343161],
+                         [0.40351694, 0.40441486, 0.19206819],
+                         [0.42116111, 0.36615497, 0.21268391],
+                         [0.42222255, 0.38345229, 0.19432516]])
+
         npt.assert_almost_equal(pred, true, decimal=5)
 
-    def test_params_assertions(self):
+    def test_6(self):
         """
         Params Assertions
         Test that the gpc assertions work to raise exceptions for invalid parameters.
         """
+
         x_train = self.x_train
+        y_train = self.y_train
         kernel = self.kernel
+
+        # define model
+        model = gpc.GaussianProcess(n_classes=2, kernel=kernel, var_l=1050**2, inv_method='lu')
+
+        with self.assertRaises(Exception) as context:
+            model.fit(x_train, y_train)
+        self.assertTrue('More classes in ytrain than specified in model object.' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
             gpc.GaussianProcess(var_l=1050**2, inv_method='lu')
+        self.assertTrue('Please specify the number of classes.' in str(context.exception))
+
+        with self.assertRaises(Exception) as context:
+            gpc.GaussianProcess(n_classes=5, var_l=1050**2, inv_method='lu')
         self.assertTrue('Model object must be instantiated with a valid kernel object.' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            gpc.GaussianProcess(kernel=kernel, var_l=-1.0**2, inv_method='lu')
+            gpc.GaussianProcess(n_classes=5, kernel=kernel, var_l=-1.0**2, inv_method='lu')
         self.assertTrue('Invalid likelihood variance argument.' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            gpc.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu').posterior_predict(x_train)
+            gpc.GaussianProcess(n_classes=5, kernel=kernel, var_l=1050**2, inv_method='lu').posterior_predict(x_train)
         self.assertTrue('Please fit the model before trying to make posterior predictions!' in str(context.exception))
 
-        with self.assertRaises(Exception) as context:
-            model = gpc.GaussianProcess(kernel=kernel, var_l=1050**2, inv_method='lu')
-            model.prior_sample(x_train)
-        self.assertTrue('Please either fit the model or specify the number of classes.' in str(context.exception))
-
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(failfast=True)

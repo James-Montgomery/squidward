@@ -6,12 +6,19 @@ model can be created by calling one of these classes to create a model object.
 import numpy as np
 from squidward.utils import Invert, exactly_2d, check_valid_cov
 
+# TODO: bigfloat
+# https://stackoverflow.com/questions/9559346/deal-with-overflow-in-exp-using-numpy/9559478
+
 np.seterr(over="raise")
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Gaussian Process Regression
+# ---------------------------------------------------------------------------------------------------------------------
 
 class GaussianProcess(object):
     """Model object for single output gaussian process (SOGP) regression."""
 
-    def __init__(self, kernel=None, var_l=1e-15, inv_method="inv"):
+    def __init__(self, kernel=None, var_l=1e-15, inv_method="inv", seed=None, show_warnings=True):
         """
         Description
         ----------
@@ -29,6 +36,9 @@ class GaussianProcess(object):
         inv_method: string
             A string argument choosing an inversion method for matrix K when
             fitting the gaussian process.
+        show_warnings: boolean
+            A boolean indicating whether to silence singular matrix warnings.
+            Defaults to show warnings (better safe than sorry).
 
         Returns
         ----------
@@ -41,6 +51,12 @@ class GaussianProcess(object):
         self.inv = Invert(inv_method)
         self.K = None
         self.fitted = False
+        self.safe = show_warnings
+        if seed is None:
+            self.random = np.random
+        else:
+            self.random = np.random.RandomState(seed)
+
         assert self.kernel is not None, \
             "Model object must be instantiated with a valid kernel object."
         assert self.var_l >= 0.0, \
@@ -102,9 +118,8 @@ class GaussianProcess(object):
             process posterior.
         Var: array_like
             The variance around the values of the mean function of the
-            gaussian process posterior.
-        Cov: array_like
-            The full covariance matrix opf the gaussian process posterior.
+            gaussian process posterior. If return_cov is True then returns the
+            full covariance matrix of the gaussian process posterior instead.
         """
         assert self.fitted and (self.K is not None), "Please fit the model before trying to make posterior predictions!"
 
@@ -113,7 +128,7 @@ class GaussianProcess(object):
         mean = K_s.dot(self.K).dot(self.y_obs)
         K_ss = self.kernel(x_test, x_test)
         cov = K_ss - np.dot(np.dot(K_s, self.K), K_s.T)
-        check_valid_cov(cov)
+        check_valid_cov(cov, self.safe)
         if return_cov:
             return mean, cov
         var = exactly_2d(np.diag(cov))
@@ -143,15 +158,14 @@ class GaussianProcess(object):
             process prior.
         Var: array_like
             The variance around the values of the mean function of the
-            gaussian process prior.
-        Cov: array_like
-            The full covariance matrix opf the gaussian process prior.
+            gaussian process posterior. If return_cov is True then returns the
+            full covariance matrix of the gaussian process posterior instead.
         """
         # update to take into account constant kernels
         mean = np.zeros(x_test.shape[0]).reshape(-1, 1)
         cov = self.kernel(x_test, x_test)
 
-        check_valid_cov(cov)
+        check_valid_cov(cov, self.safe)
         if return_cov:
             return mean, cov
         var = exactly_2d(np.diag(cov))
@@ -176,8 +190,8 @@ class GaussianProcess(object):
         assert self.fitted, "Please fit the model before trying to make posterior predictions!"
 
         mean, cov = self.posterior_predict(x_test, True)
-        check_valid_cov(cov)
-        return np.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
+        check_valid_cov(cov, self.safe)
+        return self.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
 
     def prior_sample(self, x_test):
         """
@@ -196,13 +210,18 @@ class GaussianProcess(object):
             The values of a function sampled from the gaussian process prior.
         """
         mean, cov = self.prior_predict(x_test, True)
-        check_valid_cov(cov)
-        return np.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
+        check_valid_cov(cov, self.safe)
+        return self.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Gaussian Process Regression
+# Stable Cholesky Version
+# ---------------------------------------------------------------------------------------------------------------------
 
 class GaussianProcessStableCholesky(object):
     """Model object for single output gaussian process (SOGP) regression formulated for stability.."""
 
-    def __init__(self, kernel=None, var_l=1e-15):
+    def __init__(self, kernel=None, var_l=1e-15, show_warnings=True):
         """
         Description
         ----------
@@ -219,6 +238,9 @@ class GaussianProcessStableCholesky(object):
         var_l: float
             The liklihood variance of the process. Currently only supports
             scalars for homoskedastic regression.
+        show_warnings: boolean
+            A boolean indicating whether to silence singular matrix warnings.
+            Defaults to show warnings (better safe than sorry).
 
         Returns
         ----------
@@ -226,6 +248,8 @@ class GaussianProcessStableCholesky(object):
         """
         self.kernel = kernel
         self.var_l = var_l
+        self.safe = show_warnings
+
         assert self.kernel is not None, \
             "Model object must be instantiated with a valid kernel object."
         assert self.var_l >= 0.0, \
@@ -248,13 +272,6 @@ class GaussianProcessStableCholesky(object):
             single outputs - SOGP).
         x_test: array_like
             Feature input for points to make predictions for.
-        kernel : kernel object
-            An object with an associated function k that takes in 2 arrays and
-            returns a valid K matrix. Valid K matricies are positive
-            semi-definite and not singular.
-        var_l: float
-            The liklihood variance of the process. Currently only supports
-            scalars for homoskedastic regression.
         return_cov: boolean
             If true, will return the full covariance matrix. Otherwise it will
             return the variance.
@@ -266,9 +283,8 @@ class GaussianProcessStableCholesky(object):
             process posterior.
         Var: array_like
             The variance around the values of the mean function of the
-            gaussian process posterior.
-        Cov: array_like
-            The full covariance matrix opf the gaussian process posterior.
+            gaussian process posterior. If return_cov is True then returns the
+            full covariance matrix of the gaussian process posterior instead.
         """
 
         x_obs = exactly_2d(x_obs)
@@ -291,7 +307,7 @@ class GaussianProcessStableCholesky(object):
         V = np.linalg.solve(L, K_)
         mean = np.dot(K_.transpose(), alpha)
         cov = K_ss - np.dot(V.transpose(), V)
-        check_valid_cov(cov)
+        check_valid_cov(cov, self.safe)
         if return_cov:
             return mean, cov
         var = exactly_2d(np.diag(cov))
