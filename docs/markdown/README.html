@@ -85,13 +85,14 @@
 <li class="toctree-l2"><a class="reference internal" href="#authors">Authors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#installing">Installing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#basic-examples">Basic Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-squidward">Installing squidward</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#running-the-unit-tests">Running the unit tests</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#running-the-style-tests">Running the style tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-required-packages">Install required packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-unit-tests">Running unit tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-style-tests">Running style tests</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#acknowledgments">Acknowledgments</a></li>
@@ -178,8 +179,8 @@
 <div class="section" id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
 <p>These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.</p>
-<div class="section" id="installing">
-<h3>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="installing-squidward">
+<h3>Installing squidward<a class="headerlink" href="#installing-squidward" title="Permalink to this headline">¶</a></h3>
 <p>This is a step by step guide to installing squidward for your local environment.</p>
 <p>I recommend installing squidward in a virtual environment for organized dependency control. Personally, I prefer conda environments. First, let’s create and open our environment.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">--</span><span class="n">name</span> <span class="n">squidward_env</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.6</span>
@@ -191,11 +192,11 @@
 <span class="n">source</span> <span class="n">activate</span> <span class="n">squidward_env</span>
 </pre></div>
 </div>
-<p>To install the latest stable version, simply <a class="reference external" href="https://pypi.org/project/squidward/">pip install from pypi</a>!</p>
+<p>To install the most recent stable version, simply <a class="reference external" href="https://pypi.org/project/squidward/">pip install from pypi</a>!</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">squidward</span>
 </pre></div>
 </div>
-<p>However, if you want the latest version git clone this repository to your local environment instead.</p>
+<p>If you want the latest version, git clone this repository to your local environment instead. To run unit and style tests you will need to clone this repository as tests are not included with the pypi installed package.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">looyclark</span><span class="o">/</span><span class="n">squidward</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
@@ -207,10 +208,19 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
 </pre></div>
 </div>
+<p>When you are finished using squidward you can either deactivate you conda environment for later use or remove it completely.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">deactivate</span>
+<span class="n">conda</span> <span class="n">env</span> <span class="n">remove</span> <span class="o">-</span><span class="n">n</span> <span class="n">squidward_env</span>
+</pre></div>
 </div>
-<div class="section" id="basic-examples">
-<h3>Basic Examples<a class="headerlink" href="#basic-examples" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
 <p>I’ve included basic examples of how to use squidward to get new users started building gaussian process models with this package.</p>
+<p>Many of these examples include visualizations of data and GP models. This will require the visualization packages below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="s2">&quot;matplotlib&gt;=2.2.3&#39; &quot;</span><span class="n">seaborn</span><span class="o">&gt;=</span><span class="mf">0.9</span><span class="o">.</span><span class="mi">0</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
 <ul class="simple">
 <li><a class="reference external" href="https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Regression.ipynb">Simple Regression</a></li>
 <li><a class="reference external" href="https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Classification.ipynb">Simple Classification</a></li>
@@ -219,9 +229,16 @@
 </div>
 <div class="section" id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
-<p>Testing is an important part of creating maintainable, production grade code.</p>
-<div class="section" id="running-the-unit-tests">
-<h3>Running the unit tests<a class="headerlink" href="#running-the-unit-tests" title="Permalink to this headline">¶</a></h3>
+<p>Testing is an important part of creating maintainable, production grade code. Below are instructions for running unit and style tests as well as installing the necessary testing packages. Tests have intentionally been separated from the installable pypi package for a variety of reasons.</p>
+<div class="section" id="install-required-packages">
+<h3>Install required packages<a class="headerlink" href="#install-required-packages" title="Permalink to this headline">¶</a></h3>
+<p>These packages are required to run unit and style tests for squidward.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="s2">&quot;nose&gt;=1.3.7&quot;</span> <span class="s2">&quot;coverage==4.0.0&quot;</span> <span class="s2">&quot;pylint&gt;=1.8.2&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-unit-tests">
+<h3>Running unit tests<a class="headerlink" href="#running-unit-tests" title="Permalink to this headline">¶</a></h3>
 <p>To run the unit tests cd to <code class="docutils literal notranslate"><span class="pre">squidward/squidward</span></code> so that <code class="docutils literal notranslate"><span class="pre">/tests</span></code> is a subdirectory.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">./</span><span class="n">squidward</span><span class="o">/</span><span class="n">tests</span>
 </pre></div>
@@ -236,15 +253,15 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="running-the-style-tests">
-<h3>Running the style tests<a class="headerlink" href="#running-the-style-tests" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="running-style-tests">
+<h3>Running style tests<a class="headerlink" href="#running-style-tests" title="Permalink to this headline">¶</a></h3>
 <p>I attempt to adhere to the <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">pep8</a> style guide for the squidward project. To run the style tests cd to the root directory of the repository <code class="docutils literal notranslate"><span class="pre">squidward/</span></code> so that <code class="docutils literal notranslate"><span class="pre">/squidward</span></code> is a subdirectory. Use <code class="docutils literal notranslate"><span class="pre">pylint</span> <span class="pre">squidward</span></code> to run all style tests for squidward.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">./</span><span class="n">squidward</span>
 <span class="n">pylint</span> <span class="n">squidward</span>
 </pre></div>
 </div>
 <p>Some of the naming conventions I’ve chosen intentionally do not adhere to pep8 in order to better resemble mathematical conventions. For example, I often borrow the matrix naming conventions of Rassmussen such as <code class="docutils literal notranslate"><span class="pre">K</span></code> and <code class="docutils literal notranslate"><span class="pre">K_ss</span></code>. You can run <code class="docutils literal notranslate"><span class="pre">pylint</span> <span class="pre">--disable=invalid-name</span></code> if you would like to ignore the resulting pylint warnings.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pylint</span> <span class="n">squidward</span> <span class="o">--</span><span class="n">disable</span><span class="o">=</span><span class="n">invalid</span><span class="o">-</span><span class="n">name</span> <span class="o">--</span><span class="n">ignore</span><span class="o">=</span><span class="n">gp_viz</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pylint</span> <span class="n">squidward</span> <span class="o">--</span><span class="n">disable</span><span class="o">=</span><span class="n">invalid</span><span class="o">-</span><span class="n">name</span>
 </pre></div>
 </div>
 </div>
@@ -264,6 +281,7 @@
 <li><a class="reference external" href="https://gpytorch.ai/">GPyTorch</a></li>
 <li><a class="reference external" href="https://gpy.readthedocs.io/en/deploy/">GPy</a></li>
 <li><a class="reference external" href="https://gpflow.readthedocs.io/en/develop/">GPFlow</a></li>
+<li><a class="reference external" href="https://github.com/tensorflow/probability/blob/master/tensorflow_probability/examples/jupyter_notebooks/Gaussian_Process_Regression_In_TFP.ipynb">Tensorflow Probability</a></li>
 <li><a class="reference external" href="https://scikit-learn.org/stable/modules/gaussian_process.html">Sklearn</a></li>
 <li><a class="reference external" href="https://george.readthedocs.io/en/latest/tutorials/first/">George</a></li>
 <li><a class="reference external" href="https://docs.pymc.io/api/gp.html">Pymc3</a></li>

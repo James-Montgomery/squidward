@@ -18,7 +18,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Installing
+### Installing squidward
 
 This is a step by step guide to installing squidward for your local environment.
 
@@ -36,13 +36,13 @@ conda create --name squidward_env python=3.6 anaconda
 source activate squidward_env
 ```
 
-To install the latest stable version, simply [pip install from pypi](https://pypi.org/project/squidward/)!
+To install the most recent stable version, simply [pip install from pypi](https://pypi.org/project/squidward/)!
 
 ```
 pip install squidward
 ```
 
-However, if you want the latest version git clone this repository to your local environment instead.
+If you want the latest version, git clone this repository to your local environment instead. To run unit and style tests you will need to clone this repository as tests are not included with the pypi installed package.
 
 ```
 git clone https://github.com/looyclark/squidward.git
@@ -60,18 +60,39 @@ Install squidward using pip from the setup file.
 pip install .
 ```
 
-### Basic Examples
+When you are finished using squidward you can either deactivate you conda environment for later use or remove it completely.
+
+```
+source deactivate
+conda env remove -n squidward_env
+```
+
+### Examples
 
 I've included basic examples of how to use squidward to get new users started building gaussian process models with this package.
+
+Many of these examples include visualizations of data and GP models. This will require the visualization packages below:
+
+```
+pip install "matplotlib>=2.2.3' "seaborn>=0.9.0"
+```
 
 * [Simple Regression](https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Regression.ipynb)
 * [Simple Classification](https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Classification.ipynb)
 
 ## Testing
 
-Testing is an important part of creating maintainable, production grade code.
+Testing is an important part of creating maintainable, production grade code. Below are instructions for running unit and style tests as well as installing the necessary testing packages. Tests have intentionally been separated from the installable pypi package for a variety of reasons.
 
-### Running the unit tests
+### Install required packages
+
+These packages are required to run unit and style tests for squidward.
+
+```
+pip install "nose>=1.3.7" "coverage==4.0.0" "pylint>=1.8.2"
+```
+
+### Running unit tests
 
 To run the unit tests cd to `squidward/squidward` so that `/tests` is a subdirectory.
 
@@ -92,7 +113,7 @@ You can also run the tests with coverage to see what code within the package is 
 nosetests --with-coverage --cover-package=squidward
 ```
 
-### Running the style tests
+### Running style tests
 
 I attempt to adhere to the [pep8](https://www.python.org/dev/peps/pep-0008/) style guide for the squidward project. To run the style tests cd to the root directory of the repository `squidward/` so that `/squidward` is a subdirectory. Use `pylint squidward` to run all style tests for squidward.
 
@@ -104,7 +125,7 @@ pylint squidward
 Some of the naming conventions I've chosen intentionally do not adhere to pep8 in order to better resemble mathematical conventions. For example, I often borrow the matrix naming conventions of Rassmussen such as `K` and `K_ss`. You can run `pylint --disable=invalid-name` if you would like to ignore the resulting pylint warnings.
 
 ```
-pylint squidward --disable=invalid-name --ignore=gp_viz
+pylint squidward --disable=invalid-name
 ```
 
 ## Acknowledgments
@@ -120,6 +141,7 @@ This is hardly the only gaussian process package out there. Here are a few alter
 * [GPyTorch](https://gpytorch.ai/)
 * [GPy](https://gpy.readthedocs.io/en/deploy/)
 * [GPFlow](https://gpflow.readthedocs.io/en/develop/)
+* [Tensorflow Probability](https://github.com/tensorflow/probability/blob/master/tensorflow_probability/examples/jupyter_notebooks/Gaussian_Process_Regression_In_TFP.ipynb)
 * [Sklearn](https://scikit-learn.org/stable/modules/gaussian_process.html)
 * [George](https://george.readthedocs.io/en/latest/tutorials/first/)
 * [Pymc3](https://docs.pymc.io/api/gp.html)

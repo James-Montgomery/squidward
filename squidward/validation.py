@@ -18,33 +18,57 @@ def preprocess(func):
         Wrapper function for decorator.
         """
         if args:
-            prediction, target = args[0], args[1]
-            prediction, target = exactly_1d(prediction), exactly_1d(target)
+            predictions, targets = args[0], args[1]
+            predictions, targets = exactly_1d(predictions), exactly_1d(targets)
+
         if kwargs:
-            prediction, target = kwargs['prediction'], kwargs['target']
-            prediction, target = exactly_1d(prediction), exactly_1d(target)
-        if prediction.shape[0] != target.shape[0]:
+            predictions, targets = kwargs['predictions'], kwargs['targets']
+            predictions, targets = exactly_1d(predictions), exactly_1d(targets)
+
+        if predictions.shape[0] != targets.shape[0]:
             raise Exception("Number of predictions does not match number of targets.")
-        return func(prediction=prediction, target=target)
+
+        return func(predictions=predictions, targets=targets)
+
     return wrapper
 
 @preprocess
-def rmse(prediction, target):
+def rmse(predictions, targets):
     """
+    Description
+    ----------
     Calculate of the root mean squared error of univariate regression model.
+
+    Parameters
+    ----------
+    predictions: array-like
+        description
+    targets: array-like
+        description
+
+    Returns
+    ----------
     """
-    return np.sqrt(np.sum((prediction-target) **2)/target.shape[0])
+    return np.sqrt(np.sum((predictions-targets) **2)/targets.shape[0])
 
 @preprocess
-def acc(prediction, target):
+def acc(predictions, targets):
     """
+    Description
+    ----------
     Calculate the accuracy of univariate classification problem.
+
+    Parameters
+    ----------
+
+    Returns
+    ----------
     """
-    return target[target == prediction].shape[0]/target.shape[0]
+    return 1.0 * targets[targets == predictions].shape[0] / targets.shape[0]
 
 # TODO: add the following methods
 # brier_score
 # precision
 # recall
 # roc_auc
-#posterior_checkes
+# posterior_checks

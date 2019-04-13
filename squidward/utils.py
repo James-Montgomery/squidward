@@ -25,6 +25,60 @@ np.seterr(over="raise")
 # backend
 
 # ---------------------------------------------------------------------------------------------------------------------
+# Array Checks
+# ---------------------------------------------------------------------------------------------------------------------
+
+def array_equal(alpha, beta):
+    """
+    Function returns true if two arrays are identical.
+    """
+    #if alpha.shape == beta.shape:
+        #if np.all(np.sort(alpha) == np.sort(beta):
+            #return True
+    #return False
+    return np.array_equal(alpha, beta)
+
+def exactly_1d(arr):
+    """
+    Function to ensure that an array has a most 1 dimension. Used to
+    formalize output / input dimensions for certain functions.
+    """
+    arr = np.asarray(arr)
+    if not arr.shape:
+        if isinstance(arr, numeric_types):
+            return np.array([arr])
+    if len(arr.shape) == 1:
+        return arr
+    if len(arr.shape) == 2:
+        if arr.shape[0] == 1:
+            return arr[0, :]
+        if arr.shape[1] == 1:
+            return arr[:, 0]
+    raise Exception("Not appropriate input shape.")
+
+def exactly_2d(arr):
+    """
+    Function to ensure that an array has a least 2 dimensions. Used to
+    formalize output / input dimensions for certain functions.
+    """
+    arr = np.asarray(arr)
+    if len(arr.shape) == 1:
+        return arr.reshape(-1, 1)
+    if len(arr.shape) == 2:
+        if arr.shape[0] == 1:
+            return arr.reshape(-1, 1)
+        return arr
+    if len(arr.shape) == 3:
+        if arr.shape[0] == 1:
+            return arr[0, :, :]
+        if arr.shape[2] == 1:
+            return arr[:, :, 0]
+        raise Exception("Not appropriate input shape.")
+    if len(arr.shape) > 3:
+        raise Exception("Not appropriate input shape.")
+    raise Exception("Not appropriate input shape.")
+
+# ---------------------------------------------------------------------------------------------------------------------
 # Inversions
 # ---------------------------------------------------------------------------------------------------------------------
 
@@ -151,58 +205,6 @@ def reversehot(arr):
                 return arr[:, 0]
         return arr.argmax(axis=1)
     return arr
-
-# ---------------------------------------------------------------------------------------------------------------------
-# Array Checks
-# ---------------------------------------------------------------------------------------------------------------------
-
-def array_equal(alpha, beta):
-    """
-    Function returns true if two arrays are identical.
-    """
-    #if alpha.shape == beta.shape:
-        #if np.all(np.sort(alpha) == np.sort(beta):
-            #return True
-    #return False
-    return np.array_equal(alpha, beta)
-
-def exactly_2d(arr):
-    """
-    Function to ensure that an array has a least 2 dimensions. Used to
-    formalize output / input dimensions for certain functions.
-    """
-    if len(arr.shape) == 1:
-        return arr.reshape(-1, 1)
-    if len(arr.shape) == 2:
-        if arr.shape[0] == 1:
-            return arr.reshape(-1, 1)
-        return arr
-    if len(arr.shape) == 3:
-        if arr.shape[0] == 1:
-            return arr[0, :, :]
-        if arr.shape[2] == 1:
-            return arr[:, :, 0]
-        raise Exception("Not appropriate input shape.")
-    if len(arr.shape) > 3:
-        raise Exception("Not appropriate input shape.")
-    raise Exception("Not appropriate input shape.")
-
-def exactly_1d(arr):
-    """
-    Function to ensure that an array has a most 1 dimension. Used to
-    formalize output / input dimensions for certain functions.
-    """
-    if not arr.shape:
-        if isinstance(arr, numeric_types):
-            return np.array([arr])
-    if len(arr.shape) == 1:
-        return arr
-    if len(arr.shape) == 2:
-        if arr.shape[0] == 1:
-            return arr[0, :]
-        if arr.shape[1] == 1:
-            return arr[:, 0]
-    raise Exception("Not appropriate input shape.")
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Classification Specific
