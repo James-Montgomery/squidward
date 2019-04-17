@@ -1,26 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="20aa2745-ec30-43a3-b175-4e1475474d3b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/tests/kernels_tests/optimized_kernels_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/squidward.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/squidward.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/squidward/gpc.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/gpc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/squidward/gpr.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/gpr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/squidward/kernels/distance.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/kernels/distance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/squidward/kernels/kernel_base.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/kernels/kernel_base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/squidward/kernels/optimized_kernels.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/kernels/optimized_kernels.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/squidward/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/gpc_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/gpc_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/gpr_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/gpr_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/kernels_tests/distance_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/kernels_tests/distance_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/kernels_tests/kernel_base_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/kernels_tests/kernel_base_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/utils_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/utils_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/validation_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/validation_test.py" afterDir="false" />
-    </list>
+    <list default="true" id="20aa2745-ec30-43a3-b175-4e1475474d3b" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,22 +65,6 @@
             <path>
               <item name="squidward" type="b2602c69:ProjectViewProjectNode" />
               <item name="squidward" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="squidward" type="b2602c69:ProjectViewProjectNode" />
-              <item name="squidward" type="462c0819:PsiDirectoryNode" />
-              <item name="squidward" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="squidward" type="b2602c69:ProjectViewProjectNode" />
-              <item name="squidward" type="462c0819:PsiDirectoryNode" />
-              <item name="squidward" type="462c0819:PsiDirectoryNode" />
-              <item name="kernels" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="squidward" type="b2602c69:ProjectViewProjectNode" />
-              <item name="squidward" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -395,6 +360,29 @@
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_config.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.coverage">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="15">
+            <caret line="1" selection-start-line="1" selection-end-line="1" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
         </state>
       </provider>
     </entry>
