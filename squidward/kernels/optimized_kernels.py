@@ -4,18 +4,22 @@ than the more general kernel format of Kernel_Base + Distance_Function.
 """
 
 import numpy as np
+
 from squidward.utils import exactly_2d
+
+# TODO: Better docstrings
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Radial Basis Function
 # ---------------------------------------------------------------------------------------------------------------------
+
 
 class RBF_Kernel(object):
     """Radial Basis Function Kernel"""
 
     def __init__(self, lengthscale, var_k):
         """
-        RBF kernel.
+        RBF Kernel
         """
         self.lengthscale = lengthscale
         self.var_k = var_k
@@ -26,7 +30,7 @@ class RBF_Kernel(object):
 
     def __call__(self, alpha, beta):
         """
-        RBF kernel.
+        RBF Kernel
         """
         alpha, beta = exactly_2d(alpha), exactly_2d(beta)
         if alpha.shape[1] != beta.shape[1]:
@@ -36,5 +40,5 @@ class RBF_Kernel(object):
         return self.var_k*np.exp(gamma * distance)
 
 # ---------------------------------------------------------------------------------------------------------------------
-# 
+# A different kernel
 # ---------------------------------------------------------------------------------------------------------------------

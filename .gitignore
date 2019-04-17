@@ -15,6 +15,9 @@
 # Mac files
 .DS_Store
 
+# IDE
+.idea
+
 # pypi build files
 build
 dist

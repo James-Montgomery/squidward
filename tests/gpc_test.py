@@ -1,12 +1,14 @@
 import unittest
 import numpy as np
+import numpy.testing as npt
+
 from squidward import gpc, utils
 from squidward.kernels import distance, kernel_base
-import numpy.testing as npt
 
 # useful for debugging
 np.set_printoptions(suppress=True)
 np.random.seed(0)
+
 
 class ClassificationTestCase(unittest.TestCase):
     """Class for guassian process classification tests."""
@@ -19,15 +21,15 @@ class ClassificationTestCase(unittest.TestCase):
 
         # train data
         x_train = np.array([[0.74775167, 0.09963786, 0.24078391,
-                           0.16182137, 0.72764008, 0.13583729],
-                          [0.1427068 , 0.61315893, 0.61929491,
-                           0.88585838, 0.96463067, 0.81522606],
-                          [0.16291094, 0.59166813, 0.17442026,
-                           0.34366403, 0.75932132, 0.02574967],
-                          [0.16449091, 0.71445737, 0.71023514,
-                           0.22225375, 0.49399307, 0.62012281],
-                          [0.36558453, 0.50613319, 0.62597648,
-                          0.44873197, 0.5863159 , 0.44340289]])
+                             0.16182137, 0.72764008, 0.13583729],
+                            [0.1427068 , 0.61315893, 0.61929491,
+                             0.88585838, 0.96463067, 0.81522606],
+                            [0.16291094, 0.59166813, 0.17442026,
+                             0.34366403, 0.75932132, 0.02574967],
+                            [0.16449091, 0.71445737, 0.71023514,
+                             0.22225375, 0.49399307, 0.62012281],
+                            [0.36558453, 0.50613319, 0.62597648,
+                             0.44873197, 0.5863159 , 0.44340289]])
 
         y_train = np.array([0,1,2,0,2])
         y_train = utils.onehot(y_train)
@@ -40,6 +42,7 @@ class ClassificationTestCase(unittest.TestCase):
         self.x_train = x_train
         self.y_train = y_train
         self.kernel = kernel
+
 
 class GaussianProcessTestCase(ClassificationTestCase):
     """Tests for guassian process."""
@@ -56,7 +59,7 @@ class GaussianProcessTestCase(ClassificationTestCase):
         kernel = self.kernel
 
         # define model
-        model = gpc.GaussianProcess(n_classes=3, kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(n_classes=3, kernel=kernel, var_l=1050**2)
 
         # check prior predict
         with self.assertRaises(NotImplementedError):
@@ -73,7 +76,7 @@ class GaussianProcessTestCase(ClassificationTestCase):
         kernel = self.kernel
 
         # define model
-        model = gpc.GaussianProcess(n_classes=7, kernel=kernel, var_l=0.1**2, inv_method='lu')
+        model = gpc.GaussianProcess(n_classes=7, kernel=kernel, var_l=0.1**2)
 
         # check prior sample without fitting
         logits = model.prior_sample(x_train, True)
@@ -109,7 +112,7 @@ class GaussianProcessTestCase(ClassificationTestCase):
         kernel = self.kernel
 
         # define model
-        model = gpc.GaussianProcess(n_classes=7, kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(n_classes=7, kernel=kernel, var_l=1050**2)
 
         # fit model
         model.fit(x_train, y_train)
@@ -148,7 +151,7 @@ class GaussianProcessTestCase(ClassificationTestCase):
         kernel = self.kernel
 
         # define model
-        model = gpc.GaussianProcess(n_classes=6, kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(n_classes=6, kernel=kernel, var_l=1050**2)
 
         # fit model
         model.fit(x_train, y_train)
@@ -180,7 +183,6 @@ class GaussianProcessTestCase(ClassificationTestCase):
 
         npt.assert_almost_equal(pred, true, decimal=5)
 
-
     def test_5(self):
         """
         Posterior Sample
@@ -192,7 +194,7 @@ class GaussianProcessTestCase(ClassificationTestCase):
         kernel = self.kernel
 
         # define model
-        model = gpc.GaussianProcess(n_classes=3, kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(n_classes=3, kernel=kernel, var_l=1050**2)
 
         # fit model
         model.fit(x_train, y_train)
@@ -227,27 +229,32 @@ class GaussianProcessTestCase(ClassificationTestCase):
         kernel = self.kernel
 
         # define model
-        model = gpc.GaussianProcess(n_classes=2, kernel=kernel, var_l=1050**2, inv_method='lu')
+        model = gpc.GaussianProcess(n_classes=2, kernel=kernel, var_l=1050**2)
 
         with self.assertRaises(Exception) as context:
             model.fit(x_train, y_train)
         self.assertTrue('More classes in ytrain than specified in model object.' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            gpc.GaussianProcess(var_l=1050**2, inv_method='lu')
+            gpc.GaussianProcess(var_l=1050**2)
         self.assertTrue('Please specify the number of classes.' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            gpc.GaussianProcess(n_classes=5, var_l=1050**2, inv_method='lu')
+            gpc.GaussianProcess(n_classes=5, var_l=1050**2)
         self.assertTrue('Model object must be instantiated with a valid kernel object.' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            gpc.GaussianProcess(n_classes=5, kernel=kernel, var_l=-1.0**2, inv_method='lu')
+            gpc.GaussianProcess(n_classes=5, kernel=kernel, var_l=-1.0**2)
         self.assertTrue('Invalid likelihood variance argument.' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            gpc.GaussianProcess(n_classes=5, kernel=kernel, var_l=1050**2, inv_method='lu').posterior_predict(x_train)
-        self.assertTrue('Please fit the model before trying to make posterior predictions!' in str(context.exception))
+            gpc.GaussianProcess(n_classes=5, kernel=kernel, var_l=1050**2).posterior_predict(x_train)
+        self.assertTrue("Please fit the model before trying to make posterior predictions!" in str(context.exception))
+
+        with self.assertRaises(Exception) as context:
+            gpc.GaussianProcess(n_classes=5, kernel=kernel, var_l=1050**2).posterior_sample(x_train)
+        self.assertTrue("Please fit the model before trying to make posterior predictions!" in str(context.exception))
+
 
 if __name__ == '__main__':
     unittest.main(failfast=True)

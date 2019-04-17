@@ -1,11 +1,11 @@
 import unittest
 
 import numpy as np
-np.random.seed(0)
 
 from squidward import validation
 
-class validationTestCase(unittest.TestCase):
+
+class ValidationTestCase(unittest.TestCase):
     """Class for validation tests."""
 
     def test_preprocess(self):
@@ -16,14 +16,14 @@ class validationTestCase(unittest.TestCase):
         preprocess = validation.preprocess
 
         @preprocess
-        def f(predictions, targets):
+        def test_function(predictions, targets):
             return True
 
         predictions = np.ones(10)
         targets = np.zeros(9)
 
         with self.assertRaises(Exception) as context:
-           f(predictions, targets)
+           test_function(predictions, targets)
         self.assertTrue('Number of predictions does not match number of targets' in str(context.exception))
 
     def test_rmse(self):
@@ -65,7 +65,6 @@ class validationTestCase(unittest.TestCase):
 
         output = validation.acc(predictions=predictions, targets=targets)
         self.assertEqual(output, true)
-
 
 
 if __name__ == '__main__':

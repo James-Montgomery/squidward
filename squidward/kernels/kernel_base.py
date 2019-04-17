@@ -11,7 +11,7 @@ np.seterr(over="raise")
 class Kernel(object):
     """Base class for Kernel object."""
 
-    def __init__(self, distance_function, method='k1'):
+    def __init__(self, distance_function=None, method='k1'):
         """
         Description
         ----------
@@ -33,6 +33,13 @@ class Kernel(object):
         Model object
         """
         self.distance_function = distance_function
+
+        assert self.distance_function is not None, \
+            "Model object must be instantiated with a valid distance function."
+
+        assert not isinstance(self.distance_function, (str, int, float, list, np.ndarray)), \
+            "Model object must be instantiated with a valid distance function."
+
         if method == 'k1':
             self._k = self._k1
         elif method == 'k2':
@@ -50,8 +57,6 @@ class Kernel(object):
             The second array to compare. Must match dimensions for alpha.
         """
         alpha, beta = exactly_2d(alpha), exactly_2d(beta)
-        if alpha.shape[1] != beta.shape[1]:
-            raise Exception("Input arrays have differing number of features.")
         return self._k(alpha, beta)
 
     def _k1(self, alpha, beta):

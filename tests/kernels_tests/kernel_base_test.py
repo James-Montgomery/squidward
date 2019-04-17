@@ -1,13 +1,18 @@
 import unittest
 import numpy as np
-from squidward.kernels import kernel_base
 import numpy.testing as npt
-np.random.seed(0)
+
+from squidward.kernels import kernel_base
 
 # useful for debugging
 np.set_printoptions(suppress=True)
 
-class kernel_baseTestCase(unittest.TestCase):
+
+# ---------------------------------------------------------------------------------------------------------------------
+# kernel class tests
+# ---------------------------------------------------------------------------------------------------------------------
+
+class KernelTestCase(unittest.TestCase):
     """Class for kernel base tests."""
 
     def setUp(self):
@@ -15,36 +20,19 @@ class kernel_baseTestCase(unittest.TestCase):
         Set Up
         Set up shared environment or variables for tests.
         """
-        def test_distance(alpha, beta):
-            return np.sum(np.abs(alpha+beta))
 
-        alpha = np.array([[0.74775167, 0.09963786, 0.24078391,
-                           0.16182137, 0.72764008, 0.13583729],
-                          [0.1427068 , 0.61315893, 0.61929491,
-                           0.88585838, 0.96463067, 0.81522606],
-                          [0.16291094, 0.59166813, 0.17442026,
-                           0.34366403, 0.75932132, 0.02574967],
-                          [0.16449091, 0.71445737, 0.71023514,
-                           0.22225375, 0.49399307, 0.62012281],
-                          [0.36558453, 0.50613319, 0.62597648,
-                          0.44873197, 0.5863159 , 0.44340289]])
+        seed = 0
+        random = np.random.RandomState(seed)
 
-        beta = np.array([[0.83951641, 0.1409072 , 0.96615312,
-                          0.1480484 , 0.17059111, 0.06294672],
-                         [0.10287028, 0.1472429 , 0.99437229,
-                          0.25818537, 0.907556  , 0.11534158],
-                         [0.03248681, 0.09601429, 0.88024617,
-                          0.42245145, 0.0778328 , 0.22152001],
-                         [0.45315421, 0.13692575, 0.44841676,
-                          0.2994347 , 0.56941712, 0.80653022],
-                         [0.81958843, 0.79307846, 0.80562772,
-                          0.03878067, 0.74121989, 0.1833349 ]])
+        # a simple differencing function for testing
+        def test_distance(input_a, input_b):
+            return np.exp( 1.0/(2.0*1.0**2.0) * np.sum( np.abs(input_a - input_b) ) )
 
         self.dist = test_distance
-        self.alpha = alpha
-        self.beta = beta
+        self.alpha = random.normal(0, 1, (5, 3))
+        self.beta = random.normal(0, 1, (5, 3))
 
-    def test_params_assertions(self):
+    def test_1(self):
         """
         Params Assertions
         Test that the kernel_base assertions work to raise exceptions for invalid parameters.
@@ -52,74 +40,77 @@ class kernel_baseTestCase(unittest.TestCase):
         d = self.dist
 
         with self.assertRaises(Exception) as context:
+            kernel_base.Kernel(method='k1')
+        self.assertTrue("Model object must be instantiated with a valid distance function." in str(context.exception))
+
+        with self.assertRaises(Exception) as context:
+            kernel_base.Kernel(distance_function='grabage', method='k1')
+        self.assertTrue("Model object must be instantiated with a valid distance function." in str(context.exception))
+
+        with self.assertRaises(Exception) as context:
             kernel_base.Kernel(d, 'fake')
         self.assertTrue('Invalid argument for kernel method' in str(context.exception))
 
-    def test_unequal_features(self):
+    def test_2(self):
         """
-        Unequal Features
-        Test that exception is raised if arrays with unequal numbers of
-        features are passed.
-        """
-        d = self.dist
-        a = np.random.rand(10,2)
-        b = np.random.rand(10,3)
-
-        kernel = kernel_base.Kernel(d)
-
-        with self.assertRaises(Exception) as context:
-            kernel(a,b)
-        self.assertTrue('Input arrays have differing number of features.' in str(context.exception))
-
-class KOneTestCase(kernel_baseTestCase):
-    """Test that the k1 method of kernel_base returns valid kernels."""
-
-    def test_normal_input(self):
-        """
-        Normal Input
-        Test that k1 normal inputs return expected result.
+        K1
+        Test that the first kernel function option behaves as expected.
         """
         d = self.dist
         a = self.alpha
         b = self.beta
 
         kernel = kernel_base.Kernel(d, 'k1')
+        output = kernel(a, a)
+
+        expected_output = np.array([[ 1.        ,  7.02959258,  3.39980335,  2.83644498,  2.47981952],
+                                    [ 7.02959258,  1.        ,  8.10020609, 19.93905261, 10.21073666],
+                                    [ 3.39980335,  8.10020609,  1.        ,  3.30749639,  1.65629387],
+                                    [ 2.83644498, 19.93905261,  3.30749639,  1.        ,  1.99692606],
+                                    [ 2.47981952, 10.21073666,  1.65629387,  1.99692606,  1.        ]])
+
+        npt.assert_almost_equal(output, expected_output, decimal=7)
+
         output = kernel(a, b)
-        true = np.array([[4.44163514, 4.6390406,  3.84402371, 4.82735094, 5.49510225],
-                         [6.36903871, 6.56644417, 5.77142728, 6.75475451, 7.42250582],
-                         [4.38589731, 4.58330277, 3.78828588, 4.77161311, 5.43936442],
-                         [5.25371601, 5.45112147, 4.65610458, 5.63943181, 6.30718312],
-                         [5.30430792, 5.50171338, 4.70669649, 5.69002372, 6.35777503]])
-        npt.assert_almost_equal(output, true, decimal=7)
 
-class KTwoTestCase(kernel_baseTestCase):
-    """Test that the k2 method of kernel_base returns valid kernels."""
+        expected_output = np.array([[ 6.38593596, 22.61204426,  5.19557797,  5.18931817,  5.97294135],
+                                    [ 4.60162132, 22.47931564,  4.10725379,  8.90765254, 13.52779202],
+                                    [ 3.26054674,  6.65098594,  2.65277085,  3.99812708,  8.99791745],
+                                    [ 4.67952086, 12.82590196,  4.85459473, 11.39346766,  2.72046176],
+                                    [ 3.4021054 ,  9.11842338,  2.76794255,  5.70550303,  5.43256096]])
 
-    def test_normal_input(self):
+        npt.assert_almost_equal(output, expected_output, decimal=7)
+
+    def test_3(self):
         """
-        Normal Input
-        Test that k2 normal inputs return expected result.
+        K1
+        Test that the first kernel function option behaves as expected.
         """
         d = self.dist
         a = self.alpha
         b = self.beta
 
         kernel = kernel_base.Kernel(d, 'k2')
-        output = kernel(a, b)
-        true = np.array([[4.44163514, 4.6390406,  3.84402371, 4.82735094, 5.49510225],
-                         [6.36903871, 6.56644417, 5.77142728, 6.75475451, 7.42250582],
-                         [4.38589731, 4.58330277, 3.78828588, 4.77161311, 5.43936442],
-                         [5.25371601, 5.45112147, 4.65610458, 5.63943181, 6.30718312],
-                         [5.30430792, 5.50171338, 4.70669649, 5.69002372, 6.35777503]])
-        npt.assert_almost_equal(output, true, decimal=7)
-
         output = kernel(a, a)
-        true = np.array([[4.22694436, 6.15434793, 4.17120653, 5.03902523, 5.08961714],
-                         [6.15434793, 8.0817515 , 6.0986101 , 6.9664288 , 7.01702071],
-                         [4.17120653, 6.0986101 , 4.1154687 , 4.9832874 , 5.03387931],
-                         [5.03902523, 6.9664288 , 4.9832874 , 5.8511061 , 5.90169801],
-                         [5.08961714, 7.01702071, 5.03387931, 5.90169801, 5.95228992]])
-        npt.assert_almost_equal(output, true, decimal=7)
+
+        expected_output = np.array([[ 1.        ,  7.02959258,  3.39980335,  2.83644498,  2.47981952],
+                                    [ 7.02959258,  1.        ,  8.10020609, 19.93905261, 10.21073666],
+                                    [ 3.39980335,  8.10020609,  1.        ,  3.30749639,  1.65629387],
+                                    [ 2.83644498, 19.93905261,  3.30749639,  1.        ,  1.99692606],
+                                    [ 2.47981952, 10.21073666,  1.65629387,  1.99692606,  1.        ]])
+
+        npt.assert_almost_equal(output, expected_output, decimal=7)
+
+        output = kernel(a, b)
+
+        expected_output = np.array([[ 6.38593596, 22.61204426,  5.19557797,  5.18931817,  5.97294135],
+                                    [ 4.60162132, 22.47931564,  4.10725379,  8.90765254, 13.52779202],
+                                    [ 3.26054674,  6.65098594,  2.65277085,  3.99812708,  8.99791745],
+                                    [ 4.67952086, 12.82590196,  4.85459473, 11.39346766,  2.72046176],
+                                    [ 3.4021054 ,  9.11842338,  2.76794255,  5.70550303,  5.43256096]])
+
+        npt.assert_almost_equal(output, expected_output, decimal=7)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f6cf8db6-c24e-4d14-829f-544fa5b5e8fe" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/squidward.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_sources/markdown/README.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/markdown/README.md.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/markdown/README.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/markdown/README.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/searchindex.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/markdown/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/source/markdown/README.md" afterDir="false" />
+    <list default="true" id="20aa2745-ec30-43a3-b175-4e1475474d3b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/tests/kernels_tests/optimized_kernels_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/squidward.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/squidward.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/squidward/gpc.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/gpc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/squidward/gpr.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/gpr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/squidward/kernels/distance.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/kernels/distance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/squidward/kernels/kernel_base.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/kernels/kernel_base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/squidward/kernels/optimized_kernels.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/kernels/optimized_kernels.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/squidward/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/squidward/validation.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/validation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/gpc_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/gpc_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/gpr_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/gpr_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/kernels_tests/distance_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/kernels_tests/distance_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/kernels_tests/kernel_base_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/kernels_tests/kernel_base_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/utils_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/utils_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/validation_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/validation_test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,45 +28,20 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/squidward/validation.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="38" lean-forward="true" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
-              <folding>
-                <element signature="e#137#155#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/squidward/utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="191" column="50" lean-forward="true" selection-start-line="191" selection-start-column="50" selection-end-line="191" selection-end-column="50" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/validation_test.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="519">
-              <caret line="43" column="40" lean-forward="true" selection-start-line="43" selection-start-column="40" selection-end-line="43" selection-end-column="40" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>exactly</find>
+      <find>liklihood</find>
+      <find>model = gpr.GaussianProcessCholesky(kernel=kernel, var_l=1.0 ** 2, inv_method='lu')</find>
+      <find>gpr.GaussianProcess(</find>
+      <find>inv_me</find>
+      <find>inv_method</find>
+      <find>Please fit the model</find>
+      <find>check</find>
+      <find>check_val</find>
+      <find>numeric_types</find>
+      <find>np.random</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -68,24 +50,34 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/squidward/gpc.py" />
-        <option value="$PROJECT_DIR$/squidward/validation.py" />
-        <option value="$PROJECT_DIR$/tests/validation_test.py" />
         <option value="$PROJECT_DIR$/squidward/utils.py" />
+        <option value="$PROJECT_DIR$/squidward/kernels/kernel_base.py" />
+        <option value="$PROJECT_DIR$/squidward/gpr.py" />
+        <option value="$PROJECT_DIR$/squidward/kernels/optimized_kernels.py" />
+        <option value="$PROJECT_DIR$/squidward/kernels/distance.py" />
+        <option value="$PROJECT_DIR$/tests/utils_test.py" />
+        <option value="$PROJECT_DIR$/tests/validation_test.py" />
+        <option value="$PROJECT_DIR$/tests/gpc_test.py" />
+        <option value="$PROJECT_DIR$/tests/kernels_tests/kernel_base_test.py" />
+        <option value="$PROJECT_DIR$/tests/kernels_tests/distance_test.py" />
+        <option value="$PROJECT_DIR$/tests/gpr_test.py" />
+        <option value="$PROJECT_DIR$/tests/kernels_tests/optimized_kernels_test.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="556" />
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="23" />
-    <option name="width" value="1124" />
-    <option name="height" value="929" />
+    <option name="width" value="840" />
+    <option name="height" value="930" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -101,19 +93,24 @@
             <path>
               <item name="squidward" type="b2602c69:ProjectViewProjectNode" />
               <item name="squidward" type="462c0819:PsiDirectoryNode" />
+              <item name="squidward" type="462c0819:PsiDirectoryNode" />
+              <item name="kernels" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="squidward" type="b2602c69:ProjectViewProjectNode" />
+              <item name="squidward" type="462c0819:PsiDirectoryNode" />
               <item name="tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -127,8 +124,22 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
-    <configuration name="Unittests in validation_test.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python tests.Unittests in optimized_kernels_test.py">
+    <configuration name="Unittests in distance_test.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="squidward" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/kernels_tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/kernels_tests/distance_test.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in gpc_test.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="squidward" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -138,13 +149,59 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/validation_test.py&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/gpc_test.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in gpr_test.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="squidward" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/gpr_test.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in kernel_base_test.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="squidward" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/kernels_tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/kernels_tests/kernel_base_test.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in optimized_kernels_test.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="squidward" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/kernels_tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/kernels_tests/optimized_kernels_test.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Unittests in validation_test.py" />
+        <item itemvalue="Python tests.Unittests in optimized_kernels_test.py" />
+        <item itemvalue="Python tests.Unittests in kernel_base_test.py" />
+        <item itemvalue="Python tests.Unittests in gpc_test.py" />
+        <item itemvalue="Python tests.Unittests in gpr_test.py" />
+        <item itemvalue="Python tests.Unittests in distance_test.py" />
       </list>
     </recent_temporary>
   </component>
@@ -153,86 +210,191 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f6cf8db6-c24e-4d14-829f-544fa5b5e8fe" name="Default Changelist" comment="" />
-      <created>1555029582189</created>
+      <changelist id="20aa2745-ec30-43a3-b175-4e1475474d3b" name="Default Changelist" comment="" />
+      <created>1555192758175</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1555029582189</updated>
+      <updated>1555192758175</updated>
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_validation_test_py - 2019.04.11 at 20h 58m 12s.xml">
-      <configuration name="Unittests in validation_test.py" configurationId="tests" />
+    <history-entry file="Unittests_in_gpc_test_py - 2019.04.17 at 13h 43m 41s.xml">
+      <configuration name="Unittests in gpc_test.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_validation_test_py - 2019.04.11 at 21h 00m 41s.xml">
-      <configuration name="Unittests in validation_test.py" configurationId="tests" />
+    <history-entry file="Unittests_in_kernel_base_test_py - 2019.04.17 at 13h 43m 54s.xml">
+      <configuration name="Unittests in kernel_base_test.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_validation_test_py - 2019.04.11 at 21h 03m 06s.xml">
-      <configuration name="Unittests in validation_test.py" configurationId="tests" />
+    <history-entry file="Unittests_in_optimized_kernels_test_py - 2019.04.17 at 14h 03m 53s.xml">
+      <configuration name="Unittests in optimized_kernels_test.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_validation_test_py - 2019.04.11 at 21h 05m 44s.xml">
-      <configuration name="Unittests in validation_test.py" configurationId="tests" />
+    <history-entry file="Unittests_in_optimized_kernels_test_py - 2019.04.17 at 14h 56m 54s.xml">
+      <configuration name="Unittests in optimized_kernels_test.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_optimized_kernels_test_py - 2019.04.17 at 14h 57m 10s.xml">
+      <configuration name="Unittests in optimized_kernels_test.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_optimized_kernels_test_py - 2019.04.17 at 15h 01m 13s.xml">
+      <configuration name="Unittests in optimized_kernels_test.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_optimized_kernels_test_py - 2019.04.17 at 15h 01m 47s.xml">
+      <configuration name="Unittests in optimized_kernels_test.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_optimized_kernels_test_py - 2019.04.17 at 15h 01m 59s.xml">
+      <configuration name="Unittests in optimized_kernels_test.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_optimized_kernels_test_py - 2019.04.17 at 15h 03m 02s.xml">
+      <configuration name="Unittests in optimized_kernels_test.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_optimized_kernels_test_py - 2019.04.17 at 15h 03m 08s.xml">
+      <configuration name="Unittests in optimized_kernels_test.py" configurationId="tests" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="556" y="23" width="1124" height="929" extended-state="1" />
-    <editor active="true" />
+    <frame x="0" y="23" width="1680" height="930" extended-state="6" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3118767" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Python Console" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3297491" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.14767933" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Terminal" order="0" />
+      <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="2" />
+      <window_info anchor="bottom" id="Message" order="3" />
+      <window_info anchor="bottom" id="Find" order="4" />
+      <window_info anchor="bottom" id="Version Control" order="5" />
+      <window_info anchor="bottom" id="Run" order="6" visible="true" weight="0.33293557" />
+      <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.coverage">
+    <entry file="file://$PROJECT_DIR$/squidward/validation.py">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="6" selection-start-line="24" selection-start-column="6" selection-end-line="24" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/squidward/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="268">
+          <caret line="80" selection-start-line="80" selection-end-line="80" />
+          <folding>
+            <element signature="e#123#133#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/squidward/gpr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="16" lean-forward="true" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
+          <folding>
+            <element signature="e#166#184#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/squidward/gpc.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
+        <state relative-caret-position="3705">
+          <caret line="247" column="34" selection-start-line="247" selection-start-column="34" selection-end-line="247" selection-end-column="34" />
+          <folding>
+            <element signature="e#174#192#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/squidward/kernels/kernel_base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/squidward/kernels/distance.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="53" column="20" selection-start-line="53" selection-start-column="20" selection-end-line="53" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/kernels_tests/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/squidward/kernels/optimized_kernels.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="28" column="81" lean-forward="true" selection-start-line="28" selection-start-column="29" selection-end-line="28" selection-end-column="81" />
+          <folding>
+            <element signature="e#149#167#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/utils_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/validation_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="519">
-          <caret line="43" column="40" lean-forward="true" selection-start-line="43" selection-start-column="40" selection-end-line="43" selection-end-column="40" />
+        <state relative-caret-position="30">
+          <caret line="2" column="18" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/gpc_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/squidward/validation.py">
+    <entry file="file://$PROJECT_DIR$/tests/kernels_tests/kernel_base_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="38" lean-forward="true" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
+        <state relative-caret-position="-234">
+          <caret line="62" column="44" lean-forward="true" selection-start-line="62" selection-start-column="44" selection-end-line="62" selection-end-column="44" />
           <folding>
-            <element signature="e#137#155#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/squidward/utils.py">
+    <entry file="file://$PROJECT_DIR$/tests/kernels_tests/distance_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="191" column="50" lean-forward="true" selection-start-line="191" selection-start-column="50" selection-end-line="191" selection-end-column="50" />
+        <state relative-caret-position="15">
+          <caret line="1" column="18" lean-forward="true" selection-start-line="1" selection-start-column="18" selection-end-line="1" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/gpr_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="25" selection-start-line="1" selection-start-column="25" selection-end-line="1" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/kernels_tests/optimized_kernels_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1065">
+          <caret line="71" selection-start-line="71" selection-end-line="71" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

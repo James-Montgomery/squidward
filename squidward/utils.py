@@ -6,10 +6,8 @@ used in the other modules of squidward.
 import sys
 import warnings
 import functools
-import multiprocessing
 import numpy as np
 import scipy.linalg as la
-from scipy.special import expit
 
 try:
     # python 2
@@ -21,22 +19,24 @@ except:
 np.seterr(over="raise")
 
 # run np.show_config() to see
-# if numpy is runniing with MKL
+# if numpy is running with MKL
 # backend
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Array Checks
 # ---------------------------------------------------------------------------------------------------------------------
 
+
 def array_equal(alpha, beta):
     """
     Function returns true if two arrays are identical.
     """
-    #if alpha.shape == beta.shape:
-        #if np.all(np.sort(alpha) == np.sort(beta):
-            #return True
-    #return False
+    # if alpha.shape == beta.shape:
+    #     if np.all(np.sort(alpha) == np.sort(beta):
+    #         return True
+    # return False
     return np.array_equal(alpha, beta)
+
 
 def exactly_1d(arr):
     """
@@ -55,6 +55,7 @@ def exactly_1d(arr):
         if arr.shape[1] == 1:
             return arr[:, 0]
     raise Exception("Not appropriate input shape.")
+
 
 def exactly_2d(arr):
     """
@@ -82,6 +83,7 @@ def exactly_2d(arr):
 # Inversions
 # ---------------------------------------------------------------------------------------------------------------------
 
+
 def is_invertible(arr, strength='condition'):
     """
     Function to return True is matrix is safely invertible and
@@ -92,6 +94,7 @@ def is_invertible(arr, strength='condition'):
     if strength == 'rank':
         return arr.shape[0] == arr.shape[1] and np.linalg.matrix_rank(arr) == arr.shape[0]
     return 1.0 / np.linalg.cond(arr) >= sys.float_info.epsilon
+
 
 def check_valid_cov(cov, safe=True):
     """
@@ -177,8 +180,9 @@ class Invert(object):
         return inv_u.dot(inv_l).dot(inv_p)
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Preprocessing
+# Pre-processing
 # ---------------------------------------------------------------------------------------------------------------------
+
 
 def onehot(arr, num_classes=None, safe=True):
     """
@@ -210,12 +214,20 @@ def reversehot(arr):
 # Classification Specific
 # ---------------------------------------------------------------------------------------------------------------------
 
+
 def sigmoid(z):
     """
     Function to return the sigmoid transformation for every
     term in an array.
     """
-    return 1.0 / (1.0 + np.exp(-z))
+    # TODO: find a better way to get this working
+    np.seterr(over="warn")
+    sig = 1.0 / (1.0 + np.exp(-z))
+    sig = np.minimum(sig, 1.0)  # Set upper bound
+    sig = np.maximum(sig, 0.0)  # Set lower bound
+    np.seterr(over="raise")
+    return sig
+
 
 def softmax(z):
     """
@@ -228,6 +240,7 @@ def softmax(z):
 # ---------------------------------------------------------------------------------------------------------------------
 # Miscellaneous
 # ---------------------------------------------------------------------------------------------------------------------
+
 
 def deprecated(func):
     """
