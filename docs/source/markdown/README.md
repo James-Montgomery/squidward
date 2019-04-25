@@ -77,16 +77,7 @@ Many of these examples include visualizations of data and GP models. This will r
 pip install "matplotlib>=2.2.3' "seaborn>=0.9.0"
 ```
 
-Examples:
-* [Using Kernels in Squidward](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Working_With_Kernels.ipynb)
-* [Basic GP Regression](https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Regression.ipynb)
-* [Basic GP Classification](https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Classification.ipynb)
-* [Heteroscedastic Likelihood Variance](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Heteroscedastic_GP.ipynb)
-* [Non-Zero Mean Prior](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/NonZero_Prior_Mean.ipynb)
-
-Tutorials:
-* [Introduction to GPs](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Intro_To_GP.ipynb)
-* [Fitting a GP](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Fitting_A_GP.ipynb)
+Examples and Tutorials can be found on the squidward [docs site](https://james-montgomery.github.io/squidward/)
 
 ## Testing
 

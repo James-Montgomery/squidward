@@ -4,7 +4,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Overview\n",
+    "# Gaussian Process Classification\n",
     "\n",
     "In this notebook we will go over a basic example of how to use Squidward for gaussian process (GP) classification. This is not a tutorial on how GP classification works or should be done; it is merely an example of how to use Squidward for a simple classification problem. Squidward implements GP classification using the one vs. all methodology commonly implemented for logistic regression multi-classification. It is recommended to review the squidward simple regression example before going through this classification example.\n",
     "\n",

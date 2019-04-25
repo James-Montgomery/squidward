@@ -101,6 +101,12 @@
     "\n",
     "This brings us to an important constraint on kernels. Kernels must produce [positive semi-definite](https://math.stackexchange.com/questions/1733726/positive-semi-definite-vs-positive-definite) matrices. This means that for the matrix produced all values along the diagonal have values >= 0. We put this constraint in place to ensure that the kernel will only produce valid covariance matrices. \n",
     "\n",
+    "Kernels must also be symmetric, meaning that the order of the points being compared should not matter:\n",
+    "\n",
+    "$$\n",
+    "k(x_i, x_j) = k(x_j, x_i)\n",
+    "$$\n",
+    "\n",
     "**Author's Note:** In the last section I noted that neural networks and Gaussian processes share a philosophical relationship based on Bayesian neural network behavior in the limit of infinitely many parameters. neural networks also relate to GPs where kernels are concerned. Neural networks can be considered [universal approximators ](https://en.wikipedia.org/wiki/Universal_approximation_theorem). This means that (theoretically) they can approximate arbitrarily complex functions as their number of parameters increases. We can take advantage of this for GPs by using a neural network as a kernel function. Rather than hand picking a kernel function we let the neural network learn a kernel that works for us. We call such a kernel a \"general kernel\"."
    ]
   },

@@ -8,6 +8,23 @@ Welcome to Squidward's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Squidward Overview:
 
    /markdown/README
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Squidward Examples:
+
+   /markdown/examples/Working_With_Kernels
+   /markdown/examples/Regression
+   /markdown/examples/Heteroscedastic_GP
+   /markdown/examples/NonZero_Prior_Mean
+   /markdown/examples/Classification
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Gaussian Process Tutorials:
+
+   /markdown/examples/Intro_To_GP
+   /markdown/examples/Fitting_A_GP

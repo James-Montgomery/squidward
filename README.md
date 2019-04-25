@@ -29,26 +29,26 @@ conda create --name squidward_env python=3.6
 source activate squidward_env
 ```
 
-MKL backend for numpy can help increase performance of this code. Anaconda now comes with mkl by default. To make use of mkl simply set up your virtual environment with anaconda like below.
+Using the MKL backend for numpy can help increase the performance of this code. Anaconda now comes with mkl by default. To make use of mkl simply set up your virtual environment with anaconda like below.
 
 ```
 conda create --name squidward_env python=3.6 anaconda
 source activate squidward_env
 ```
 
-To install the most recent stable version, simply [pip install from pypi](https://pypi.org/project/squidward/)!
+To install the most recent stable version, simply [pip install from pypi](https://pypi.org/project/squidward/)! Squidward is installed and ready to use. 
 
 ```
 pip install squidward
 ```
 
-If you want the latest version, git clone this repository to your local environment instead. To run unit and style tests you will need to clone this repository as tests are not included with the pypi installed package.
+If you want the latest (not necessarily stable) version, git clone this repository to your local environment instead. To run unit and style tests you will need to clone this repository as tests are not included with the pypi installed package.
 
 ```
 git clone https://github.com/looyclark/squidward.git
 ```
 
-Change directory (cd) into the root of the squidward repository. Updates staged for the next stable release will be in the `master` branch and experimental updates will be in branched ending in the suffix "\_dev".
+Change directory (cd) into the root of the squidward repository. Updates staged for the next stable release will be in the `master` branch and experimental updates will be in branches ending in the suffix "\_dev".
 
 ```
 cd ./squidward
@@ -77,16 +77,7 @@ Many of these examples include visualizations of data and GP models. This will r
 pip install "matplotlib>=2.2.3' "seaborn>=0.9.0"
 ```
 
-Examples:
-* [Using Kernels in Squidward](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Working_With_Kernels.ipynb)
-* [Basic GP Regression](https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Regression.ipynb)
-* [Basic GP Classification](https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Classification.ipynb)
-* [Heteroscedastic Likelihood Variance](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Heteroscedastic_GP.ipynb)
-* [Non-Zero Mean Prior](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/NonZero_Prior_Mean.ipynb)
-
-Tutorials:
-* [Introduction to GPs](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Intro_To_GP.ipynb)
-* [Fitting a GP](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Fitting_A_GP.ipynb)
+Examples and Tutorials can be found on the squidward [docs site](https://james-montgomery.github.io/squidward/)
 
 ## Testing
 

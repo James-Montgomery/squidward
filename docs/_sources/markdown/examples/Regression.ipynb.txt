@@ -4,9 +4,9 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Overview\n",
+    "# Gaussian Process Regression\n",
     "\n",
-    "In this notebook we will go over a basic example of how to use Squidward for gaussian process (GP) regression. This is not a tutorial on how GP regression works or should be done; it is merely an example of how to use Squidward for a simple regression problem.\n",
+    "In this notebook we will go over a basic example of how to use Squidward for Gaussian process (GP) regression. This is not a tutorial on how GP regression works or should be done; it is merely an example of how to use Squidward for a simple regression problem.\n",
     "\n",
     "We'll begin by importing the packages needed to go through these examples!"
    ]

@@ -4,7 +4,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Non-Zero Prior Mean for GP Fitting\n",
+    "# Non-Zero Prior Mean for Gaussian Process Regression\n",
     "\n",
     "Often users simply use a GP prior with zero mean. The model formulation is simple and meets most use cases. However, it can be useful to set a non-zero prior mean. This notebook walks through the use of squidward to fit a Gaussian process with a non-zero prior mean. I intentionally use a very informative prior over the covariance of each GP below to highlight the difference between the informative prior mean and the zero prior mean."
    ]
