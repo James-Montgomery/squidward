@@ -66,6 +66,8 @@ class GaussianProcess(object):
             "n_classes must be greater than one."
         assert self.kernel is not None, \
             "Model object must be instantiated with a valid kernel object."
+        if isinstance(self.var_l, (list, np.ndarray)):
+            raise Exception("GP classification does not support heteroscedastic noise.")
         assert self.var_l >= 0.0, \
             "Invalid likelihood variance argument."
 
@@ -150,7 +152,7 @@ class GaussianProcess(object):
         None
         """
         self.x_obs = exactly_2d(x_obs)
-        y_obs = reversehot(y_obs)
+        y_obs = reversehot(y_obs).copy()
         self.y_obs = exactly_2d(y_obs)
 
         if self.n_classes < np.unique(self.y_obs).shape[0]:

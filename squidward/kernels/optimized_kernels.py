@@ -19,7 +19,22 @@ class RBF_Kernel(object):
 
     def __init__(self, lengthscale, var_k):
         """
-        RBF Kernel
+        Description
+        ----------
+        Radial basis function (rbf) kernel.
+
+        Parameters
+        ----------
+        lengthscale: Float
+            The lengthscale of the rbf function that detrmins the radius around
+            which the value of an observation imapcts other observations.
+        var_k: Float
+            The kernel variance or amplitude. This can be thought of as the maximum
+            value that the rbf function can take.
+
+        Returns
+        ----------
+        kernel object
         """
         self.lengthscale = lengthscale
         self.var_k = var_k
@@ -30,7 +45,21 @@ class RBF_Kernel(object):
 
     def __call__(self, alpha, beta):
         """
-        RBF Kernel
+        Description
+        ----------
+        Calls the kernel object.
+
+        Parameters
+        ----------
+        alpha: array_like
+            The first vector to compare.
+        beta: array_like
+            The second vector to compare.
+
+        Returns
+        ----------
+        A array representing the covariance between points in
+        the vectors alpha and beta.
         """
         alpha, beta = exactly_2d(alpha), exactly_2d(beta)
         if alpha.shape[1] != beta.shape[1]:

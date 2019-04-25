@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="20aa2745-ec30-43a3-b175-4e1475474d3b" name="Default Changelist" comment="" />
+    <list default="true" id="20aa2745-ec30-43a3-b175-4e1475474d3b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/examples/Simple_Classification.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/examples/Simple_Regression.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/squidward/gpc.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/gpc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/squidward/gpr.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/gpr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/squidward/kernels/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/kernels/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/squidward/kernels/distance.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/kernels/distance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/squidward/kernels/optimized_kernels.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/kernels/optimized_kernels.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/squidward/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/squidward/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/utils_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/utils_test.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -9,7 +21,17 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/squidward/kernels/distance.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="466">
+              <caret line="102" column="25" selection-start-line="102" selection-start-column="25" selection-end-line="102" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -23,6 +45,13 @@
       <find>check_val</find>
       <find>numeric_types</find>
       <find>np.random</find>
+      <find>print</find>
+      <find>prior_mean</find>
+      <find>show_warnings</find>
+      <find>self.safe</find>
+      <find>check_valid_cov</find>
+      <find>show</find>
+      <find>self.x_obs</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -31,26 +60,29 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/setup.py" />
-        <option value="$PROJECT_DIR$/squidward/gpc.py" />
-        <option value="$PROJECT_DIR$/squidward/utils.py" />
-        <option value="$PROJECT_DIR$/squidward/kernels/kernel_base.py" />
-        <option value="$PROJECT_DIR$/squidward/gpr.py" />
-        <option value="$PROJECT_DIR$/squidward/kernels/optimized_kernels.py" />
-        <option value="$PROJECT_DIR$/squidward/kernels/distance.py" />
-        <option value="$PROJECT_DIR$/tests/utils_test.py" />
         <option value="$PROJECT_DIR$/tests/validation_test.py" />
         <option value="$PROJECT_DIR$/tests/gpc_test.py" />
         <option value="$PROJECT_DIR$/tests/kernels_tests/kernel_base_test.py" />
         <option value="$PROJECT_DIR$/tests/kernels_tests/distance_test.py" />
         <option value="$PROJECT_DIR$/tests/gpr_test.py" />
         <option value="$PROJECT_DIR$/tests/kernels_tests/optimized_kernels_test.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/setup.py" />
+        <option value="$PROJECT_DIR$/squidward/utils.py" />
+        <option value="$PROJECT_DIR$/squidward/kernels/kernel_base.py" />
+        <option value="$PROJECT_DIR$/squidward/kernels/optimized_kernels.py" />
+        <option value="$PROJECT_DIR$/squidward/kernels/__init__.py" />
+        <option value="$PROJECT_DIR$/tests/utils_test.py" />
+        <option value="$PROJECT_DIR$/squidward/gpc.py" />
+        <option value="$PROJECT_DIR$/squidward/gpr.py" />
+        <option value="$PROJECT_DIR$/squidward/kernels/distance.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="1">
+    <option name="x" value="709" />
     <option name="y" value="23" />
-    <option name="width" value="840" />
+    <option name="width" value="971" />
     <option name="height" value="930" />
   </component>
   <component name="ProjectView">
@@ -65,6 +97,22 @@
             <path>
               <item name="squidward" type="b2602c69:ProjectViewProjectNode" />
               <item name="squidward" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="squidward" type="b2602c69:ProjectViewProjectNode" />
+              <item name="squidward" type="462c0819:PsiDirectoryNode" />
+              <item name="squidward" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="squidward" type="b2602c69:ProjectViewProjectNode" />
+              <item name="squidward" type="462c0819:PsiDirectoryNode" />
+              <item name="squidward" type="462c0819:PsiDirectoryNode" />
+              <item name="kernels" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="squidward" type="b2602c69:ProjectViewProjectNode" />
+              <item name="squidward" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -216,10 +264,11 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1680" height="930" extended-state="6" />
+    <frame x="709" y="23" width="971" height="930" extended-state="1" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.14767933" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.25789472" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
@@ -227,7 +276,7 @@
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" />
       <window_info anchor="bottom" id="Version Control" order="5" />
-      <window_info anchor="bottom" id="Run" order="6" visible="true" weight="0.33293557" />
+      <window_info anchor="bottom" id="Run" order="6" weight="0.33293557" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -241,76 +290,8 @@
     <entry file="file://$PROJECT_DIR$/squidward/validation.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/setup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="6" selection-start-line="24" selection-start-column="6" selection-end-line="24" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/squidward/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="80" selection-start-line="80" selection-end-line="80" />
-          <folding>
-            <element signature="e#123#133#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/squidward/gpr.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="16" lean-forward="true" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
-          <folding>
-            <element signature="e#166#184#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/squidward/gpc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3705">
-          <caret line="247" column="34" selection-start-line="247" selection-start-column="34" selection-end-line="247" selection-end-column="34" />
-          <folding>
-            <element signature="e#174#192#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/squidward/kernels/kernel_base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/squidward/kernels/distance.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="53" column="20" selection-start-line="53" selection-start-column="20" selection-end-line="53" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/kernels_tests/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/squidward/kernels/optimized_kernels.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="28" column="81" lean-forward="true" selection-start-line="28" selection-start-column="29" selection-end-line="28" selection-end-column="81" />
-          <folding>
-            <element signature="e#149#167#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/utils_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/validation_test.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -346,13 +327,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/gpr_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="25" selection-start-line="1" selection-start-column="25" selection-end-line="1" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/kernels_tests/optimized_kernels_test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1065">
@@ -363,9 +337,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_config.yml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/_config.yml" />
     <entry file="file://$PROJECT_DIR$/.coverage">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -381,8 +353,99 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="38" lean-forward="true" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/squidward/kernels/kernel_base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="268">
+          <caret line="68" column="74" selection-start-line="68" selection-start-column="74" selection-end-line="68" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/squidward/kernels/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
-          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+          <caret line="7" column="42" selection-start-line="7" selection-start-column="42" selection-end-line="7" selection-end-column="42" />
+          <folding>
+            <element signature="e#89#125#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/squidward/kernels/optimized_kernels.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="46" column="8" selection-start-line="46" selection-start-column="8" selection-end-line="62" selection-end-column="11" />
+          <folding>
+            <element signature="e#149#167#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/gpr_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3900">
+          <caret line="260" column="94" selection-start-line="260" selection-start-column="94" selection-end-line="260" selection-end-column="94" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/utils_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="145" column="56" lean-forward="true" selection-start-line="145" selection-start-column="56" selection-end-line="145" selection-end-column="56" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/squidward/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="13" />
+          <folding>
+            <element signature="e#123#133#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/squidward/gpc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="277">
+          <caret line="153" column="38" selection-start-line="153" selection-start-column="38" selection-end-line="153" selection-end-column="38" />
+          <folding>
+            <element signature="e#174#192#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/squidward/gpr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="329" column="39" selection-start-line="329" selection-start-column="39" selection-end-line="329" selection-end-column="39" />
+          <folding>
+            <element signature="e#166#184#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/squidward/kernels/distance.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="466">
+          <caret line="102" column="25" selection-start-line="102" selection-start-column="25" selection-end-line="102" selection-end-column="25" />
         </state>
       </provider>
     </entry>

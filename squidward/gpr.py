@@ -6,6 +6,7 @@ model can be created by calling one of these classes to create a model object.
 import numpy as np
 from squidward.utils import Invert, exactly_1d, exactly_2d, check_valid_cov
 
+# TODO: Add tests for non-zero prior mean
 # TODO: set up logging options
 # TODO: bigfloat
 # https://stackoverflow.com/questions/9559346/deal-with-overflow-in-exp-using-numpy/9559478
@@ -21,7 +22,7 @@ np.seterr(over="raise")
 class GaussianProcessBase(object):
     """Base Class Gaussian Process Regression"""
 
-    def __init__(self, kernel=None, var_l=1e-15, seed=None, show_warnings=True):
+    def __init__(self, kernel=None, prior_mean=None, var_l=1e-15, seed=None, show_warnings=True):
         """
         Description
         ----------
@@ -33,6 +34,10 @@ class GaussianProcessBase(object):
             An object with an associated function k that takes in 2 arrays and
             returns a valid K matrix. Valid K matricies are positive
             semi-definite and not singular.
+        prior_mean: function
+            The mean of the GP prior. Defaults to a zero mean GP. Should be a function
+            that takes in a features array x and returns a prediction array y. The output
+            should be an (n, 1) numpy array.
         var_l: float or array_like
             The likelihood variance of the process. Takes a scalar for homoscedastic
             regression and an array_like for heteroscedastic regression. If an array,
@@ -53,11 +58,19 @@ class GaussianProcessBase(object):
         self.kernel = kernel
         self.var_l = var_l
 
+        # Gaussian Processes for Machine Learning Eq 2.7
+        self.prior_mean = prior_mean
+
         self.x_obs = None
         self.y_obs = None
 
         self.K = None
         self.fitted = False
+
+        # Assertions to ensure that inputs are of expected types
+
+        assert (self.prior_mean is None) or callable(self.prior_mean), \
+            "Invalid prior mean function."
 
         assert isinstance(self.var_l, (int, float, list, np.ndarray)), \
             "Likelihood variance argument must be a positive integer, " \
@@ -124,8 +137,13 @@ class GaussianProcessBase(object):
             gaussian process posterior. If return_cov is True then returns the
             full covariance matrix of the gaussian process posterior instead.
         """
-        # update to take into account constant kernels
-        mean = np.zeros(x_test.shape[0]).reshape(-1, 1)
+
+        if self.prior_mean is None:
+            mean = np.zeros(x_test.shape[0]).reshape(-1, 1)
+        else:
+            mean = exactly_1d(self.prior_mean(self.x_obs))
+        mean = exactly_2d(mean)
+
         cov = self.kernel(x_test, x_test)
 
         check_valid_cov(cov, self.safe)
@@ -177,7 +195,10 @@ class GaussianProcessBase(object):
             samples.
         """
         self.x_obs = exactly_2d(x_obs)
-        self.y_obs = exactly_2d(y_obs)
+        self.y_obs = exactly_2d(y_obs).copy()
+
+        if self.prior_mean is not None:
+            self.y_obs -= exactly_2d(exactly_1d(self.prior_mean(self.x_obs)))
 
         if isinstance(self.var_l, np.ndarray):
             assert self.var_l.shape[0] == self.y_obs.shape[0], \
@@ -263,8 +284,8 @@ class GaussianProcessInversion(GaussianProcessBase):
         ----------
         None
         """
-        K = self._fit(x_obs, y_obs)
-        self.K = self.inv(K)
+        self.K = self._fit(x_obs, y_obs)
+        self.inv_K = self.inv(self.K)
         self.fitted = True
 
     def posterior_predict(self, x_test, return_cov=False):
@@ -294,15 +315,21 @@ class GaussianProcessInversion(GaussianProcessBase):
             gaussian process posterior. If return_cov is True then returns the
             full covariance matrix of the gaussian process posterior instead.
         """
-        assert self.fitted and (self.K is not None), \
+        assert self.fitted and (self.inv_K is not None), \
             "Please fit the model before trying to make posterior predictions!"
+
+        x_test = exactly_2d(x_test)
 
         # Gaussian Processes for Machine Learning Eq 2.18/2.19
         K_s = self.kernel(x_test, self.x_obs)
         K_ss = self.kernel(x_test, x_test)
 
-        mean = K_s.dot(self.K).dot(self.y_obs)
-        cov = K_ss - np.dot(np.dot(K_s, self.K), K_s.T)
+        mean = K_s.dot(self.inv_K).dot(self.y_obs)
+        cov = K_ss - np.dot(np.dot(K_s, self.inv_K), K_s.T)
+
+        if self.prior_mean is not None:
+            mean += self.prior_mean(x_test)
+        mean = exactly_2d(mean)
 
         check_valid_cov(cov, self.safe)
         if return_cov:
@@ -396,6 +423,8 @@ class GaussianProcessCholesky(GaussianProcessBase):
         assert self.fitted and (self.alpha is not None) and (self.L is not None), \
             "Please fit the model before trying to make posterior predictions!"
 
+        x_test = exactly_2d(x_test)
+
         # Gaussian Processes for Machine Learning Eq 2.18/2.19
         K_ = self.kernel(self.x_obs, x_test)
         K_ss = self.kernel(x_test, x_test)
@@ -403,6 +432,10 @@ class GaussianProcessCholesky(GaussianProcessBase):
 
         mean = np.dot(K_.transpose(), self.alpha)
         cov = K_ss - np.dot(V.transpose(), V)
+
+        if self.prior_mean is not None:
+            mean += self.prior_mean(x_test)
+        mean = exactly_2d(mean)
 
         check_valid_cov(cov, self.safe)
         if return_cov:

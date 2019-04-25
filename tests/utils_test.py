@@ -149,6 +149,8 @@ class UtilitiesTestCase(unittest.TestCase):
             utils.check_valid_cov(arr)
             assert "Cov has high condition. Inverting matrix may result in errors." in str(w[-1].message)
 
+        # TODO: check show_warnings argument actually silences warnings
+
     def test_6(self):
         """
         Invert

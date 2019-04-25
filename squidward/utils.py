@@ -43,10 +43,11 @@ def exactly_1d(arr):
     Function to ensure that an array has a most 1 dimension. Used to
     formalize output / input dimensions for certain functions.
     """
-    arr = np.asarray(arr)
-    if not arr.shape:
+    if not isinstance(arr, np.ndarray):
         if isinstance(arr, numeric_types):
             return np.array([arr])
+        else:
+            raise Exception("Not appropriate input type.")
     if len(arr.shape) == 1:
         return arr
     if len(arr.shape) == 2:

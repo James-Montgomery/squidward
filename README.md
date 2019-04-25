@@ -130,19 +130,5 @@ pylint squidward --disable=invalid-name
 
 ## Acknowledgments
 
-* A big thanks to Keegan Hines and Josh Touyz who introduced me to Gaussian Processes
-* Many of the methods/implementations in this package are based off of [Gaussian Processes for Machine Learning](http://www.gaussianprocess.org/gpml/) chapters 2 and 3.
-* Many of the native kernels supported by squidward are largely drawn from the [kernel cookbook](https://www.cs.toronto.edu/~duvenaud/cookbook/) by David Duvenaud.
-
-## Alternative Gaussian Process Packages
-
-This is hardly the only gaussian process package out there. Here are a few alternatives in case you dislike this package.
-
-* [GPyTorch](https://gpytorch.ai/)
-* [GPy](https://gpy.readthedocs.io/en/deploy/)
-* [GPFlow](https://gpflow.readthedocs.io/en/develop/)
-* [Tensorflow Probability](https://github.com/tensorflow/probability/blob/master/tensorflow_probability/examples/jupyter_notebooks/Gaussian_Process_Regression_In_TFP.ipynb)
-* [Sklearn](https://scikit-learn.org/stable/modules/gaussian_process.html)
-* [George](https://george.readthedocs.io/en/latest/tutorials/first/)
-* [Pymc3](https://docs.pymc.io/api/gp.html)
-* [Stan](https://betanalpha.github.io/assets/case_studies/gp_part1/part1.html)
+A big thanks to Keegan Hines and Josh Touyz who introduced me to Gaussian Processes. Additionally, a big thanks to Jason Wittenbach and
+Mack Sweeney who have helped guide me along my journey implementing Bayesian models from scratch. 
