@@ -134,7 +134,17 @@ Mack Sweeney who have helped guide me along my journey implementing Bayesian mod
 
 [//]: # (Comment Section)
 
-[//]: # (Updated the Github Docs)
+[//]: # (Update the Github Docs)
 [//]: # (for further help: https://github.com/James-Montgomery/misc_musings/tree/master/sphinx/docs)
 [//]: # (cd ./docs)
 [//]: # (make github)
+
+[//]: # (TODOs)
+[//]: # (1. Logprob at fit)
+[//]: # (2. Add more distance measures)
+[//]: # (3. Add more optimized kernels)
+[//]: # (4. Update Testing)
+[//]: # (5. Update Styling)
+
+[//]: # (6. Student T Process)
+[//]: # (7. Multi-Output)
