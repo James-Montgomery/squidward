@@ -86,7 +86,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#installing-squidward">Installing squidward</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples-tutorials">Examples / Tutorials</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a><ul>
@@ -96,7 +96,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#acknowledgments">Acknowledgments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#alternative-gaussian-process-packages">Alternative Gaussian Process Packages</a></li>
 </ul>
 </li>
 </ul>
@@ -200,7 +199,7 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">looyclark</span><span class="o">/</span><span class="n">squidward</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
-<p>Change directory (cd) into the root of the squidward repository. Updates staged for the next stable release will be in the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch and experimental updates will be in the <code class="docutils literal notranslate"><span class="pre">dev_branch</span></code> branch of this repo.</p>
+<p>Change directory (cd) into the root of the squidward repository. Updates staged for the next stable release will be in the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch and experimental updates will be in branched ending in the suffix “_dev”.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">./</span><span class="n">squidward</span>
 </pre></div>
 </div>
@@ -214,16 +213,25 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="examples-tutorials">
+<h3>Examples / Tutorials<a class="headerlink" href="#examples-tutorials" title="Permalink to this headline">¶</a></h3>
 <p>I’ve included basic examples of how to use squidward to get new users started building gaussian process models with this package.</p>
 <p>Many of these examples include visualizations of data and GP models. This will require the visualization packages below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="s2">&quot;matplotlib&gt;=2.2.3&#39; &quot;</span><span class="n">seaborn</span><span class="o">&gt;=</span><span class="mf">0.9</span><span class="o">.</span><span class="mi">0</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
+<p>Examples:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Regression.ipynb">Simple Regression</a></li>
-<li><a class="reference external" href="https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Classification.ipynb">Simple Classification</a></li>
+<li><a class="reference external" href="https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Working_With_Kernels.ipynb">Using Kernels in Squidward</a></li>
+<li><a class="reference external" href="https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Regression.ipynb">Basic GP Regression</a></li>
+<li><a class="reference external" href="https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Classification.ipynb">Basic GP Classification</a></li>
+<li><a class="reference external" href="https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Heteroscedastic_GP.ipynb">Heteroscedastic Likelihood Variance</a></li>
+<li><a class="reference external" href="https://github.com/James-Montgomery/squidward/blob/master/docs/examples/NonZero_Prior_Mean.ipynb">Non-Zero Mean Prior</a></li>
+</ul>
+<p>Tutorials:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Intro_To_GP.ipynb">Introduction to GPs</a></li>
+<li><a class="reference external" href="https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Fitting_A_GP.ipynb">Fitting a GP</a></li>
 </ul>
 </div>
 </div>
@@ -268,25 +276,8 @@
 </div>
 <div class="section" id="acknowledgments">
 <h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>A big thanks to Keegan Hines and Josh Touyz who introduced me to Gaussian Processes</li>
-<li>Many of the methods/implementations in this package are based off of <a class="reference external" href="http://www.gaussianprocess.org/gpml/">Gaussian Processes for Machine Learning</a> chapters 2 and 3.</li>
-<li>Many of the native kernels supported by squidward are largely drawn from the <a class="reference external" href="https://www.cs.toronto.edu/%7Eduvenaud/cookbook/">kernel cookbook</a> by David Duvenaud.</li>
-</ul>
-</div>
-<div class="section" id="alternative-gaussian-process-packages">
-<h2>Alternative Gaussian Process Packages<a class="headerlink" href="#alternative-gaussian-process-packages" title="Permalink to this headline">¶</a></h2>
-<p>This is hardly the only gaussian process package out there. Here are a few alternatives in case you dislike this package.</p>
-<ul class="simple">
-<li><a class="reference external" href="https://gpytorch.ai/">GPyTorch</a></li>
-<li><a class="reference external" href="https://gpy.readthedocs.io/en/deploy/">GPy</a></li>
-<li><a class="reference external" href="https://gpflow.readthedocs.io/en/develop/">GPFlow</a></li>
-<li><a class="reference external" href="https://github.com/tensorflow/probability/blob/master/tensorflow_probability/examples/jupyter_notebooks/Gaussian_Process_Regression_In_TFP.ipynb">Tensorflow Probability</a></li>
-<li><a class="reference external" href="https://scikit-learn.org/stable/modules/gaussian_process.html">Sklearn</a></li>
-<li><a class="reference external" href="https://george.readthedocs.io/en/latest/tutorials/first/">George</a></li>
-<li><a class="reference external" href="https://docs.pymc.io/api/gp.html">Pymc3</a></li>
-<li><a class="reference external" href="https://betanalpha.github.io/assets/case_studies/gp_part1/part1.html">Stan</a></li>
-</ul>
+<p>A big thanks to Keegan Hines and Josh Touyz who introduced me to Gaussian Processes. Additionally, a big thanks to Jason Wittenbach and
+Mack Sweeney who have helped guide me along my journey implementing Bayesian models from scratch.</p>
 </div>
 </div>
 

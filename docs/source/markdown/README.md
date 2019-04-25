@@ -48,7 +48,7 @@ If you want the latest version, git clone this repository to your local environm
 git clone https://github.com/looyclark/squidward.git
 ```
 
-Change directory (cd) into the root of the squidward repository. Updates staged for the next stable release will be in the `master` branch and experimental updates will be in the `dev_branch` branch of this repo.
+Change directory (cd) into the root of the squidward repository. Updates staged for the next stable release will be in the `master` branch and experimental updates will be in branched ending in the suffix "\_dev".
 
 ```
 cd ./squidward
@@ -67,7 +67,7 @@ source deactivate
 conda env remove -n squidward_env
 ```
 
-### Examples
+### Examples / Tutorials
 
 I've included basic examples of how to use squidward to get new users started building gaussian process models with this package.
 
@@ -77,8 +77,16 @@ Many of these examples include visualizations of data and GP models. This will r
 pip install "matplotlib>=2.2.3' "seaborn>=0.9.0"
 ```
 
-* [Simple Regression](https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Regression.ipynb)
-* [Simple Classification](https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Classification.ipynb)
+Examples:
+* [Using Kernels in Squidward](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Working_With_Kernels.ipynb)
+* [Basic GP Regression](https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Regression.ipynb)
+* [Basic GP Classification](https://github.com/looyclark/squidward/blob/master/docs/examples/Simple_Classification.ipynb)
+* [Heteroscedastic Likelihood Variance](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Heteroscedastic_GP.ipynb)
+* [Non-Zero Mean Prior](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/NonZero_Prior_Mean.ipynb)
+
+Tutorials:
+* [Introduction to GPs](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Intro_To_GP.ipynb)
+* [Fitting a GP](https://github.com/James-Montgomery/squidward/blob/master/docs/examples/Fitting_A_GP.ipynb)
 
 ## Testing
 
@@ -130,19 +138,12 @@ pylint squidward --disable=invalid-name
 
 ## Acknowledgments
 
-* A big thanks to Keegan Hines and Josh Touyz who introduced me to Gaussian Processes
-* Many of the methods/implementations in this package are based off of [Gaussian Processes for Machine Learning](http://www.gaussianprocess.org/gpml/) chapters 2 and 3.
-* Many of the native kernels supported by squidward are largely drawn from the [kernel cookbook](https://www.cs.toronto.edu/~duvenaud/cookbook/) by David Duvenaud.
+A big thanks to Keegan Hines and Josh Touyz who introduced me to Gaussian Processes. Additionally, a big thanks to Jason Wittenbach and
+Mack Sweeney who have helped guide me along my journey implementing Bayesian models from scratch.
 
-## Alternative Gaussian Process Packages
+[//]: # (Comment Section)
 
-This is hardly the only gaussian process package out there. Here are a few alternatives in case you dislike this package.
-
-* [GPyTorch](https://gpytorch.ai/)
-* [GPy](https://gpy.readthedocs.io/en/deploy/)
-* [GPFlow](https://gpflow.readthedocs.io/en/develop/)
-* [Tensorflow Probability](https://github.com/tensorflow/probability/blob/master/tensorflow_probability/examples/jupyter_notebooks/Gaussian_Process_Regression_In_TFP.ipynb)
-* [Sklearn](https://scikit-learn.org/stable/modules/gaussian_process.html)
-* [George](https://george.readthedocs.io/en/latest/tutorials/first/)
-* [Pymc3](https://docs.pymc.io/api/gp.html)
-* [Stan](https://betanalpha.github.io/assets/case_studies/gp_part1/part1.html)
+[//]: # (Updated the Github Docs)
+[//]: # (for further help: https://github.com/James-Montgomery/misc_musings/tree/master/sphinx/docs)
+[//]: # (cd ./docs)
+[//]: # (make github)
