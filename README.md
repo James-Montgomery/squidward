@@ -74,7 +74,7 @@ I've included basic examples of how to use squidward to get new users started bu
 Many of these examples include visualizations of data and GP models. Running these examples locally will require the visualization packages below:
 
 ```
-pip install "matplotlib>=2.2.3' "seaborn>=0.9.0"
+pip install "matplotlib>=2.2.3" "seaborn>=0.9.0"
 ```
 
 Examples and Tutorials can be found on the squidward [docs site](https://james-montgomery.github.io/squidward/)
