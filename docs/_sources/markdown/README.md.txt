@@ -29,26 +29,26 @@ conda create --name squidward_env python=3.6
 source activate squidward_env
 ```
 
-MKL backend for numpy can help increase performance of this code. Anaconda now comes with mkl by default. To make use of mkl simply set up your virtual environment with anaconda like below.
+Using the MKL backend for numpy can help increase the performance of this code. Anaconda now comes with mkl by default. To make use of mkl simply set up your virtual environment with anaconda like below.
 
 ```
 conda create --name squidward_env python=3.6 anaconda
 source activate squidward_env
 ```
 
-To install the most recent stable version, simply [pip install from pypi](https://pypi.org/project/squidward/)!
+To install the most recent stable version, simply [pip install from pypi](https://pypi.org/project/squidward/)! Squidward is installed and ready to use. 
 
 ```
 pip install squidward
 ```
 
-If you want the latest version, git clone this repository to your local environment instead. To run unit and style tests you will need to clone this repository as tests are not included with the pypi installed package.
+If you want the latest (not necessarily stable) version, git clone this repository to your local environment instead. To run unit and style tests you will need to clone this repository as tests are not included with the pypi installed package.
 
 ```
 git clone https://github.com/looyclark/squidward.git
 ```
 
-Change directory (cd) into the root of the squidward repository. Updates staged for the next stable release will be in the `master` branch and experimental updates will be in branched ending in the suffix "\_dev".
+Change directory (cd) into the root of the squidward repository. Updates staged for the next stable release will be in the `master` branch and experimental updates will be in branches ending in the suffix "\_dev".
 
 ```
 cd ./squidward
