@@ -26,7 +26,7 @@ Welcome to Squidward's documentation!
    :maxdepth: 1
    :caption: Gaussian Process Tutorials:
 
-   /markdown/examples/Intro_To_GP
+   /markdown/examples/Intro_to_GP
    /markdown/examples/Fitting_A_GP
 
 Jupyter notebooks with code for all Examples and Tutorials can be found HERE_.

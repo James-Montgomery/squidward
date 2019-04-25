@@ -97,14 +97,14 @@
 <p class="caption"><span class="caption-text">Gaussian Process Tutorials:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">An Introduction to Gaussian Processes Models</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Who-Is-This-Notebook-Intended-For?">Who Is This Notebook Intended For?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#What-Is-A-Gaussian-Process?">What Is A Gaussian Process?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#What-is-a-Gaussian-Process-Model?">What is a Gaussian Process Model?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#What-Is-The-Deal-With-Kernels?">What Is The Deal With Kernels?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Advantages-Of-Gaussian-Process-Models">Advantages Of Gaussian Process Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Disadvantages-Of-Gaussian-Process-Models">Disadvantages Of Gaussian Process Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#What-Have-We-Learned?">What Have We Learned?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Where-To-Learn-More">Where To Learn More</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#who-is-this-notebook-intended-for">Who Is This Notebook Intended For?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-a-gaussian-process">What Is A Gaussian Process?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-a-gaussian-process-model">What is a Gaussian Process Model?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-the-deal-with-kernels">What Is The Deal With Kernels?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advantages-of-gaussian-process-models">Advantages Of Gaussian Process Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#disadvantages-of-gaussian-process-models">Disadvantages Of Gaussian Process Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-have-we-learned">What Have We Learned?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#where-to-learn-more">Where To Learn More</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Fitting_A_GP.html">Fitting A Gaussian Process</a></li>
@@ -159,7 +159,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/markdown/examples/Intro_To_GP.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/markdown/examples/Intro_to_GP.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -174,204 +174,6 @@
             
   
 <style>
-/* CSS for nbsphinx extension */
-
-/* remove conflicting styling from Sphinx themes */
-div.nbinput,
-div.nbinput div.prompt,
-div.nbinput div.input_area,
-div.nbinput div[class*=highlight],
-div.nbinput div[class*=highlight] pre,
-div.nboutput,
-div.nbinput div.prompt,
-div.nbinput div.output_area,
-div.nboutput div[class*=highlight],
-div.nboutput div[class*=highlight] pre {
-    background: none;
-    border: none;
-    padding: 0 0;
-    margin: 0;
-    box-shadow: none;
-}
-
-/* avoid gaps between output lines */
-div.nboutput div[class*=highlight] pre {
-    line-height: normal;
-}
-
-/* input/output containers */
-div.nbinput,
-div.nboutput {
-    display: -webkit-flex;
-    display: flex;
-    align-items: flex-start;
-    margin: 0;
-    width: 100%;
-}
-@media (max-width: 540px) {
-    div.nbinput,
-    div.nboutput {
-        flex-direction: column;
-    }
-}
-
-/* input container */
-div.nbinput {
-    padding-top: 5px;
-}
-
-/* last container */
-div.nblast {
-    padding-bottom: 5px;
-}
-
-/* input prompt */
-div.nbinput div.prompt pre {
-    color: #307FC1;
-}
-
-/* output prompt */
-div.nboutput div.prompt pre {
-    color: #BF5B3D;
-}
-
-/* all prompts */
-div.nbinput div.prompt,
-div.nboutput div.prompt {
-    min-width: 5ex;
-    padding-top: 0.4em;
-    padding-right: 0.4em;
-    text-align: right;
-    flex: 0;
-}
-@media (max-width: 540px) {
-    div.nbinput div.prompt,
-    div.nboutput div.prompt {
-        text-align: left;
-        padding: 0.4em;
-    }
-    div.nboutput div.prompt.empty {
-        padding: 0;
-    }
-}
-
-/* disable scrollbars on prompts */
-div.nbinput div.prompt pre,
-div.nboutput div.prompt pre {
-    overflow: hidden;
-}
-
-/* input/output area */
-div.nbinput div.input_area,
-div.nboutput div.output_area {
-    padding: 0.4em;
-    -webkit-flex: 1;
-    flex: 1;
-    overflow: auto;
-}
-@media (max-width: 540px) {
-    div.nbinput div.input_area,
-    div.nboutput div.output_area {
-        width: 100%;
-    }
-}
-
-/* input area */
-div.nbinput div.input_area {
-    border: 1px solid #e0e0e0;
-    border-radius: 2px;
-    background: #f5f5f5;
-}
-
-/* override MathJax center alignment in output cells */
-div.nboutput div[class*=MathJax] {
-    text-align: left !important;
-}
-
-/* override sphinx.ext.imgmath center alignment in output cells */
-div.nboutput div.math p {
-    text-align: left;
-}
-
-/* standard error */
-div.nboutput div.output_area.stderr {
-    background: #fdd;
-}
-
-/* ANSI colors */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-default-inverse-fg { color: #FFFFFF; }
-.ansi-default-inverse-bg { background-color: #000000; }
-
-.ansi-bold { font-weight: bold; }
-.ansi-underline { text-decoration: underline; }
-
-/* Some additional styling taken form the Jupyter notebook CSS */
-div.rendered_html table {
-  border: none;
-  border-collapse: collapse;
-  border-spacing: 0;
-  color: black;
-  font-size: 12px;
-  table-layout: fixed;
-}
-div.rendered_html thead {
-  border-bottom: 1px solid black;
-  vertical-align: bottom;
-}
-div.rendered_html tr,
-div.rendered_html th,
-div.rendered_html td {
-  text-align: right;
-  vertical-align: middle;
-  padding: 0.5em 0.5em;
-  line-height: normal;
-  white-space: normal;
-  max-width: none;
-  border: none;
-}
-div.rendered_html th {
-  font-weight: bold;
-}
-div.rendered_html tbody tr:nth-child(odd) {
-  background: #f5f5f5;
-}
-div.rendered_html tbody tr:hover {
-  background: rgba(66, 165, 245, 0.2);
-}
-
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
@@ -394,21 +196,19 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="An-Introduction-to-Gaussian-Processes-Models">
-<h1>An Introduction to Gaussian Processes Models<a class="headerlink" href="#An-Introduction-to-Gaussian-Processes-Models" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Who-Is-This-Notebook-Intended-For?">
-<h2>Who Is This Notebook Intended For?<a class="headerlink" href="#Who-Is-This-Notebook-Intended-For?" title="Permalink to this headline">¶</a></h2>
-<p>Many machine learning engineers have never even heard of a Gaussian process model. This is a real shame as they are quite interesting models that can be very useful in a variety of situations from Digital Marketing, Oil Drilling, Robotics, Aerospace Design, and Optimization. Gaussian processes are a relatively old methodology being used as far back as 1880 by astronomer T. N. Thiele and gaining populatrity in the 1970’s in geostatistics under the name
-<a class="reference external" href="https://en.wikipedia.org/wiki/Kriging">kriging</a> (pronaunced “kree-ging”).</p>
+<div class="section" id="an-introduction-to-gaussian-processes-models">
+<h1>An Introduction to Gaussian Processes Models<a class="headerlink" href="#an-introduction-to-gaussian-processes-models" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="who-is-this-notebook-intended-for">
+<h2>Who Is This Notebook Intended For?<a class="headerlink" href="#who-is-this-notebook-intended-for" title="Permalink to this headline">¶</a></h2>
+<p>Many machine learning engineers have never even heard of a Gaussian process model. This is a real shame as they are quite interesting models that can be very useful in a variety of situations from Digital Marketing, Oil Drilling, Robotics, Aerospace Design, and Optimization. Gaussian processes are a relatively old methodology being used as far back as 1880 by astronomer T. N. Thiele and gaining populatrity in the 1970’s in geostatistics under the name <a class="reference external" href="https://en.wikipedia.org/wiki/Kriging">kriging</a> (pronaunced “kree-ging”).</p>
 <p>This notebook is meant to be a quick and dirty introduction to Gaussian process models for those unfamiliar with the topic. I assume some basic familiarity with machine learning and Bayesian statistics. We won’t too deep into the math or the nitty gritty, but at the end of this crash course I provide links to much more in-depth and rigorous sources of information for those readers wishing to dive deeper.</p>
 <p>This notebook is simply meant to whet the appetite of those interested in using Gaussian process models. I’ve found that there are very few good introductory materials on the subject and that many new learners get quickly discouraged by the steep learning curve of the subject.</p>
 </div>
-<div class="section" id="What-Is-A-Gaussian-Process?">
-<h2>What Is A Gaussian Process?<a class="headerlink" href="#What-Is-A-Gaussian-Process?" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-a-gaussian-process">
+<h2>What Is A Gaussian Process?<a class="headerlink" href="#what-is-a-gaussian-process" title="Permalink to this headline">¶</a></h2>
 <p>Before we get into Gaussian process models, we should first address what a Gaussian process is.</p>
 <p>A <a class="reference external" href="https://www.itl.nist.gov/div898/handbook/pmd/section2/pmd211.htm">process</a> is simply a phenomena that occurs in the world that one might desire to model. For example, if I were to start flipping coins and recording the results I would consider the flipping of the coins to be a process. This is sometimes referred to as the “data generating process”.</p>
-<p>This process can be exchangeable or non-exchangeable, meaning that the ordering of samples taken from the process may or may not matter. For example, if I flip a coin many times the flips are almost certainly independent random variables and so the order of the observations does not matter. This means that the data is exchangeable. However, a time series problems such as modeling cards drawn from a deck without replacement requires that I keep track of the order of the observations because they
-are dependent on each other (once I have drawn the king of hearts I will never draw it again). This kind of data is non-exchangeable.</p>
+<p>This process can be exchangeable or non-exchangeable, meaning that the ordering of samples taken from the process may or may not matter. For example, if I flip a coin many times the flips are almost certainly independent random variables and so the order of the observations does not matter. This means that the data is exchangeable. However, a time series problems such as modeling cards drawn from a deck without replacement requires that I keep track of the order of the observations because they are dependent on each other (once I have drawn the king of hearts I will never draw it again). This kind of data is non-exchangeable.</p>
 <p>A process is a <a class="reference external" href="https://en.wikipedia.org/wiki/Gaussian_process#Gaussian_process_prediction,_or_kriging">Gaussian process</a> if any collection of finite random variables drawn from the process is Gaussian distributed. A single sampled random variable would be a univariate Gaussian while a collection of sampled random variables would be a multivariate Gaussian.</p>
 <p>Our coin flipping example is obviously not a Gaussian process. Any individual coin flip is <a class="reference external" href="https://en.wikipedia.org/wiki/Bernoulli_distribution">Bernoulli distributed</a> and any collection of coin flips is <a class="reference external" href="https://en.wikipedia.org/wiki/Binomial_distribution">Binomial distributed</a>. We would call the coin flips a <a class="reference external" href="https://en.wikipedia.org/wiki/Bernoulli_process">Bernoulli process</a>.</p>
 <p>Modeling the relationship of height by age in a population that is homogeneous with respect to gender and ethnicity tends to be a Gaussian process. This is because <a class="reference external" href="http://faculty.virginia.edu/ASTR3130/lectures/error2/error2.html">heights at any given age tend to be Gaussian distributed</a> and so modeling heights across ages tends to be a Gaussian process.</p>
@@ -418,8 +218,8 @@ are dependent on each other (once I have drawn the king of hearts I will never d
 <p>Finally, there is the <a class="reference external" href="https://en.wikipedia.org/wiki/Dirichlet_process">Dirichlet process</a>, commonly used in topic modeling to represent uncertainty over distributions.</p>
 <p>Each of these processes could be a chapter (or even a book) in and of themselves. They are each unique in their own way and are used in very different ways. We focus here on Gaussian processes and provide links for learning more about the other processes mentioned above.</p>
 </div>
-<div class="section" id="What-is-a-Gaussian-Process-Model?">
-<h2>What is a Gaussian Process Model?<a class="headerlink" href="#What-is-a-Gaussian-Process-Model?" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-a-gaussian-process-model">
+<h2>What is a Gaussian Process Model?<a class="headerlink" href="#what-is-a-gaussian-process-model" title="Permalink to this headline">¶</a></h2>
 <p>First of all, I will mention that the term “Gaussian process” and “Gaussian process model” are often used interchangeably. A Gaussian process model is a model where the posterior belief about the data generating process is a Gaussian process. This means that every point prediction that the model makes (the marginal posterior at that point) is a one dimensional Gaussian. Additionally, any collection of predictions can be represented by a multivariate Gaussian distribution.</p>
 <p>While the marginal posterior at any point in feature space is a one dimensional Gaussian distribution, the entire posterior is a Gaussian process. This means that the posterior describes a distribution over functions.</p>
 <p>This may seem confusing to some, but is actually a very common concept in Bayesian statistics. When fitting a <a class="reference external" href="https://en.wikipedia.org/wiki/Bayesian_statistics">Bayesian</a> <a class="reference external" href="https://en.wikipedia.org/wiki/General_linear_model">general linear model (GLM)</a> the modeler gets a posterior distribution over model parameters after inference. Sampling values for model parameters from this posterior is equivalent to sampling a function (in the case of a GLM these functions are all linear).</p>
@@ -427,77 +227,116 @@ are dependent on each other (once I have drawn the king of hearts I will never d
 <p>We do this using <a class="reference external" href="https://en.wikipedia.org/wiki/Kernel_method">kernel methods</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Lazy_learning">lazy learning</a>.</p>
 <p>This next section is where most students get lost, so I will try describing the concepts below in two different ways: GPs as smoothing models and GPs as linear regression.</p>
 <p><em>Attempt One: GPs as Smoothing Models</em></p>
-<p>Rather than trying to describe the data using some <a class="reference external" href="https://en.wikipedia.org/wiki/Parametric_model">parametric model</a>, we use kernels to find the relationship (covariance) between labeled points in a training set. When we want to make predictions we use kernels to find the covariance of the new points with our training points. The labels of the new points are arrived at by smoothing (getting a weighted average) over the training points closest to them. How close two points are depends on the
-kernel being used.</p>
+<p>Rather than trying to describe the data using some <a class="reference external" href="https://en.wikipedia.org/wiki/Parametric_model">parametric model</a>, we use kernels to find the relationship (covariance) between labeled points in a training set. When we want to make predictions we use kernels to find the covariance of the new points with our training points. The labels of the new points are arrived at by smoothing (getting a weighted average) over the training points closest to them. How close two points are depends on the kernel being used.</p>
 <p><em>Attempt Two: GPs as Linear Regression</em></p>
-<p>A different way to think about GPs is to imagine that you are trying to model non-linear data with a linear model. To model the data well you need to transform the data so that it becomes linear. This transformation can be done using kernels. We typically say that the untransformed data is in “feature space” and the transformed data is in “kernel space”. If we pick the right kernel then we will model the data well. If fit this linear model using Bayesian statistics we would get a posterior over
-the model weights (which is equivalent to getting a posterior over functions where each function is described by a specific value of the model parameters). This is the basic idea behind a GP model <em>except</em> that we never see the model weights. We directly sample outcomes from the posterior rather than sampling parameters and them predicting outcomes.</p>
-<p><strong>Author’s Note:</strong> Readers familiar with neural networks might be interested to know that neural networks and Gaussian process models have an interesting relationship. Predictions from a Bayesian neural network can be though of as the sum of random variables where the random variables are the weights of the model. Bayesian statisticians treat these weights as random variables and use inference to find the posterior distribution over these weights. if we imagine that the number of weights go to
-infinity, then predictions from the model become Gaussian (<a class="reference external" href="https://en.wikipedia.org/wiki/Central_limit_theorem">central limit theorem</a>). This means that infinitely large Bayesian neural networks are Gaussian processes! It implies that finite sized Bayesian neural networks can be thought of as approximations of true Gaussian process models. In fact, a number of breakthroughs in Bayesian deep learning have come from this line of thinking.</p>
+<p>A different way to think about GPs is to imagine that you are trying to model non-linear data with a linear model. To model the data well you need to transform the data so that it becomes linear. This transformation can be done using kernels. We typically say that the untransformed data is in “feature space” and the transformed data is in “kernel space”. If we pick the right kernel then we will model the data well. If fit this linear model using Bayesian statistics we would get a posterior over the model weights (which is equivalent to getting a posterior over functions where each function is described by a specific value of the model parameters). This is the basic idea behind a GP model <em>except</em> that we never see the model weights. We directly sample outcomes from the posterior rather than sampling parameters and them predicting outcomes.</p>
+<p><strong>Author’s Note:</strong> Readers familiar with neural networks might be interested to know that neural networks and Gaussian process models have an interesting relationship. Predictions from a Bayesian neural network can be though of as the sum of random variables where the random variables are the weights of the model. Bayesian statisticians treat these weights as random variables and use inference to find the posterior distribution over these weights. if we imagine that the number of weights go to infinity, then predictions from the model become Gaussian (<a class="reference external" href="https://en.wikipedia.org/wiki/Central_limit_theorem">central limit theorem</a>). This means that infinitely large Bayesian neural networks are Gaussian processes! It implies that finite sized Bayesian neural networks can be thought of as approximations of true Gaussian process models. In fact, a number of breakthroughs in Bayesian deep learning have come from this line of thinking.</p>
 </div>
-<div class="section" id="What-Is-The-Deal-With-Kernels?">
-<h2>What Is The Deal With Kernels?<a class="headerlink" href="#What-Is-The-Deal-With-Kernels?" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-the-deal-with-kernels">
+<h2>What Is The Deal With Kernels?<a class="headerlink" href="#what-is-the-deal-with-kernels" title="Permalink to this headline">¶</a></h2>
 <p>In the last section many of you probably picked up on my comment “if we pick the right kernel”. How do we pick the right kernel? What even is a kernel?</p>
 <p>A kernel is simply a function that relates two points in space. For example:</p>
-<div class="math notranslate nohighlight">
-\[k(x_i, x_j) = |x_i - x_j|\]</div>
+<p>$$
+k(x_i, x_j) = |x_i - x_j|
+$$</p>
 <p>This is a very simple kernel. It tells us the absolute different between two points in space. We can think of a kernel as giving us the variance of one point with another. If we apply a kernel over a set of points we get the covariance of all of the points.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}K(x, x) =
+<p>$$
+K(x, x) =
 \begin{bmatrix}
-    k(x_i, x_j) &amp; \dots  \\
-    \dots &amp; \dots  \\
-    \dots &amp; k(x_n, x_m)
+k(x_i, x_j) &amp; \dots  \
+\dots &amp; \dots  \
+\dots &amp; k(x_n, x_m)
 \end{bmatrix}
-= cov(x, x)\end{split}\]</div>
+= cov(x, x)
+$$</p>
 <p>This brings us to an important constraint on kernels. Kernels must produce <a class="reference external" href="https://math.stackexchange.com/questions/1733726/positive-semi-definite-vs-positive-definite">positive semi-definite</a> matrices. This means that for the matrix produced all values along the diagonal have values &gt;= 0. We put this constraint in place to ensure that the kernel will only produce valid covariance matrices.</p>
 <p>Kernels must also be symmetric, meaning that the order of the points being compared should not matter:</p>
-<div class="math notranslate nohighlight">
-\[k(x_i, x_j) = k(x_j, x_i)\]</div>
-<p><strong>Author’s Note:</strong> In the last section I noted that neural networks and Gaussian processes share a philosophical relationship based on Bayesian neural network behavior in the limit of infinitely many parameters. neural networks also relate to GPs where kernels are concerned. Neural networks can be considered <a class="reference external" href="https://en.wikipedia.org/wiki/Universal_approximation_theorem">universal approximators</a>. This means that (theoretically) they can approximate arbitrarily complex functions as their
-number of parameters increases. We can take advantage of this for GPs by using a neural network as a kernel function. Rather than hand picking a kernel function we let the neural network learn a kernel that works for us. We call such a kernel a “general kernel”.</p>
+<p>$$
+k(x_i, x_j) = k(x_j, x_i)
+$$</p>
+<p><strong>Author’s Note:</strong> In the last section I noted that neural networks and Gaussian processes share a philosophical relationship based on Bayesian neural network behavior in the limit of infinitely many parameters. neural networks also relate to GPs where kernels are concerned. Neural networks can be considered <a class="reference external" href="https://en.wikipedia.org/wiki/Universal_approximation_theorem">universal approximators </a>. This means that (theoretically) they can approximate arbitrarily complex functions as their number of parameters increases. We can take advantage of this for GPs by using a neural network as a kernel function. Rather than hand picking a kernel function we let the neural network learn a kernel that works for us. We call such a kernel a “general kernel”.</p>
 </div>
-<div class="section" id="Advantages-Of-Gaussian-Process-Models">
-<h2>Advantages Of Gaussian Process Models<a class="headerlink" href="#Advantages-Of-Gaussian-Process-Models" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="advantages-of-gaussian-process-models">
+<h2>Advantages Of Gaussian Process Models<a class="headerlink" href="#advantages-of-gaussian-process-models" title="Permalink to this headline">¶</a></h2>
 <p>So what is so great about these models? Firstly, they fit nicely into the Bayesian modeling paradigm. We set priors, collect data, and use inference to get a posterior. This provides us with a model of the data generating process we are interested with predictions and uncertainty baked in.</p>
 <p>Additionally, GPs can model highly non-linear data, unlike many Bayesian models. If we have very complex data we can feel more confident about getting a good fit.</p>
 </div>
-<div class="section" id="Disadvantages-Of-Gaussian-Process-Models">
-<h2>Disadvantages Of Gaussian Process Models<a class="headerlink" href="#Disadvantages-Of-Gaussian-Process-Models" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="disadvantages-of-gaussian-process-models">
+<h2>Disadvantages Of Gaussian Process Models<a class="headerlink" href="#disadvantages-of-gaussian-process-models" title="Permalink to this headline">¶</a></h2>
 <p>GPs can be hard to fit. Choosing the right kernel can be difficult and might require a fair bit of domain specific knowledge.</p>
 <p>Additionally, the lazy learning characteristics of a GP model mean that fitting and prediction can be computationally taxing.</p>
 <p>There is a lot of research out there on how to efficiently fit and/or approximate a Gaussian process model to mitigate these problems.</p>
 </div>
-<div class="section" id="What-Have-We-Learned?">
-<h2>What Have We Learned?<a class="headerlink" href="#What-Have-We-Learned?" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-have-we-learned">
+<h2>What Have We Learned?<a class="headerlink" href="#what-have-we-learned" title="Permalink to this headline">¶</a></h2>
 <p>We learned that a Gaussian process is simply a set of events that are produced in such a way that any (or every) collection of finite random variables from the process is Gaussian distributed.</p>
 <p>We learned that a Gaussian process model is a Bayesian modeling method that uses kernels to produce non-linear predictive models with a Gaussian process posterior.</p>
 <p>We learned that Gaussian process models are most useful for modeling highly non-linear data where it is important to get uncertainty estimates around out model predictions.</p>
 </div>
-<div class="section" id="Where-To-Learn-More">
-<h2>Where To Learn More<a class="headerlink" href="#Where-To-Learn-More" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="where-to-learn-more">
+<h2>Where To Learn More<a class="headerlink" href="#where-to-learn-more" title="Permalink to this headline">¶</a></h2>
 <p>We’ve barely scratched the surface on Gaussian process models. Below I list other useful educational resources that you might want to explore. I don’t agree with 100% of the methods and advice for fitting Gaussian process models in the materials below, but they are all good introductions to GP modeling for the beginner.</p>
-<p>Fun Visualizations: * <a class="reference external" href="https://chi-feng.github.io/gp-demo/">GP Demo</a> * <a class="reference external" href="http://www.tmpl.fi/gp/">Gaussian process regression demo</a></p>
-<p>More About Processes * <a class="reference external" href="https://www.ee.ryerson.ca/~courses/ee8103/chap4.pdf">Stochastic Processes</a> * <a class="reference external" href="http://astrostatistics.psu.edu/su05/richards_poisson061005.pdf">Poisson Processes and Gaussian Processes</a></p>
-<p>More About Kernels: * <a class="reference external" href="http://www.cs.toronto.edu/~duvenaud/cookbook/index.html">The Kernel Cookbook</a> * <a class="reference external" href="http://www.cs.toronto.edu/~duvenaud/thesis.pdf">David Duvenaud’s Thesis</a></p>
-<p>Introductory Level Material: * <a class="reference external" href="https://towardsdatascience.com/an-intuitive-guide-to-gaussian-processes-ec2f0b45c71d">An intuitive guide to Gaussian processes</a> * <a class="reference external" href="http://katbailey.github.io/post/gaussian-processes-for-dummies/">Gaussian Processes for Dummies</a> * <a class="reference external" href="http://www.cs.cmu.edu/~16831-f14/notes/F09/lec20/16831_lecture20.albertor.pdf">Statistical Techniques in Robotics: Gaussian Process Part One</a> * <a class="reference external" href="http://www.cs.cmu.edu/~16831-f14/notes/F09/lec21/16831_lecture21.sross.pdf">Statistical Techniques in Robotics: Gaussian Process Part
-Two</a></p>
-<p>Practitioner Level Material: * <a class="reference external" href="https://www.robots.ox.ac.uk/~mebden/reports/GPtutorial.pdf">Gaussian Processes for Regression: A Quick Introduction</a> * <a class="reference external" href="http://mlg.eng.cam.ac.uk/tutorials/06/es.pdf">Tutorial: Gaussian process models for machine learning</a> * <a class="reference external" href="https://www.cs.cmu.edu/~epxing/Class/10708-17/notes-17/10708-scribe-lecture24.pdf">Gaussian Process and Deep Kernel Learning</a> * <a class="reference external" href="http://people.ee.duke.edu/~lcarin/David1.27.06.pdf">Gaussian Processes</a></p>
-<p>The GP Bible: * <a class="reference external" href="http://www.gaussianprocess.org/gpml/chapters/RW.pdf">Gaussian Processes for Machine Learning</a></p>
-<p>Notes and Guides: * <a class="reference external" href="http://keeganhin.es/blog/gp.html">Notes On Gaussian Processes</a> * <a class="reference external" href="https://drafts.distill.pub/gp/">A Practical Guide to Gaussian Processes</a> * <a class="reference external" href="https://www.jgoertler.com/visual-exploration-gaussian-processes/">A Visual Exploration of Gaussian Processes</a></p>
-<p>Packages For GP Modeling: * <a class="reference external" href="https://gpytorch.ai/">GPyTorch</a> * <a class="reference external" href="http://docs.pyro.ai/en/0.3.1/contrib.gp.html">Pyro</a> * <a class="reference external" href="https://gpy.readthedocs.io/en/deploy/">GPy</a> * <a class="reference external" href="https://gpflow.readthedocs.io/en/develop/">GPFlow</a> * <a class="reference external" href="https://github.com/tensorflow/probability/blob/master/tensorflow_probability/examples/jupyter_notebooks/Gaussian_Process_Regression_In_TFP.ipynb">Tensorflow Probability</a> * <a class="reference external" href="https://scikit-learn.org/stable/modules/gaussian_process.html">Sklearn</a> *
-<a class="reference external" href="https://george.readthedocs.io/en/latest/tutorials/first/">George</a> * <a class="reference external" href="https://docs.pymc.io/api/gp.html">Pymc3</a> * <a class="reference external" href="https://betanalpha.github.io/assets/case_studies/gp_part1/part1.html">Stan</a> * <a class="reference external" href="https://github.com/James-Montgomery/squidward">Squidward</a></p>
-<p>Information about Other Processes * <a class="reference external" href="https://www.unf.edu/~cwinton/html/cop4300/s09/class.notes/DiscreteDist.pdf">Bernoulli and Poisson</a> * <a class="reference external" href="https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-436j-fundamentals-of-probability-fall-2008/lecture-notes/MIT6_436JF08_lec20.pdf">Bernoulli and Poisson</a> * <a class="reference external" href="https://fromosia.wordpress.com/2017/03/19/stochastic-poisson-process/">Poisson</a> * <a class="reference external" href="https://www.probabilitycourse.com/chapter11/11_1_2_basic_concepts_of_the_poisson_process.php">Basic Concepts of the Poisson
-Process</a> * <a class="reference external" href="https://www.cs.cmu.edu/~kbe/dp_tutorial.pdf">Dirichlet Processes: A Gentle Tutorial</a> * <a class="reference external" href="https://www.ijcai.org/proceedings/2017/0393.pdf">Student-t Process Regression with Student-t Likelihood</a> * <a class="reference external" href="https://www.cs.cmu.edu/~andrewgw/tprocess.pdf">Student-t Processes as Alternatives to Gaussian Processes</a></p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
+<p>Fun Visualizations:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://chi-feng.github.io/gp-demo/">GP Demo</a></li>
+<li><a class="reference external" href="http://www.tmpl.fi/gp/">Gaussian Process Regression Demo</a></li>
+</ul>
+<p>More About Kernels:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.cs.toronto.edu/%7Eduvenaud/cookbook/index.html">The Kernel Cookbook</a></li>
+<li><a class="reference external" href="http://www.cs.toronto.edu/%7Eduvenaud/thesis.pdf">David Duvenaud’s Thesis</a></li>
+</ul>
+<p>Introductory Level Material:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://towardsdatascience.com/an-intuitive-guide-to-gaussian-processes-ec2f0b45c71d">An intuitive guide to Gaussian processes</a></li>
+<li><a class="reference external" href="http://katbailey.github.io/post/gaussian-processes-for-dummies/">Gaussian Processes for Dummies</a></li>
+<li><a class="reference external" href="http://www.cs.cmu.edu/%7E16831-f14/notes/F09/lec20/16831_lecture20.albertor.pdf">Statistical Techniques in Robotics: Gaussian Process Part One</a></li>
+<li><a class="reference external" href="http://www.cs.cmu.edu/%7E16831-f14/notes/F09/lec21/16831_lecture21.sross.pdf">Statistical Techniques in Robotics: Gaussian Process Part Two</a></li>
+</ul>
+<p>Practitioner Level Material:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://www.robots.ox.ac.uk/%7Emebden/reports/GPtutorial.pdf">Gaussian Processes for Regression:
+A Quick Introduction</a></li>
+<li><a class="reference external" href="http://mlg.eng.cam.ac.uk/tutorials/06/es.pdf">Tutorial: Gaussian process models
+for machine learning</a></li>
+<li><a class="reference external" href="https://www.cs.cmu.edu/%7Eepxing/Class/10708-17/notes-17/10708-scribe-lecture24.pdf"> Gaussian Process and Deep Kernel Learning</a></li>
+<li><a class="reference external" href="http://people.ee.duke.edu/%7Elcarin/David1.27.06.pdf">Gaussian Processes</a></li>
+</ul>
+<p>The GP Bible:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.gaussianprocess.org/gpml/chapters/RW.pdf">Gaussian Processes for Machine Learning</a></li>
+</ul>
+<p>Notes and Guides:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://keeganhin.es/blog/gp.html">Notes On Gaussian Processes</a></li>
+<li><a class="reference external" href="https://drafts.distill.pub/gp/">A Practical Guide to Gaussian Processes</a></li>
+<li><a class="reference external" href="https://www.jgoertler.com/visual-exploration-gaussian-processes/">A Visual Exploration of Gaussian Processes</a></li>
+</ul>
+<p>Packages For GP Modeling:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://gpytorch.ai/">GPyTorch</a></li>
+<li><a class="reference external" href="http://docs.pyro.ai/en/0.3.1/contrib.gp.html">Pyro</a></li>
+<li><a class="reference external" href="https://gpy.readthedocs.io/en/deploy/">GPy</a></li>
+<li><a class="reference external" href="https://gpflow.readthedocs.io/en/develop/">GPFlow</a></li>
+<li><a class="reference external" href="https://github.com/tensorflow/probability/blob/master/tensorflow_probability/examples/jupyter_notebooks/Gaussian_Process_Regression_In_TFP.ipynb">Tensorflow Probability</a></li>
+<li><a class="reference external" href="https://scikit-learn.org/stable/modules/gaussian_process.html">Sklearn</a></li>
+<li><a class="reference external" href="https://george.readthedocs.io/en/latest/tutorials/first/">George</a></li>
+<li><a class="reference external" href="https://docs.pymc.io/api/gp.html">Pymc3</a></li>
+<li><a class="reference external" href="https://betanalpha.github.io/assets/case_studies/gp_part1/part1.html">Stan</a></li>
+<li><a class="reference external" href="https://github.com/James-Montgomery/squidward">Squidward</a></li>
+</ul>
+<p>Information about Other Processes</p>
+<ul class="simple">
+<li><a class="reference external" href="https://www.ee.ryerson.ca/%7Ecourses/ee8103/chap4.pdf">Stochastic Processes</a></li>
+<li><a class="reference external" href="https://www.unf.edu/%7Ecwinton/html/cop4300/s09/class.notes/DiscreteDist.pdf">Bernoulli and Poisson</a></li>
+<li><a class="reference external" href="https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-436j-fundamentals-of-probability-fall-2008/lecture-notes/MIT6_436JF08_lec20.pdf">Bernoulli and Poisson</a></li>
+<li><a class="reference external" href="http://astrostatistics.psu.edu/su05/richards_poisson061005.pdf">Poisson Processes and Gaussian Processes</a></li>
+<li><a class="reference external" href="https://fromosia.wordpress.com/2017/03/19/stochastic-poisson-process/">Poisson</a></li>
+<li><a class="reference external" href="https://www.probabilitycourse.com/chapter11/11_1_2_basic_concepts_of_the_poisson_process.php">Basic Concepts of the Poisson Process</a></li>
+<li><a class="reference external" href="https://www.cs.cmu.edu/%7Ekbe/dp_tutorial.pdf">Dirichlet Processes: A Gentle Tutorial</a></li>
+<li><a class="reference external" href="https://www.ijcai.org/proceedings/2017/0393.pdf">Student-t Process Regression with Student-t Likelihood</a></li>
+<li><a class="reference external" href="https://www.cs.cmu.edu/%7Eandrewgw/tprocess.pdf">Student-t Processes as Alternatives to Gaussian Processes</a></li>
+</ul>
 </div>
 </div>
 
