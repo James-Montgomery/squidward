@@ -36,7 +36,7 @@ conda create --name squidward_env python=3.6 anaconda
 source activate squidward_env
 ```
 
-To install the most recent stable version, simply [pip install from pypi](https://pypi.org/project/squidward/)! Squidward is installed and ready to use. 
+To install the most recent stable version, simply [pip install from pypi](https://pypi.org/project/squidward/)! Squidward is installed and ready to use.
 
 ```
 pip install squidward
@@ -71,7 +71,7 @@ conda env remove -n squidward_env
 
 I've included basic examples of how to use squidward to get new users started building gaussian process models with this package.
 
-Many of these examples include visualizations of data and GP models. This will require the visualization packages below:
+Many of these examples include visualizations of data and GP models. Running these examples locally will require the visualization packages below:
 
 ```
 pip install "matplotlib>=2.2.3' "seaborn>=0.9.0"

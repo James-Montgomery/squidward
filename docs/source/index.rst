@@ -28,3 +28,7 @@ Welcome to Squidward's documentation!
 
    /markdown/examples/Intro_To_GP
    /markdown/examples/Fitting_A_GP
+
+Jupyter notebooks with code for all Examples and Tutorials can be found HERE_.
+
+.. _HERE: https://github.com/James-Montgomery/squidward/tree/master/docs/source/markdown/examples

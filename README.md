@@ -77,8 +77,6 @@ Many of these examples include visualizations of data and GP models. Running the
 pip install "matplotlib>=2.2.3' "seaborn>=0.9.0"
 ```
 
-You will also need the visualization helper functions found here: [Helper Functions](https://github.com/James-Montgomery/squidward/tree/master/docs/source/markdown/examples/gp_viz)
-
 Examples and Tutorials can be found on the squidward [docs site](https://james-montgomery.github.io/squidward/)
 
 ## Testing
