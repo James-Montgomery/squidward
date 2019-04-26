@@ -74,7 +74,7 @@ I've included basic examples of how to use squidward to get new users started bu
 Many of these examples include visualizations of data and GP models. Running these examples locally will require the visualization packages below:
 
 ```
-pip install "matplotlib>=2.2.3' "seaborn>=0.9.0"
+pip install "matplotlib>=2.2.3" "seaborn>=0.9.0"
 ```
 
 Examples and Tutorials can be found on the squidward [docs site](https://james-montgomery.github.io/squidward/)
@@ -134,7 +134,18 @@ Mack Sweeney who have helped guide me along my journey implementing Bayesian mod
 
 [//]: # (Comment Section)
 
-[//]: # (Updated the Github Docs)
+[//]: # (Update the Github Docs)
 [//]: # (for further help: https://github.com/James-Montgomery/misc_musings/tree/master/sphinx/docs)
 [//]: # (cd ./docs)
 [//]: # (make github)
+
+[//]: # (TODOs)
+[//]: # (1. Prior and Posterior Predictive)
+[//]: # (2. Logprob at fit)
+[//]: # (3. Add more distance measures)
+[//]: # (4. Add more optimized kernels)
+[//]: # (5. Update Testing)
+[//]: # (6. Update Styling)
+
+[//]: # (7. Student T Process)
+[//]: # (8. Multi-Output)
