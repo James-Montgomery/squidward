@@ -37,7 +37,7 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Gaussian Process Classification" href="Classification.html" />
+    <link rel="next" title="An Introduction to Gaussian Processes Models" href="Intro_to_GP.html" />
     <link rel="prev" title="Heteroscedastic Gaussian Process Regression" href="Heteroscedastic_GP.html" /> 
 </head>
 
@@ -97,7 +97,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#Fit-Model-with-Non-Zero-Mean">Fit Model with Non-Zero Mean</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Classification.html">Gaussian Process Classification</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Gaussian Process Tutorials:</span></p>
 <ul>
@@ -469,7 +468,7 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Fit-Model-with-Zero-Mean">
 <h2>Fit Model with Zero Mean<a class="headerlink" href="#Fit-Model-with-Zero-Mean" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -482,7 +481,7 @@ div.rendered_html tbody tr:hover {
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
 
 <span class="c1"># pull the parameters of the posterior distribution</span>
-<span class="n">mean</span><span class="p">,</span> <span class="n">var</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">posterior_predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">mean</span><span class="p">,</span> <span class="n">var</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_posterior</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
 <span class="c1"># plot posterior of model</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
@@ -507,12 +506,12 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Fit-Model-with-Non-Zero-Mean">
 <h2>Fit Model with Non-Zero Mean<a class="headerlink" href="#Fit-Model-with-Non-Zero-Mean" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">prior_mean</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mf">200.0</span><span class="o">*</span><span class="n">x</span>
+    <span class="k">return</span> <span class="mf">150.0</span><span class="o">*</span><span class="n">x</span>
 
 <span class="n">d</span> <span class="o">=</span> <span class="n">distance</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">10</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">kernel</span> <span class="o">=</span> <span class="n">kernel_base</span><span class="o">.</span><span class="n">Kernel</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s1">&#39;k1&#39;</span><span class="p">)</span>
@@ -523,7 +522,7 @@ div.rendered_html tbody tr:hover {
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
 
 <span class="c1"># pull the parameters of the posterior distribution</span>
-<span class="n">mean</span><span class="p">,</span> <span class="n">var</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">posterior_predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">mean</span><span class="p">,</span> <span class="n">var</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_posterior</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
 <span class="c1"># plot posterior of model</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
@@ -564,7 +563,7 @@ div.rendered_html tbody tr:hover {
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Classification.html" class="btn btn-neutral float-right" title="Gaussian Process Classification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Intro_to_GP.html" class="btn btn-neutral float-right" title="An Introduction to Gaussian Processes Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="Heteroscedastic_GP.html" class="btn btn-neutral float-left" title="Heteroscedastic Gaussian Process Regression" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

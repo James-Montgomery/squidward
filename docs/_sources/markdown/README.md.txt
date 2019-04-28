@@ -140,7 +140,6 @@ Mack Sweeney who have helped guide me along my journey implementing Bayesian mod
 [//]: # (make github)
 
 [//]: # (TODOs)
-[//]: # (1. Prior and Posterior Predictive)
 [//]: # (2. Logprob at fit)
 [//]: # (3. Add more distance measures)
 [//]: # (4. Add more optimized kernels)
