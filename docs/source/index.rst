@@ -20,7 +20,6 @@ Welcome to Squidward's documentation!
    /markdown/examples/Regression
    /markdown/examples/Heteroscedastic_GP
    /markdown/examples/NonZero_Prior_Mean
-   /markdown/examples/Classification
 
 .. toctree::
    :maxdepth: 1

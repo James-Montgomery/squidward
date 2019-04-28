@@ -257,4 +257,5 @@ class GaussianProcessTestCase(ClassificationTestCase):
 
 
 if __name__ == '__main__':
-    unittest.main(failfast=True)
+    pass
+    # unittest.main(failfast=True)

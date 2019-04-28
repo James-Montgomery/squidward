@@ -4,6 +4,7 @@ model can be created by calling one of these classes to create a model object.
 """
 
 import numpy as np
+import scipy.stats as st
 from squidward.utils import Invert, exactly_1d, exactly_2d, check_valid_cov
 
 # TODO: Add tests for non-zero prior mean
@@ -34,14 +35,16 @@ class GaussianProcessBase(object):
             An object with an associated function k that takes in 2 arrays and
             returns a valid K matrix. Valid K matricies are positive
             semi-definite and not singular.
-        prior_mean: function
-            The mean of the GP prior. Defaults to a zero mean GP. Should be a function
+        prior_mean: callable
+            The mean of the GP prior. Defaults to a zero mean GP. Should be a function or class
             that takes in a features array x and returns a prediction array y. The output
             should be an (n, 1) numpy array.
-        var_l: float or array_like
+        var_l: float or array_like or callable
             The likelihood variance of the process. Takes a scalar for homoscedastic
-            regression and an array_like for heteroscedastic regression. If an array,
-            the variances should be ordered with respect to the training observations.
+            regression and an array_like or callable for heteroscedastic regression. If an array,
+            the variances should be ordered with respect to the training observations. If a callable,
+            the function or class should take in a features array x and returns a likelihood variance array.
+            The output should be an (n, 1) numpy array.
         seed: integer
             An optional parameter that sets the seed for prior and posterior
             sampling functions.
@@ -72,7 +75,7 @@ class GaussianProcessBase(object):
         assert (self.prior_mean is None) or callable(self.prior_mean), \
             "Invalid prior mean function."
 
-        assert isinstance(self.var_l, (int, float, list, np.ndarray)), \
+        assert isinstance(self.var_l, (int, float, list, np.ndarray)) or callable(self.var_l), \
             "Likelihood variance argument must be a positive integer, " \
             "float, array of integers, or array of floats."
 
@@ -81,20 +84,24 @@ class GaussianProcessBase(object):
             assert self.var_l >= 0.0, \
                 "Likelihood variance argument must be a positive integer, " \
                 "float, array of integers, or array of floats."
+
         # heteroscedastic case
         else:
-            try:
-                self.var_l = exactly_1d( np.asarray(self.var_l) )
-                assert self.var_l.shape[0] > 0, \
+            if callable(self.var_l):
+                pass
+            else:
+                try:
+                    self.var_l = exactly_1d( np.asarray(self.var_l) )
+                    assert self.var_l.shape[0] > 0, \
+                        "Likelihood variance argument must be a positive integer, " \
+                        "float, array of integers, or array of floats."
+                except Exception as e:
+                    error = "Error with likelihood variance argument.\n{}".format(e)
+                    raise Exception(error)
+
+                assert (self.var_l >= 0.0).all(), \
                     "Likelihood variance argument must be a positive integer, " \
                     "float, array of integers, or array of floats."
-            except Exception as e:
-                error = "Error with likelihood variance argument.\n{}".format(e)
-                raise Exception(error)
-
-            assert (self.var_l >= 0.0).all(), \
-                "Likelihood variance argument must be a positive integer, " \
-                "float, array of integers, or array of floats."
 
         assert (seed is None) or isinstance(seed, int), \
             "When specifying random seed argument it must be an integer."
@@ -110,7 +117,7 @@ class GaussianProcessBase(object):
         else:
             self.random = np.random.RandomState(seed)
 
-    def prior_predict(self, x_test, return_cov=False):
+    def get_prior(self, x_test, return_cov=False):
         """
         Description
         ----------
@@ -138,6 +145,8 @@ class GaussianProcessBase(object):
             full covariance matrix of the gaussian process posterior instead.
         """
 
+        x_test = exactly_2d(x_test)
+
         if self.prior_mean is None:
             mean = np.zeros(x_test.shape[0]).reshape(-1, 1)
         else:
@@ -153,7 +162,7 @@ class GaussianProcessBase(object):
         var = exactly_2d(np.diag(cov))
         return mean, var
 
-    def prior_sample(self, x_test):
+    def sample_prior(self, x_test):
         """
         Description
         ----------
@@ -169,7 +178,45 @@ class GaussianProcessBase(object):
         Sample: array_like
             The values of a function sampled from the gaussian process prior.
         """
-        mean, cov = self.prior_predict(x_test, True)
+        x_test = exactly_2d(x_test)
+        mean, cov = self.get_prior(x_test, True)
+        return self.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
+
+    def get_prior_predictive(self, x_test, return_cov=False):
+        """
+
+        """
+
+        if isinstance(self.var_l, np.ndarray):
+            raise Exception("Predictive distributions only available if likelihood variance "
+                            "is specified as a callable or a scalar value.")
+
+        x_test = exactly_2d(x_test)
+
+        if callable(self.var_l):
+            var_l = exactly_1d(self.var_l(x_test))
+        else:
+            var_l = self.var_l
+
+        mean, cov = self.get_prior(x_test, True)
+
+        identity = np.zeros(cov.shape)
+        idx = np.diag_indices(identity.shape[0])
+        identity[idx] = var_l
+        cov += identity
+
+        check_valid_cov(cov, self.safe)
+        if return_cov:
+            return mean, cov
+
+        var = exactly_2d(np.diag(cov))
+        return mean, var
+
+    def sample_prior_predictive(self, x_test):
+        """
+
+        """
+        mean, cov = self.get_prior_predictive(x_test, True)
         return self.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
 
     def _fit(self, x_obs, y_obs):
@@ -204,16 +251,21 @@ class GaussianProcessBase(object):
             assert self.var_l.shape[0] == self.y_obs.shape[0], \
                 "The length of the likelihood variance array does not match the number of training observations."
 
+        if callable(self.var_l):
+            var_l = exactly_1d(self.var_l(x_obs))
+        else:
+            var_l = self.var_l
+
         K = self.kernel(x_obs, x_obs)
 
         identity = np.zeros(K.shape)
         idx = np.diag_indices(identity.shape[0])
-        identity[idx] = self.var_l
+        identity[idx] = var_l
         K += identity
 
         return K
 
-    def posterior_sample(self, x_test):
+    def sample_posterior(self, x_test):
         """
         Description
         ----------
@@ -231,9 +283,63 @@ class GaussianProcessBase(object):
         """
         assert self.fitted, "Please fit the model before trying to make posterior predictions!"
 
-        mean, cov = self.posterior_predict(x_test, True)
+        x_test = exactly_2d(x_test)
+
+        mean, cov = self.get_posterior(x_test, True)
         return self.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
 
+    def get_posterior_predictive(self, x_test, return_cov=False):
+        """
+
+        """
+
+        if isinstance(self.var_l, np.ndarray):
+            raise Exception("Predictive distributions only available if likelihood variance "
+                            "is specified as a callable or a scalar value.")
+
+        x_test = exactly_2d(x_test)
+
+        if callable(self.var_l):
+            var_l = exactly_1d(self.var_l(x_test))
+        else:
+            var_l = self.var_l
+
+        mean, cov = self.get_posterior(x_test, True)
+
+        identity = np.zeros(cov.shape)
+        idx = np.diag_indices(identity.shape[0])
+        identity[idx] = var_l
+        cov += identity
+
+        check_valid_cov(cov, self.safe)
+        if return_cov:
+            return mean, cov
+
+        var = exactly_2d(np.diag(cov))
+        return mean, var
+
+    def sample_posterior_predictive(self, x_test):
+        """
+
+        """
+        mean, cov = self.get_posterior_predictive(x_test, True)
+        return self.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
+
+    def get_prior_logpdf(self, x_test):
+        """
+
+        """
+        mean, cov = self.get_prior_predictive(x_test, True)
+        check_valid_cov(cov, self.safe)
+        return st.multivariate_normal(mean=mean, cov=cov).logpdf(x_test)
+
+    def get_posterior_logpdf(self, x_test):
+        """
+
+        """
+        mean, cov = self.get_posterior_predictive(x_test, True)
+        check_valid_cov(cov, self.safe)
+        return st.multivariate_normal(mean=mean, cov=cov).logpdf(x_test)
 # ---------------------------------------------------------------------------------------------------------------------
 # Gaussian Process Regression
 # SOGP with Inversion
@@ -288,7 +394,7 @@ class GaussianProcessInversion(GaussianProcessBase):
         self.inv_K = self.inv(self.K)
         self.fitted = True
 
-    def posterior_predict(self, x_test, return_cov=False):
+    def get_posterior(self, x_test, return_cov=False):
         """
         Description
         ----------
@@ -332,8 +438,10 @@ class GaussianProcessInversion(GaussianProcessBase):
         mean = exactly_2d(mean)
 
         check_valid_cov(cov, self.safe)
+
         if return_cov:
             return mean, cov
+
         var = exactly_2d(np.diag(cov))
         return mean, var
 
@@ -393,7 +501,7 @@ class GaussianProcessCholesky(GaussianProcessBase):
         self.alpha = np.linalg.solve(self.L.transpose(), np.linalg.solve(self.L, self.y_obs))
         self.fitted = True
 
-    def posterior_predict(self, x_test, return_cov=False):
+    def get_posterior(self, x_test, return_cov=False):
         """
         Description
         ----------
@@ -438,7 +546,9 @@ class GaussianProcessCholesky(GaussianProcessBase):
         mean = exactly_2d(mean)
 
         check_valid_cov(cov, self.safe)
+
         if return_cov:
             return mean, cov
+
         var = exactly_2d(np.diag(cov))
         return mean, var
