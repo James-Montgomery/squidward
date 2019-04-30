@@ -7,7 +7,6 @@ import numpy as np
 import scipy.stats as st
 from squidward.utils import Invert, exactly_1d, exactly_2d, check_valid_cov
 
-# TODO: Add tests for non-zero prior mean
 # TODO: set up logging options
 # TODO: bigfloat
 # https://stackoverflow.com/questions/9559346/deal-with-overflow-in-exp-using-numpy/9559478
@@ -117,108 +116,6 @@ class GaussianProcessBase(object):
         else:
             self.random = np.random.RandomState(seed)
 
-    def get_prior(self, x_test, return_cov=False):
-        """
-        Description
-        ----------
-        Make predictions. This function takes in a set of test points to make
-        predictions on and returns the mean function of the prior of the
-        gaussian process and a measure of uncertainty (either covariance or
-        variance).
-
-        Parameters
-        ----------
-        x_test: array_like
-            Feature input for points to make predictions for.
-        return_cov: boolean
-            If true, will return the full covariance matrix. Otherwise it will
-            return the variance.
-
-        Returns
-        ----------
-        Mean: array_like
-            An array with the values of the mean function of the guassian
-            process prior.
-        Var: array_like
-            The variance around the values of the mean function of the
-            gaussian process posterior. If return_cov is True then returns the
-            full covariance matrix of the gaussian process posterior instead.
-        """
-
-        x_test = exactly_2d(x_test)
-
-        if self.prior_mean is None:
-            mean = np.zeros(x_test.shape[0]).reshape(-1, 1)
-        else:
-            mean = exactly_1d(self.prior_mean(self.x_obs))
-        mean = exactly_2d(mean)
-
-        cov = self.kernel(x_test, x_test)
-
-        check_valid_cov(cov, self.safe)
-        if return_cov:
-            return mean, cov
-
-        var = exactly_2d(np.diag(cov))
-        return mean, var
-
-    def sample_prior(self, x_test):
-        """
-        Description
-        ----------
-        Draw a function from the prior.
-
-        Parameters
-        ----------
-        x_test: array_like
-            Feature input for points to draw samples for.
-
-        Returns
-        ----------
-        Sample: array_like
-            The values of a function sampled from the gaussian process prior.
-        """
-        x_test = exactly_2d(x_test)
-        mean, cov = self.get_prior(x_test, True)
-        return self.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
-
-    def get_prior_predictive(self, x_test, return_cov=False):
-        """
-
-        """
-
-        if isinstance(self.var_l, np.ndarray):
-            raise Exception("Predictive distributions only available if likelihood variance "
-                            "is specified as a callable or a scalar value.")
-
-        x_test = exactly_2d(x_test)
-
-        if callable(self.var_l):
-            var_l = exactly_1d(self.var_l(x_test))
-        else:
-            var_l = self.var_l
-
-        mean, cov = self.get_prior(x_test, True)
-
-        identity = np.zeros(cov.shape)
-        idx = np.diag_indices(identity.shape[0])
-        identity[idx] = var_l
-        cov += identity
-
-        check_valid_cov(cov, self.safe)
-        if return_cov:
-            return mean, cov
-
-        var = exactly_2d(np.diag(cov))
-        return mean, var
-
-    def sample_prior_predictive(self, x_test):
-        """
-
-        """
-        mean, cov = self.get_prior_predictive(x_test, True)
-        return self.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
-
     def _fit(self, x_obs, y_obs):
         """
         Description
@@ -265,28 +162,84 @@ class GaussianProcessBase(object):
 
         return K
 
-    def sample_posterior(self, x_test):
+    ##
+    # Get Prior / Posterior / Posterior Predictive
+    ##
+
+    def get_prior(self, x_test, return_cov=False):
         """
         Description
         ----------
-        Draw a function from the fitted posterior.
+        Make predictions. This function takes in a set of test points to make
+        predictions on and returns the mean function of the prior of the
+        gaussian process and a measure of uncertainty (either covariance or
+        variance).
 
         Parameters
         ----------
         x_test: array_like
-            Feature input for points to draw samples for.
+            Feature input for points to make predictions for.
+        return_cov: boolean
+            If true, will return the full covariance matrix. Otherwise it will
+            return the variance.
 
         Returns
         ----------
-        Sample: array_like
-            The values of a function sampled from the gaussian process posterior.
+        Mean: array_like
+            An array with the values of the mean function of the guassian
+            process prior.
+        Var: array_like
+            The variance around the values of the mean function of the
+            gaussian process posterior. If return_cov is True then returns the
+            full covariance matrix of the gaussian process posterior instead.
         """
-        assert self.fitted, "Please fit the model before trying to make posterior predictions!"
 
         x_test = exactly_2d(x_test)
 
-        mean, cov = self.get_posterior(x_test, True)
-        return self.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
+        if self.prior_mean is None:
+            mean = np.zeros(x_test.shape[0]).reshape(-1, 1)
+        else:
+            mean = exactly_1d(self.prior_mean(self.x_obs))
+        mean = exactly_2d(mean)
+
+        cov = self.kernel(x_test, x_test)
+
+        check_valid_cov(cov, self.safe)
+        if return_cov:
+            return mean, cov
+
+        var = exactly_2d(np.diag(cov))
+        return mean, var
+
+    def get_prior_predictive(self, x_test, return_cov=False):
+        """
+
+        """
+
+        if isinstance(self.var_l, np.ndarray):
+            raise Exception("Predictive distributions only available if likelihood variance "
+                            "is specified as a callable or a scalar value.")
+
+        x_test = exactly_2d(x_test)
+
+        if callable(self.var_l):
+            var_l = exactly_1d(self.var_l(x_test))
+        else:
+            var_l = self.var_l
+
+        mean, cov = self.get_prior(x_test, True)
+
+        identity = np.zeros(cov.shape)
+        idx = np.diag_indices(identity.shape[0])
+        identity[idx] = var_l
+        cov += identity
+
+        check_valid_cov(cov, self.safe)
+        if return_cov:
+            return mean, cov
+
+        var = exactly_2d(np.diag(cov))
+        return mean, var
 
     def get_posterior_predictive(self, x_test, return_cov=False):
         """
@@ -318,12 +271,70 @@ class GaussianProcessBase(object):
         var = exactly_2d(np.diag(cov))
         return mean, var
 
+    ##
+    # Sample Prior / Posterior / Posterior Predictive
+    ##
+
+    def sample_prior(self, x_test):
+        """
+        Description
+        ----------
+        Draw a function from the prior.
+
+        Parameters
+        ----------
+        x_test: array_like
+            Feature input for points to draw samples for.
+
+        Returns
+        ----------
+        Sample: array_like
+            The values of a function sampled from the gaussian process prior.
+        """
+        x_test = exactly_2d(x_test)
+        mean, cov = self.get_prior(x_test, True)
+        return self.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
+
+    def sample_prior_predictive(self, x_test):
+        """
+
+        """
+        mean, cov = self.get_prior_predictive(x_test, True)
+        return self.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
+
+    def sample_posterior(self, x_test):
+        """
+        Description
+        ----------
+        Draw a function from the fitted posterior.
+
+        Parameters
+        ----------
+        x_test: array_like
+            Feature input for points to draw samples for.
+
+        Returns
+        ----------
+        Sample: array_like
+            The values of a function sampled from the gaussian process posterior.
+        """
+        assert self.fitted, "Please fit the model before trying to make posterior predictions!"
+
+        x_test = exactly_2d(x_test)
+
+        mean, cov = self.get_posterior(x_test, True)
+        return self.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
+
     def sample_posterior_predictive(self, x_test):
         """
 
         """
         mean, cov = self.get_posterior_predictive(x_test, True)
         return self.random.multivariate_normal(mean[:, 0], cov, 1).T[:, 0]
+
+    ##
+    # Get Log Probabilities
+    ##
 
     def get_prior_logpdf(self, x_test):
         """
@@ -340,6 +351,7 @@ class GaussianProcessBase(object):
         mean, cov = self.get_posterior_predictive(x_test, True)
         check_valid_cov(cov, self.safe)
         return st.multivariate_normal(mean=mean, cov=cov).logpdf(x_test)
+
 # ---------------------------------------------------------------------------------------------------------------------
 # Gaussian Process Regression
 # SOGP with Inversion

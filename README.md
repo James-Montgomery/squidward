@@ -140,11 +140,11 @@ Mack Sweeney who have helped guide me along my journey implementing Bayesian mod
 [//]: # (make github)
 
 [//]: # (TODOs)
-[//]: # (2. Logprob at fit)
-[//]: # (3. Add more distance measures)
-[//]: # (4. Add more optimized kernels)
-[//]: # (5. Update Testing)
-[//]: # (6. Update Styling)
+[//]: # (Update Testing)
+[//]: # (Update Styling)
+[//]: # (Add more distance measures)
+[//]: # (Add more optimized kernels)
 
-[//]: # (7. Student T Process)
-[//]: # (8. Multi-Output)
+
+[//]: # (Student T Process)
+[//]: # (Multi-Output)
